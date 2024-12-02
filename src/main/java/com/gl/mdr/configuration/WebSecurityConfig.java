@@ -34,13 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.cors().disable()
         .authorizeRequests()
-        .antMatchers(configurationService.getWhiteAPIList()).permitAll()
-//        .antMatchers(new String[]{"/login","/v2/api-docs",
-//                "/configuration/ui",
-//                "/swagger-resources/**",
-//                "/configuration/security",
-//                "/swagger-ui.html",
-//                "/webjars/**", "/headerMissing"}).permitAll()
+        //.antMatchers(configurationService.getWhiteAPIList()).permitAll()
+        .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .sessionManagement()

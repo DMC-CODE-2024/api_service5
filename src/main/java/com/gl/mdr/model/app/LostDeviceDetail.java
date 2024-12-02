@@ -16,6 +16,7 @@ import com.gl.mdr.model.constants.Tags;
 
 @Entity
 @Table(name = "lost_device_detail" )
+//@Table(name = "stolen_device_detail" )
 public class LostDeviceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,24 +27,10 @@ public class LostDeviceDetail {
 	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime createdOn = LocalDateTime.now();
 
-    @UpdateTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	@Column(name="modified_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
-    LocalDateTime modifiedOn;
-
-    @Column(name="contact_number")
-    String contactNumber;
-
     @Column(name="imei")
     String imei;
 
-    @Column(name="device_model")
-    String deviceModel;
-
-    @Column(name="device_brand")
-    String deviceBrand;
-    
-    @Column(name="request_id")
+	@Column(name="request_id")
     String requestId;
     
     @Column(name="request_type")
@@ -58,14 +45,14 @@ public class LostDeviceDetail {
 	
 	@Transient
     private String tableName=Tags.lost_device_detail;
-	
-	
-	public String getTableName() {
-		return tableName;
+
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Long getId() {
@@ -84,44 +71,12 @@ public class LostDeviceDetail {
 		this.createdOn = createdOn;
 	}
 
-	public LocalDateTime getModifiedOn() {
-		return modifiedOn;
-	}
-
-	public void setModifiedOn(LocalDateTime modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
-
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
 	public String getImei() {
 		return imei;
 	}
 
 	public void setImei(String imei) {
 		this.imei = imei;
-	}
-
-	public String getDeviceModel() {
-		return deviceModel;
-	}
-
-	public void setDeviceModel(String deviceModel) {
-		this.deviceModel = deviceModel;
-	}
-
-	public String getDeviceBrand() {
-		return deviceBrand;
-	}
-
-	public void setDeviceBrand(String deviceBrand) {
-		this.deviceBrand = deviceBrand;
 	}
 
 	public String getRequestId() {
@@ -148,46 +103,25 @@ public class LostDeviceDetail {
 		this.lostStolenRequestId = lostStolenRequestId;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getTableName() {
+		return tableName;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("LostDeviceDetail [id=");
-		builder.append(id);
-		builder.append(", createdOn=");
-		builder.append(createdOn);
-		builder.append(", modifiedOn=");
-		builder.append(modifiedOn);
-		builder.append(", contactNumber=");
-		builder.append(contactNumber);
-		builder.append(", imei=");
-		builder.append(imei);
-		builder.append(", deviceModel=");
-		builder.append(deviceModel);
-		builder.append(", deviceBrand=");
-		builder.append(deviceBrand);
-		builder.append(", requestId=");
-		builder.append(requestId);
-		builder.append(", requestType=");
-		builder.append(requestType);
-		builder.append(", lostStolenRequestId=");
-		builder.append(lostStolenRequestId);
-		builder.append(", status=");
-		builder.append(status);
-		builder.append(", tableName=");
-		builder.append(tableName);
-		builder.append("]");
-		return builder.toString();
+		return "LostDeviceDetail{" +
+				"id=" + id +
+				", createdOn=" + createdOn +
+				", imei='" + imei + '\'' +
+				", requestId='" + requestId + '\'' +
+				", requestType='" + requestType + '\'' +
+				", lostStolenRequestId='" + lostStolenRequestId + '\'' +
+				", status='" + status + '\'' +
+				", tableName='" + tableName + '\'' +
+				'}';
 	}
-
-	
-    
-	
 }

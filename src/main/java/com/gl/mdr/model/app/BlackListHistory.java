@@ -21,8 +21,8 @@ public class BlackListHistory {
 	    @Column(name = "id")
 	    private Long id;
 
-	    @Column(name = "actual_imei")
-	    private String actualImei;
+	  /*  @Column(name = "actual_imei")
+	    private String actualImei;*/
 	    
 	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	    @Column(name = "created_on")
@@ -40,7 +40,7 @@ public class BlackListHistory {
 	    @Column(name = "operation")
 	    private Integer operation;
 
-	    @Column(name = "operator_id")
+	    /*@Column(name = "operator_id")
 	    private String operatorId;
 
 	    @Column(name = "operator_name")
@@ -76,20 +76,34 @@ public class BlackListHistory {
 
 	    @Column(name = "remarks")
 	    private String remarks;
-
+*/
 	    @Column(name = "source")
 	    private String source;
 
-	    @Column(name = "action")
+	   /* @Column(name = "action")
 	    private String action;
 
 	    @Column(name = "action_remark")
-	    private String actionRemark;
+	    private String actionRemark;*/
 	    
 	    @Transient
-	    private String tableName=Tags.blacklist_device_his;
-	    
-	    
+	    private String tableName=Tags.black_list_his;
+
+		@Transient
+		private String operationInterp;
+
+		public String getOperationInterp() {
+			return operationInterp;
+		}
+
+	public void setOperationInterp(String operationInterp) {
+		this.operationInterp = operationInterp;
+	}
+
+	public String getSource() { return source; }
+
+		public void setSource(String source) { this.source = source;}
+
 		public String getTableName() {
 			return tableName;
 		}
@@ -106,25 +120,12 @@ public class BlackListHistory {
 			this.id = id;
 		}
 
-		public String getActualImei() {
-			return actualImei;
-		}
-
-		public void setActualImei(String actualImei) {
-			this.actualImei = actualImei;
-		}
-
-		
 		public LocalDateTime getCreatedOn() {
 			return createdOn;
 		}
 
 		public void setCreatedOn(LocalDateTime createdOn) {
 			this.createdOn = createdOn;
-		}
-
-		public void setModifiedOn(LocalDateTime modifiedOn) {
-			this.modifiedOn = modifiedOn;
 		}
 
 		public String getImei() {
@@ -159,176 +160,19 @@ public class BlackListHistory {
 			this.operation = operation;
 		}
 
-		public String getOperatorId() {
-			return operatorId;
-		}
 
-		public void setOperatorId(String operatorId) {
-			this.operatorId = operatorId;
-		}
-
-		public String getOperatorName() {
-			return operatorName;
-		}
-
-		public void setOperatorName(String operatorName) {
-			this.operatorName = operatorName;
-		}
-
-		public String getComplaintType() {
-			return complaintType;
-		}
-
-		public void setComplaintType(String complaintType) {
-			this.complaintType = complaintType;
-		}
-
-		public String getExpiryDate() {
-			return expiryDate;
-		}
-
-		public void setExpiryDate(String expiryDate) {
-			this.expiryDate = expiryDate;
-		}
-
-		public String getModeType() {
-			return modeType;
-		}
-
-		public void setModeType(String modeType) {
-			this.modeType = modeType;
-		}
-
-		
-		public LocalDateTime getModifiedOn() {
-			return modifiedOn;
-		}
-
-		public String getRequestType() {
-			return requestType;
-		}
-
-		public void setRequestType(String requestType) {
-			this.requestType = requestType;
-		}
-
-		public String getTxnId() {
-			return txnId;
-		}
-
-		public void setTxnId(String txnId) {
-			this.txnId = txnId;
-		}
-
-		public String getUserId() {
-			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-
-		public String getUserType() {
-			return userType;
-		}
-
-		public void setUserType(String userType) {
-			this.userType = userType;
-		}
-
-		public String getTac() {
-			return tac;
-		}
-
-		public void setTac(String tac) {
-			this.tac = tac;
-		}
-
-		public String getRemarks() {
-			return remarks;
-		}
-
-		public void setRemarks(String remarks) {
-			this.remarks = remarks;
-		}
-
-		public String getSource() {
-			return source;
-		}
-
-		public void setSource(String source) {
-			this.source = source;
-		}
-
-		public String getAction() {
-			return action;
-		}
-
-		public void setAction(String action) {
-			this.action = action;
-		}
-
-		public String getActionRemark() {
-			return actionRemark;
-		}
-
-		public void setActionRemark(String actionRemark) {
-			this.actionRemark = actionRemark;
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("BlackListHistory [id=");
-			builder.append(id);
-			builder.append(", actualImei=");
-			builder.append(actualImei);
-			builder.append(", createdOn=");
-			builder.append(createdOn);
-			builder.append(", imei=");
-			builder.append(imei);
-			builder.append(", imsi=");
-			builder.append(imsi);
-			builder.append(", msisdn=");
-			builder.append(msisdn);
-			builder.append(", operation=");
-			builder.append(operation);
-			builder.append(", operatorId=");
-			builder.append(operatorId);
-			builder.append(", operatorName=");
-			builder.append(operatorName);
-			builder.append(", complaintType=");
-			builder.append(complaintType);
-			builder.append(", expiryDate=");
-			builder.append(expiryDate);
-			builder.append(", modeType=");
-			builder.append(modeType);
-			builder.append(", modifiedOn=");
-			builder.append(modifiedOn);
-			builder.append(", requestType=");
-			builder.append(requestType);
-			builder.append(", txnId=");
-			builder.append(txnId);
-			builder.append(", userId=");
-			builder.append(userId);
-			builder.append(", userType=");
-			builder.append(userType);
-			builder.append(", tac=");
-			builder.append(tac);
-			builder.append(", remarks=");
-			builder.append(remarks);
-			builder.append(", source=");
-			builder.append(source);
-			builder.append(", action=");
-			builder.append(action);
-			builder.append(", actionRemark=");
-			builder.append(actionRemark);
-			builder.append(", tableName=");
-			builder.append(tableName);
-			builder.append("]");
-			return builder.toString();
-		}
-
-		
-	    
+	@Override
+	public String toString() {
+		return "BlackListHistory{" +
+				"id=" + id +
+				", createdOn=" + createdOn +
+				", imei='" + imei + '\'' +
+				", imsi='" + imsi + '\'' +
+				", msisdn='" + msisdn + '\'' +
+				", operation=" + operation +
+				", source='" + source + '\'' +
+				", tableName='" + tableName + '\'' +
+				", operationInterp='" + operationInterp + '\'' +
+				'}';
+	}
 }

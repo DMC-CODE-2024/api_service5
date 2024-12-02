@@ -90,7 +90,7 @@ public class TrackLostDevices {
 	
 	
 	@Column(name="request_type", length=20, columnDefinition="varchar(20) DEFAULT ''")
-	private String request_type = "";
+	private String requestType = "";
 	
 	@Transient
 	private String interpretation;
@@ -273,15 +273,15 @@ public class TrackLostDevices {
 		this.request_id = request_id;
 	}
 
-	public String getRequest_type() {
-		return request_type;
+		
+	public String getRequestType() {
+		return requestType;
 	}
 
-	public void setRequest_type(String request_type) {
-		this.request_type = request_type;
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
 	}
 
-	
 	public String getInterpretation() {
 		return interpretation;
 	}
@@ -297,7 +297,7 @@ public class TrackLostDevices {
 				+ ", deviceType=" + deviceType + ", list_type=" + list_type + ", operator=" + operator + ", server="
 				+ server + ", session_id=" + session_id + ", status=" + status + ", origin_host=" + origin_host
 				+ ", hostname=" + hostname + ", time_stamp=" + time_stamp + ", time_taken=" + time_taken
-				+ ", reason_code=" + reason_code + ", request_id=" + request_id + ", request_type=" + request_type
+				+ ", reason_code=" + reason_code + ", request_id=" + request_id + ", request_type=" + requestType
 				+ ", interpretation=" + interpretation + "]";
 	}
 

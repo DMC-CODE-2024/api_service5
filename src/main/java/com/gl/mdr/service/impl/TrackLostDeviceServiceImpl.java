@@ -7,27 +7,33 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.gl.mdr.bulk.imei.feign.AlertFeign;
 import com.gl.mdr.configuration.PropertiesReader;
 import com.gl.mdr.configuration.SortDirection;
 import com.gl.mdr.exceptions.ResourceServicesException;
 import com.gl.mdr.model.app.ActiveMsisdnList;
-import com.gl.mdr.model.app.DuplicateDeviceDetail;
+import com.gl.mdr.model.app.AlertDto;
 import com.gl.mdr.model.app.LostDeviceDetail;
 import com.gl.mdr.model.app.StatesInterpretationDb;
 import com.gl.mdr.model.app.SystemConfigurationDb;
@@ -43,6 +49,7 @@ import com.gl.mdr.model.filter.TrackLostDeviceFilterRequest;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.model.generic.SearchCriteria;
 import com.gl.mdr.repo.app.ActiveMsisdnListRepository;
+import com.gl.mdr.repo.app.AlertRepository;
 import com.gl.mdr.repo.app.AttachedFileInfoRepository;
 import com.gl.mdr.repo.app.LostDeviceDetailRepository;
 import com.gl.mdr.repo.app.StatesInterpretaionRepository;
@@ -101,6 +108,15 @@ public class TrackLostDeviceServiceImpl {
 	@Autowired
 	TrackLostDevicesRepository trackLostDevicesRepository;
 	
+	@Autowired
+	AlertFeign alertFeign;
+	
+	@Autowired
+	AlertRepository alertRepository;
+	
+	
+	@Value("${serverName}")
+	public String serverName;
 
 	public Page<TrackLostDevices> getTrackLostDevicesDetails(
 			TrackLostDeviceFilterRequest trackLostRequest, Integer pageNo, Integer pageSize,String operation) {
@@ -115,11 +131,13 @@ public class TrackLostDeviceServiceImpl {
 				logger.info("column Name :: " + trackLostRequest.getOrderColumnName()); 
 				orderColumn = "Date & Time".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "createdOn" :
 						"Request Number".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "request_id" :
-							"IMEI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imei" :
-								"MSISDN".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "msisdn" :
-									"Operator".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "operator" :
-										"Status".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "status"
-												:"modifiedOn"; 
+							"IMSI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imsi" :
+								"IMEI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imei" :
+									"MSISDN".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "msisdn" :
+										"Operator".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "operator" :
+											"Request Type".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "requestType" :
+												"Status".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "status"
+														:"modifiedOn"; 
 			}
 			
 			logger.info("orderColumn data:  "+orderColumn);
@@ -172,6 +190,12 @@ public class TrackLostDeviceServiceImpl {
 			
 			if(Objects.nonNull(trackLostRequest.getImei()) && !trackLostRequest.getImei().equals(""))
 				uPSB.with(new SearchCriteria("imei",trackLostRequest.getImei() ,  SearchOperation.LIKE, Datatype.STRING));
+			
+			if(Objects.nonNull(trackLostRequest.getImsi()) && !trackLostRequest.getImsi().equals(""))
+				uPSB.with(new SearchCriteria("imsi",trackLostRequest.getImsi() ,  SearchOperation.LIKE, Datatype.STRING));
+			
+			if(Objects.nonNull(trackLostRequest.getRequestType()) && !trackLostRequest.getRequestType().equals(""))
+				uPSB.with(new SearchCriteria("requestType",trackLostRequest.getRequestType() ,  SearchOperation.LIKE, Datatype.STRING));
 
 			if(trackLostRequest.getMsisdn() !=null) {
 				logger.info("getTrackLostDevicesDetails MSISDN found ="+trackLostRequest.getMsisdn());
@@ -187,25 +211,57 @@ public class TrackLostDeviceServiceImpl {
 			if(Objects.nonNull(trackLostRequest.getStatus()) && !trackLostRequest.getStatus().equals(""))
 				uPSB.with(new SearchCriteria("status", trackLostRequest.getStatus(), SearchOperation.EQUALITY, Datatype.STRING));
 			
+			List<String> statusesToExclude = Arrays.asList("null", "NULL");
+			uPSB.with(new SearchCriteria("request_id", statusesToExclude, SearchOperation.NOT_IN, Datatype.STRING));
+			
 			//return  trackLostDevicesRepository.findAll(uPSB.build(),pageable);
-			
 			Page<TrackLostDevices> pageResult = trackLostDevicesRepository.findAll(uPSB.build(), pageable);
-			
-            for (TrackLostDevices detail : pageResult.getContent()) {
-            	
-            	try {
-					 String interpretation = getInterpretationForStatus(Integer.parseInt(detail.getStatus()),  93L);
-		             detail.setInterpretation(interpretation);
-		                
-				} catch (Exception e) {
-					// TODO: handle exception
-					logger.info("Exception when get status ="+detail.getStatus()+" getFeatureId="+93L+" Exception="+e.getMessage());
-				}
-            	
-            	logger.info("get TrackLostDevices status ="+detail.getStatus()+" getFeatureId="+93L);
-               
-            }
-			return pageResult;
+
+			// Filter out null or blank request_ids
+			List<TrackLostDevices> filteredList = pageResult.getContent().stream()
+			    .filter(detail -> detail.getRequest_id() != null && !detail.getRequest_id().isEmpty())
+			    .collect(Collectors.toList());
+
+			// Now, process the filtered list and set interpretations
+			for (TrackLostDevices detail : filteredList) {
+			    try {
+			        String interpretation = getInterpretationForStatus(Integer.parseInt(detail.getStatus()), 93L);
+			        detail.setInterpretation(interpretation);
+			    } catch (Exception e) {
+			        logger.info("Exception when get status =" + detail.getStatus() + " getFeatureId=" + 93L + " Exception=" + e.getMessage());
+			    }
+			    
+			    logger.info("get TrackLostDevices status =" + detail.getStatus() + " getFeatureId=" + 93L);
+			}
+
+			// Create a new Page with the filtered content
+			Page<TrackLostDevices> filteredPageResult = new PageImpl<>(filteredList, pageable, pageResult.getTotalElements());
+
+			// Return the filtered Page
+			return filteredPageResult;
+
+//			Page<TrackLostDevices> pageResult = trackLostDevicesRepository.findAll(uPSB.build(), pageable);
+//			
+//            for (TrackLostDevices detail : pageResult.getContent()) {
+//            	
+//            	try {
+//            		if(detail.getRequest_id()==null || detail.getRequest_id().isEmpty()) {
+//            			
+//            		}else {
+//            			String interpretation = getInterpretationForStatus(Integer.parseInt(detail.getStatus()),  93L);
+//   		             	detail.setInterpretation(interpretation);
+//            		}
+//					 
+//		                
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					logger.info("Exception when get status ="+detail.getStatus()+" getFeatureId="+93L+" Exception="+e.getMessage());
+//				}
+//            	
+//            	logger.info("get TrackLostDevices status ="+detail.getStatus()+" getFeatureId="+93L);
+//               
+//            }
+//			return pageResult;
 			
 
 		}catch(Exception e) {
@@ -282,9 +338,21 @@ public class TrackLostDeviceServiceImpl {
 					uPFm.setCreatedOn(trackLostDevices.getCreatedOn());
 					uPFm.setRequestNo(trackLostDevices.getRequest_id());
 					uPFm.setImei(trackLostDevices.getImei());
+					uPFm.setImsi(trackLostDevices.getImsi());
 					uPFm.setMsisdn(trackLostDevices.getMsisdn());
 					uPFm.setOperator(trackLostDevices.getOperator());
-					uPFm.setStatus(trackLostDevices.getStatus());
+					uPFm.setRequestType(trackLostDevices.getRequestType());
+//					if(trackLostDevices.getStatus().equals("0")) {
+//						uPFm.setStatus(trackLostDevices.getStatus());
+//					}else if(trackLostDevices.getStatus().equals("1")) {
+//						uPFm.setStatus(trackLostDevices.getStatus();
+//					}else if(trackLostDevices.getStatus().equals("0")) {
+//						uPFm.setStatus(trackLostDevices.getStatus());
+//					}else {
+//						uPFm.setStatus(trackLostDevices.getStatus());
+//					}
+					String interpretation = getInterpretationForStatus(Integer.parseInt(trackLostDevices.getStatus()), 93L);
+					uPFm.setStatus(interpretation);
 					fileRecords.add(uPFm);
 				}
 				csvWriter.write(fileRecords);
@@ -332,11 +400,19 @@ public class TrackLostDeviceServiceImpl {
 	}
 	public GenricResponse setTrackLostDevices(LostDeviceRequest lostDeviceRequest , String operator, HttpServletRequest request) {
 		// TODO Auto-generated method stub
+		
 		GenricResponse genricResponse = new GenricResponse();
+		
 		String remoteIp=request.getRemoteAddr();
+
 		String whilteListIP=propertiesReader.WHITE_LIST_IP;
+		
 		boolean checkIpStatus=propertiesReader.WHITE_LIST_IP_STATUS;
 		
+		com.gl.mdr.model.app.AlertMessages alertMessages = null;
+		
+		AlertDto alertDto = new AlertDto();
+        
 		logger.info("setTrackLostDevices() Start Track Lost Devices Request=" + lostDeviceRequest.toString()+", Remote IP ="+remoteIp+" WHITE_LIST_IP="+whilteListIP+", WHITE_LIST_IP_STATUS ="+checkIpStatus+"");
 		
 		if(checkIpStatus) {
@@ -349,6 +425,20 @@ public class TrackLostDeviceServiceImpl {
 		}
 		try {
 			logger.info("Start Data insert in table Request=" + lostDeviceRequest.toString());
+			
+			alertMessages = alertRepository.findByAlertIdIn("alert8004");
+			
+			if(alertMessages!=null) {
+				
+				alertDto.setAlertId(alertMessages.getAlertId());
+		        alertDto.setUserId("0");
+		        alertDto.setAlertMessage(alertMessages.getDescription());
+		        alertDto.setAlertProcess("Tracking EDR Data");
+		        alertDto.setServerName(serverName);
+		        alertDto.setFeatureName("Tracking EDR");
+		        alertDto.setTxnId("");
+			}
+			
 			TrackLostDevices trackLostDevices=new TrackLostDevices();
 			
 			trackLostDevices.setCreatedOn(LocalDateTime.now());
@@ -397,15 +487,15 @@ public class TrackLostDeviceServiceImpl {
 					
 					trackLostDevices.setRequest_id(lostDeviceDetail.getRequestId());
 					try {
-						trackLostDevices.setRequest_type(lostDeviceDetail.getRequestType());
+						trackLostDevices.setRequestType(lostDeviceDetail.getRequestType());
 					} catch (Exception e) {
 						// TODO: handle exception
-						trackLostDevices.setRequest_type("");
+						trackLostDevices.setRequestType("");
 						logger.info("Exception When Set Request type = " +lostDeviceDetail.getRequestType());
 					}
 				}else {
 					trackLostDevices.setRequest_id("");
-					trackLostDevices.setRequest_type("");
+					trackLostDevices.setRequestType("");
 				}
 				trackLostDevicesRepository.save(trackLostDevices);
 				logger.info("data inserted successfully Request=" + lostDeviceRequest.toString());
@@ -429,10 +519,20 @@ public class TrackLostDeviceServiceImpl {
 			genricResponse.setErrorCode(201);
 			genricResponse.setMessage("Wrong Data");
 			genricResponse.setTxnId("FAILED");
+			logger.info("setTrackLostDevices():: Raise Alert request API=" + alertDto);
+			genricResponse = alertFeign.raiseAnAlert(alertDto);
+			logger.info("setTrackLostDevices():: Raise Alert API response=" + genricResponse);
 			return genricResponse;
 		}
 		
 		
 	}
+	
+	public List<String> getTrackLostRequestType() {
+		List<String> status=trackLostDevicesRepository.findDistinctRequestType();
+		return status;
+	}
+	
+	
 	
 }

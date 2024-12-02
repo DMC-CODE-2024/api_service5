@@ -84,6 +84,13 @@ public class TrackLostDeviceController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "get User Track Lost Device Request Type")
+	@GetMapping("/getTrackLostRequestType")
+	public ResponseEntity<?> getTrackLostRequestType() {
+		List<String>  list = trackLostDeviceServiceImpl.getTrackLostRequestType();
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "Insert Track Lost Devices Details.", response = GenricResponse.class)
 	@RequestMapping(path = "tracklost/device/{operator}", method = RequestMethod.POST)
 	public GenricResponse setTrackLostDevices(@RequestBody LostDeviceRequest lostDeviceRequest, @PathVariable String operator, HttpServletRequest request,HttpServletResponse response ){

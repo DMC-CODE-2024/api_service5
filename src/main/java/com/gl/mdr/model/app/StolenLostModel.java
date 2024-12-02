@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gl.mdr.bulk.imei.entity.AuditTrailModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "lost_device_mgmt")
+//@Table(name = "stolen_device_mgmt")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class StolenLostModel {
 
@@ -65,7 +68,7 @@ public class StolenLostModel {
 	private String devicePurchaseInvoiceUrl;
 	
 	@Column(name = "device_lost_date_time") 
-	private String deviceLostDdateTime;
+	private String deviceLostDateTime;
 	
 	@Column(name = "device_owner_name") 
 	private String deviceOwnerName;
@@ -94,7 +97,7 @@ public class StolenLostModel {
 	@Column(name = "fir_copy_url") 
 	private String firCopyUrl;
 	
-	@Column(name = "remarks") 
+	@Column(name = "remark") 
 	private String remarks;
 	
 	@Column(name = "status") 
@@ -135,16 +138,13 @@ public class StolenLostModel {
 	@Column(name = "device_lost_district") 
 	private String district;
 	
-	@Column(name = "device_lost_commune") 
+	@Column(name = "device_lost_commune")
 	private String commune;
-	
-	@Column(name = "police_station") 
+
+	@Column(name = "police_station")
 	private String policeStation;
-	
-	
-	
-	
-	@Column(name = "owner_passport_number") 
+
+	@Column(name = "owner_passport_number")
 	private String passportNumber;
 	
 	@Column(name = "email_for_otp") 
@@ -158,8 +158,37 @@ public class StolenLostModel {
 	
 	@Column(name = "language") 
 	private String language;
+
+	@Column(name="lost_id")
+	private String lostId;
+
+	@Column(name = "device_owner_state")
+	private String deviceOwnerState;
+
+	@Column(name = "device_owner_province_city")
+	private String deviceOwnerProvinceCity;
+
+	@Column(name = "device_owner_commune")
+	private String deviceOwnerCommune;
+
+	@Column(name = "otp_retry_count")
+	private int otpRetryCount;
+
+	@Column(name = "serial_number")
+	private String serialNumber;
+
+	@Column(name = "incident_detail")
+	private String incidentDetail;
+
+	@Column(name = "other_document")
+	private String otherDocument;
+
+	@Column(name = "device_type")
+	private String deviceType;
 	
-	
+	@Column(name = "updated_by")
+	private String updatedBy;
+
 	@Transient 
 	private String oldRequestId;
 
@@ -172,7 +201,148 @@ public class StolenLostModel {
 	@Transient 
 	private String userAgent;
 	
-	
+	@Transient 
+	private String fileUrl;
+
+	@Transient
+	@JsonProperty(value = "auditTrailModel", access = JsonProperty.Access.WRITE_ONLY)
+	private AuditTrailModel auditTrailModel;
+
+	@Transient
+	private String lostDeviceImei;
+
+	@Transient
+	private String policeMgmtImei1;
+
+	@Transient
+	private String policeMgmtImei2;
+
+	@Transient
+	private String policeMgmtImei3;
+
+	@Transient
+	private String policeMgmtImei4;
+
+	public String getDeviceOwnerState() {
+		return deviceOwnerState;
+	}
+
+	public void setDeviceOwnerState(String deviceOwnerState) {
+		this.deviceOwnerState = deviceOwnerState;
+	}
+
+	public String getDeviceOwnerProvinceCity() {
+		return deviceOwnerProvinceCity;
+	}
+
+	public void setDeviceOwnerProvinceCity(String deviceOwnerProvinceCity) {
+		this.deviceOwnerProvinceCity = deviceOwnerProvinceCity;
+	}
+
+	public String getDeviceOwnerCommune() {
+		return deviceOwnerCommune;
+	}
+
+	public void setDeviceOwnerCommune(String deviceOwnerCommune) {
+		this.deviceOwnerCommune = deviceOwnerCommune;
+	}
+
+	public int getOtpRetryCount() {
+		return otpRetryCount;
+	}
+
+	public void setOtpRetryCount(int otpRetryCount) {
+		this.otpRetryCount = otpRetryCount;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public String getIncidentDetail() {
+		return incidentDetail;
+	}
+
+	public void setIncidentDetail(String incidentDetail) {
+		this.incidentDetail = incidentDetail;
+	}
+
+	public String getOtherDocument() {
+		return otherDocument;
+	}
+
+	public void setOtherDocument(String otherDocument) {
+		this.otherDocument = otherDocument;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public String getLostDeviceImei() {
+		return lostDeviceImei;
+	}
+
+	public void setLostDeviceImei(String lostDeviceImei) {
+		this.lostDeviceImei = lostDeviceImei;
+	}
+
+	public String getPoliceMgmtImei1() {
+		return policeMgmtImei1;
+	}
+
+	public void setPoliceMgmtImei1(String policeMgmtImei1) {
+		this.policeMgmtImei1 = policeMgmtImei1;
+	}
+
+	public String getPoliceMgmtImei2() {
+		return policeMgmtImei2;
+	}
+
+	public void setPoliceMgmtImei2(String policeMgmtImei2) {
+		this.policeMgmtImei2 = policeMgmtImei2;
+	}
+
+	public String getPoliceMgmtImei3() {
+		return policeMgmtImei3;
+	}
+
+	public void setPoliceMgmtImei3(String policeMgmtImei3) {
+		this.policeMgmtImei3 = policeMgmtImei3;
+	}
+
+	public String getPoliceMgmtImei4() {
+		return policeMgmtImei4;
+	}
+
+	public void setPoliceMgmtImei4(String policeMgmtImei4) {
+		this.policeMgmtImei4 = policeMgmtImei4;
+	}
+
+	public AuditTrailModel getAuditTrailModel() {
+		return auditTrailModel;
+	}
+
+	public void setAuditTrailModel(AuditTrailModel auditTrailModel) {
+		this.auditTrailModel = auditTrailModel;
+	}
+
+	public String getLostId() {
+		return lostId;
+	}
+
+	public void setLostId(String lostId) {
+		this.lostId = lostId;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -255,14 +425,13 @@ public class StolenLostModel {
 		this.devicePurchaseInvoiceUrl = devicePurchaseInvoiceUrl;
 	}
 
-	public String getDeviceLostDdateTime() {
-		return deviceLostDdateTime;
+	public String getDeviceLostDateTime() {
+		return deviceLostDateTime;
 	}
 
-	public void setDeviceLostDdateTime(String deviceLostDdateTime) {
-		this.deviceLostDdateTime = deviceLostDdateTime;
+	public void setDeviceLostDateTime(String deviceLostDateTime) {
+		this.deviceLostDateTime = deviceLostDateTime;
 	}
-
 
 	public String getDeviceOwnerName() {
 		return deviceOwnerName;
@@ -562,33 +731,49 @@ public class StolenLostModel {
 		this.language = language;
 	}
 
-	@Override
-	public String toString() {
-		return "StolenLostModel [id=" + id + ", statusCode=" + statusCode + ", createdOn=" + createdOn
-				+ ", modified_on=" + modifiedOn + ", ownerDOB=" + ownerDOB + ", contactNumber=" + contactNumber
-				+ ", imei1=" + imei1 + ", imei2=" + imei2 + ", imei3=" + imei3 + ", imei4=" + imei4 + ", deviceBrand="
-				+ deviceBrand + ", deviceModel=" + deviceModel + ", devicePurchaseInvoiceUrl="
-				+ devicePurchaseInvoiceUrl + ", deviceLostDdateTime=" + deviceLostDdateTime + ", deviceOwnerName="
-				+ deviceOwnerName + ", deviceOwnerEmail=" + deviceOwnerEmail + ", deviceOwnerAddress="
-				+ deviceOwnerAddress + ", deviceOwnerNationalIdUrl=" + deviceOwnerNationalIdUrl
-				+ ", deviceOwnerNationalID=" + deviceOwnerNationalID + ", deviceOwnerNationality="
-				+ deviceOwnerNationality + ", contactNumberForOtp=" + contactNumberForOtp + ", otp=" + otp
-				+ ", firCopyUrl=" + firCopyUrl + ", remarks=" + remarks + ", status=" + status + ", createdBy="
-				+ createdBy + ", requestType=" + requestType + ", requestId=" + requestId + ", requestMode="
-				+ requestMode + ", fileName=" + fileName + ", fileRecordCount=" + fileRecordCount
-				+ ", mobileInvoiceBill=" + mobileInvoiceBill + ", deviceOwnerAddress2=" + deviceOwnerAddress2
-				+ ", recoveryReason=" + recoveryReason + ", province=" + province + ", district=" + district
-				+ ", commune=" + commune + ", policeStation=" + policeStation + ", passportNumber=" + passportNumber
-				+ ", otpEmail=" + otpEmail + ", category=" + category + ", userStatus=" + userStatus + ", language="
-				+ language + ", oldRequestId=" + oldRequestId + ", browser=" + browser + ", publicIp=" + publicIp
-				+ ", userAgent=" + userAgent + "]";
+	
+	public String getFileUrl() {
+		return fileUrl;
 	}
 
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
+	public String getDeviceType() {
+		return deviceType;
+	}
 
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
 
+	@Override
+	public String toString() {
+		return "StolenLostModel [id=" + id + ", statusCode=" + statusCode + ", createdOn=" + createdOn + ", modifiedOn="
+				+ modifiedOn + ", ownerDOB=" + ownerDOB + ", contactNumber=" + contactNumber + ", imei1=" + imei1
+				+ ", imei2=" + imei2 + ", imei3=" + imei3 + ", imei4=" + imei4 + ", deviceBrand=" + deviceBrand
+				+ ", deviceModel=" + deviceModel + ", devicePurchaseInvoiceUrl=" + devicePurchaseInvoiceUrl
+				+ ", deviceLostDateTime=" + deviceLostDateTime + ", deviceOwnerName=" + deviceOwnerName
+				+ ", deviceOwnerEmail=" + deviceOwnerEmail + ", deviceOwnerAddress=" + deviceOwnerAddress
+				+ ", deviceOwnerNationalIdUrl=" + deviceOwnerNationalIdUrl + ", deviceOwnerNationalID="
+				+ deviceOwnerNationalID + ", deviceOwnerNationality=" + deviceOwnerNationality
+				+ ", contactNumberForOtp=" + contactNumberForOtp + ", otp=" + otp + ", firCopyUrl=" + firCopyUrl
+				+ ", remarks=" + remarks + ", status=" + status + ", createdBy=" + createdBy + ", requestType="
+				+ requestType + ", requestId=" + requestId + ", requestMode=" + requestMode + ", fileName=" + fileName
+				+ ", fileRecordCount=" + fileRecordCount + ", mobileInvoiceBill=" + mobileInvoiceBill
+				+ ", deviceOwnerAddress2=" + deviceOwnerAddress2 + ", recoveryReason=" + recoveryReason + ", province="
+				+ province + ", district=" + district + ", commune=" + commune + ", policeStation=" + policeStation
+				+ ", passportNumber=" + passportNumber + ", otpEmail=" + otpEmail + ", category=" + category
+				+ ", userStatus=" + userStatus + ", language=" + language + ", lostId=" + lostId + ", deviceOwnerState="
+				+ deviceOwnerState + ", deviceOwnerProvinceCity=" + deviceOwnerProvinceCity + ", deviceOwnerCommune="
+				+ deviceOwnerCommune + ", otpRetryCount=" + otpRetryCount + ", serialNumber=" + serialNumber
+				+ ", incidentDetail=" + incidentDetail + ", otherDocument=" + otherDocument + ", deviceType="
+				+ deviceType + ", updatedBy=" + updatedBy + ", oldRequestId=" + oldRequestId + ", browser=" + browser
+				+ ", publicIp=" + publicIp + ", userAgent=" + userAgent + ", fileUrl=" + fileUrl + ", auditTrailModel="
+				+ auditTrailModel + ", lostDeviceImei=" + lostDeviceImei + ", policeMgmtImei1=" + policeMgmtImei1
+				+ ", policeMgmtImei2=" + policeMgmtImei2 + ", policeMgmtImei3=" + policeMgmtImei3 + ", policeMgmtImei4="
+				+ policeMgmtImei4 + "]";
+	}
 
-
-
-	
 	
 }

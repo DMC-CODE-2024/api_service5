@@ -12,6 +12,7 @@ public class SearchIMEIRequest {
 	private String searchString;
 	private Integer featureId;
 	private Integer userTypeId;
+	private String userName;
 	
 	private String orderColumnName;
 	private String order;
@@ -114,6 +115,14 @@ public class SearchIMEIRequest {
 		this.sort = sort;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
 		return "SearchIMEIRequest{" +
@@ -127,6 +136,7 @@ public class SearchIMEIRequest {
 				", searchString='" + searchString + '\'' +
 				", featureId=" + featureId +
 				", userTypeId=" + userTypeId +
+				", userName='" + userName + '\'' +
 				", orderColumnName='" + orderColumnName + '\'' +
 				", order='" + order + '\'' +
 				", sort='" + sort + '\'' +
@@ -134,5 +144,4 @@ public class SearchIMEIRequest {
 				", tableName='" + tableName + '\'' +
 				'}';
 	}
-
 }

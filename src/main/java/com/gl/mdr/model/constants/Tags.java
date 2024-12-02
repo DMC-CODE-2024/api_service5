@@ -36,9 +36,10 @@ public interface Tags {
 	String trc_local_manufactured_device_data="Local Manufacturer";
 	String national_whitelist="National White List";
 	String active_imei_with_different_msisdn="Duplicate";
+	String active_imei_with_different_imsi="EDR_Duplicate";
 	String imei_pair_detail="Pairing";
 	String grey_list_his="Grey List History";
-	String blacklist_device_his="Black List History";
+	String black_list_his="Black List History";
 	String imei_pair_detail_his="Pairing History";
 	String eirs_invalid_imei="Invalid IMEI";
 	String duplicate_device_detail="Duplicate Device Detail";
@@ -46,4 +47,7 @@ public interface Tags {
 	String lost_device_detail_his="Stolen History";
 	String duplicate_device_detail_his="Duplicate Device Detail History";
 	String exception_list_his="Exception List History";
+	String lost_device_mgmt_status_init="INIT_START";
+	String lost_device_mgmt_request_type_recover="RECOVER";
+	String lost_device_mgmt_status_start="START";
 }

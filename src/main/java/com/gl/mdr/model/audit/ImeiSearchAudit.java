@@ -1,4 +1,4 @@
-package com.gl.mdr.model.app;
+package com.gl.mdr.model.audit;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,21 +22,21 @@ public class ImeiSearchAudit {
     @Column(name = "created_on", nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdOn;
 
-    @Column(name = "request_id", length = 25, nullable = true)
-    private String requestId;
+    @Column(name = "ticket_id", length = 25, nullable = true)
+    private String ticketId;
 
     @Column(name = "imei", length = 20, nullable = true)
     private String imei;
 
-    @Column(name = "user_id", length = 20, nullable = true)
-    private String userId;
+    @Column(name = "username", length = 20, nullable = true)
+    private String username;
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getImei() {
@@ -47,12 +47,12 @@ public class ImeiSearchAudit {
         this.imei = imei;
     }
 
-    public String getRequestId() {
-        return requestId;
+    public String getTicketId() {
+        return ticketId;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
 
     public LocalDateTime getCreatedOn() {
@@ -76,9 +76,9 @@ public class ImeiSearchAudit {
         return "ImeiSearchAudit{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
-                ", requestId='" + requestId + '\'' +
+                ", ticketId='" + ticketId + '\'' +
                 ", imei='" + imei + '\'' +
-                ", userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

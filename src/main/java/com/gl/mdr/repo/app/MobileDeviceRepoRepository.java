@@ -1,6 +1,7 @@
 package com.gl.mdr.repo.app;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -38,8 +39,7 @@ JpaRepository<MobileDeviceRepository, Long>, JpaSpecificationExecutor<MobileDevi
 	
 	@Query(value="SELECT DISTINCT u.country_name FROM app.mdr_manufacturing_country u where u.country_name<>''",nativeQuery = true)
 	public List<String> findManufacturerCountry();
-	
-	
-	
-	
+
+
+	Optional<List<MobileDeviceRepository>> findByDeviceId(String deviceId);
 }

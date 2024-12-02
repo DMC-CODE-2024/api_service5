@@ -37,6 +37,17 @@ public class PropertiesReader {
 	
 	@Value("${WHITE_LIST_IP_STATUS}")
 	public boolean WHITE_LIST_IP_STATUS;
-	
+
+	@Value("${redmineUrl}")
+	public String redmineUrl;
+
+	@Value("${redmineFileDownloadUrl}")
+	public String redmineFileDownloadUrl;
+
+	@Value("${recoveryFilePath}")
+	public String recoveryFilePath;
+
 	//END for TRACK LOST DEVIVE API
+	@Value("${eirs.alert.url}")
+	private String alertURL;
 }

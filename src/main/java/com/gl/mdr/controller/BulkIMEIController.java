@@ -1,19 +1,14 @@
 package com.gl.mdr.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gl.mdr.bulk.imei.entity.BulkIMEIRequest;
-import com.gl.mdr.model.filter.LostDeviceRequest;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.service.impl.BulkIMEIFileUploadServiceImpl;
 
@@ -71,12 +66,6 @@ public class BulkIMEIController {
 		return genricResponse;
 	}
 	
-//	@ApiOperation(value = "Insert Track Lost Devices Details.", response = GenricResponse.class)
-//	@RequestMapping(path = "tracklost/device/{operator}", method = RequestMethod.POST)
-//	public GenricResponse setTrackLostDevices(@RequestBody LostDeviceRequest lostDeviceRequest, @PathVariable String operator, HttpServletRequest request,HttpServletResponse response ){
-//		logger.info("set Track Lost Devices Details Request = " +lostDeviceRequest.toString() );
-//		GenricResponse genricResponse =bulkIMEIFileUploadServiceImpl.setTrackLostDevices(lostDeviceRequest,operator, request);
-//		return genricResponse;
-//	}
+
 	
 }

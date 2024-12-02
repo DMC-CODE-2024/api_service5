@@ -359,15 +359,15 @@ public class BulkIMEIFileUploadServiceImpl {
 					
 					trackLostDevices.setRequest_id(lostDeviceDetail.getRequestId());
 					try {
-						trackLostDevices.setRequest_type(lostDeviceDetail.getRequestType());
+						trackLostDevices.setRequestType(lostDeviceDetail.getRequestType());
 					} catch (Exception e) {
 						// TODO: handle exception
-						trackLostDevices.setRequest_type("");
+						trackLostDevices.setRequestType("");
 						logger.info("Exception When Set Request type = " +lostDeviceDetail.getRequestType());
 					}
 				}else {
 					trackLostDevices.setRequest_id("");
-					trackLostDevices.setRequest_type("");
+					trackLostDevices.setRequestType("");
 				}
 				trackLostDevicesRepository.save(trackLostDevices);
 				logger.info("data inserted successfully Request=" + lostDeviceRequest.toString());

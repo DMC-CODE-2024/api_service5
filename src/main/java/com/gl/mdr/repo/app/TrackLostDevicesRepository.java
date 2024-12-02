@@ -16,10 +16,13 @@ JpaRepository<TrackLostDevices, Long>, JpaSpecificationExecutor<TrackLostDevices
 	@SuppressWarnings("unchecked")
 	public TrackLostDevices save(TrackLostDevices trackLostDevices);
 
-	@Query(value="SELECT DISTINCT u.operator FROM app.track_lost_devices u where u.operator<>''",nativeQuery = true)
+	@Query(value="SELECT DISTINCT u.operator FROM app.track_lost_devices u where u.operator<>'' AND u.request_id<>''",nativeQuery = true)
 	public List<String> findDistinctOperator();
 
-	@Query(value="SELECT DISTINCT u.status FROM app.track_lost_devices u where u.status<>''",nativeQuery = true)
+	@Query(value="SELECT DISTINCT u.status FROM app.track_lost_devices u where u.status<>''  AND u.request_id<>'' ",nativeQuery = true)
 	public List<String> findDistinctStatus();
+
+	@Query(value="SELECT DISTINCT u.request_type FROM app.track_lost_devices u where u.request_type<>''",nativeQuery = true)
+	public List<String> findDistinctRequestType();
 
 }

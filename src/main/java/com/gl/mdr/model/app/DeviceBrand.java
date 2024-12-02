@@ -24,11 +24,11 @@ public class DeviceBrand {
 	@Column(name="brand_name", length=50, columnDefinition="varchar(50) DEFAULT ''", unique=true)
 	private String brandName = "";
 	
-	@CreationTimestamp
+	/*@CreationTimestamp
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
-	private LocalDateTime createdOn = LocalDateTime.now();
-	
+	private LocalDateTime createdOn = LocalDateTime.now();*/
+
 	public DeviceBrand() {}
 	
 	public DeviceBrand(String brandName) {
@@ -51,12 +51,13 @@ public class DeviceBrand {
 		this.brandName = brandName;
 	}
 
-	public LocalDateTime getCreatedOn() {
-		return createdOn;
-	}
 
-	public void setCreatedOn(LocalDateTime createdOn) {
-		this.createdOn = createdOn;
+
+	@Override
+	public String toString() {
+		return "DeviceBrand{" +
+				"id=" + id +
+				", brandName='" + brandName + '\'' +
+				'}';
 	}
-	
 }

@@ -5,16 +5,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.gl.mdr.model.app.StatesInterpretationDb;
+import com.gl.mdr.model.app.StolenLostModel;
 import com.gl.mdr.model.constants.Datatype;
 import com.gl.mdr.model.constants.SearchOperation;
 import com.gl.mdr.model.generic.SearchCriteria;
@@ -229,6 +233,25 @@ public class GenericSpecificationBuilder<T> {
 	        };
 	    }
 	    return null;
+	}
+
+	public Specification<StolenLostModel> getStatus(SearchCriteria searchCriteria) {
+	    return new Specification<StolenLostModel>() {
+	        @Override
+	        public Predicate toPredicate(Root<StolenLostModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+	           
+	            Predicate condition2 = criteriaBuilder.equal(root.get("status"), "DONE");
+	            Predicate condition3 = criteriaBuilder.equal(root.get("status"), "Done");
+	            Predicate condition4 = criteriaBuilder.equal(root.get("status"), "PENDING_MOI");
+	            Predicate condition5 = criteriaBuilder.equal(root.get("status"), "REJECT");
+	            Predicate condition6 = criteriaBuilder.equal(root.get("status"), "VERIFY_MOI");
+	            Predicate condition7 = criteriaBuilder.equal(root.get("status"), "INIT");
+	            Predicate condition8 = criteriaBuilder.equal(root.get("status"), "Fail");
+
+	            // Updated logic to include null or any value other than "Approved" or "Reject"
+	            return criteriaBuilder.or(condition2, condition3,condition4,condition5,condition6,condition7,condition8);
+	        }
+	    };
 	}
 
 	

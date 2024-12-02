@@ -9,6 +9,7 @@ public class TrackLostDeviceFilterRequest {
 	public String createdOn;
 	public String modifiedOn;
 	private String imei;
+	private String imsi;
 	private String edrTime;
 	private String updatedBy;
 	private String status;
@@ -27,8 +28,8 @@ public class TrackLostDeviceFilterRequest {
 	private String requestNo;
 	private String policeId;
 	private String email;
-	private String fileName,remarks;
-	
+	private String fileName,remarks,requestMode,requestType,province,district,commune,uploadedBy;
+	private String lang;
 	public AuditTrailModel auditTrailModel;
 	public Long getId() {
 		return id;
@@ -195,18 +196,71 @@ public class TrackLostDeviceFilterRequest {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	
+	public String getImsi() {
+		return imsi;
+	}
+	public void setImsi(String imsi) {
+		this.imsi = imsi;
+	}
+	
+	public String getRequestMode() {
+		return requestMode;
+	}
+	public void setRequestMode(String requestMode) {
+		this.requestMode = requestMode;
+	}
+	public String getRequestType() {
+		return requestType;
+	}
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getCommune() {
+		return commune;
+	}
+	public void setCommune(String commune) {
+		this.commune = commune;
+	}
+	
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+	
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
+	}
 	@Override
 	public String toString() {
 		return "TrackLostDeviceFilterRequest [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", imei=" + imei + ", edrTime=" + edrTime
-				+ ", updatedBy=" + updatedBy + ", status=" + status + ", userId=" + userId + ", userType=" + userType
-				+ ", publicIp=" + publicIp + ", browser=" + browser + ", searchString=" + searchString + ", featureId="
-				+ featureId + ", userTypeId=" + userTypeId + ", orderColumnName=" + orderColumnName + ", order=" + order
-				+ ", sort=" + sort + ", msisdn=" + msisdn + ", operator=" + operator + ", requestNo=" + requestNo
-				+ ", policeId=" + policeId + ", email=" + email + ", fileName=" + fileName + ", remarks=" + remarks
-				+ ", auditTrailModel=" + auditTrailModel + "]";
+				+ ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", imei=" + imei + ", imsi=" + imsi
+				+ ", edrTime=" + edrTime + ", updatedBy=" + updatedBy + ", status=" + status + ", userId=" + userId
+				+ ", userType=" + userType + ", publicIp=" + publicIp + ", browser=" + browser + ", searchString="
+				+ searchString + ", featureId=" + featureId + ", userTypeId=" + userTypeId + ", orderColumnName="
+				+ orderColumnName + ", order=" + order + ", sort=" + sort + ", msisdn=" + msisdn + ", operator="
+				+ operator + ", requestNo=" + requestNo + ", policeId=" + policeId + ", email=" + email + ", fileName="
+				+ fileName + ", remarks=" + remarks + ", requestMode=" + requestMode + ", requestType=" + requestType
+				+ ", province=" + province + ", district=" + district + ", commune=" + commune + ", uploadedBy="
+				+ uploadedBy + ", lang=" + lang + ", auditTrailModel=" + auditTrailModel + "]";
 	}
-	
 	
 	
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface DuplicateDeviceDetailHisRepository extends JpaRepository<DuplicateDeviceDetailHis, Long>, JpaSpecificationExecutor<DuplicateDeviceDetailHis> {
 
     List<DuplicateDeviceDetailHis> findByImei(String imei);
+
+    List<DuplicateDeviceDetailHis> findTop1ByImei(String imei);
 }

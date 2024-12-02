@@ -19,17 +19,24 @@ public class TrackLostDeviceFileModel {
 	@CsvBindByPosition(position = 2)
 	private String imei;
 	
-	@CsvBindByName(column = "MSISDN")
+	@CsvBindByName(column = "IMSI")
 	@CsvBindByPosition(position = 3)
+	private String imsi;
+	
+	@CsvBindByName(column = "MSISDN")
+	@CsvBindByPosition(position = 4)
 	private String msisdn;
 	
 	@CsvBindByName(column = "Operator")
-	@CsvBindByPosition(position = 4)
+	@CsvBindByPosition(position = 5)
 	private String operator;
 	
+	@CsvBindByName(column = "Request Type")
+	@CsvBindByPosition(position = 6)
+	private String requestType;
 	
 	@CsvBindByName(column = "Status")
-	@CsvBindByPosition(position = 5)
+	@CsvBindByPosition(position = 7)
 	private String status;
 	
 	
@@ -93,10 +100,30 @@ public class TrackLostDeviceFileModel {
 	}
 
 
+	public String getImsi() {
+		return imsi;
+	}
+
+
+	public void setImsi(String imsi) {
+		this.imsi = imsi;
+	}
+	
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
+
+
 	@Override
 	public String toString() {
 		return "TrackLostDeviceFileModel [createdOn=" + createdOn + ", requestNo=" + requestNo + ", imei=" + imei
-				+ ", msisdn=" + msisdn + ", operator=" + operator + ", status=" + status + "]";
+				+ ", imsi=" + imsi + ", msisdn=" + msisdn + ", operator=" + operator + ", status=" + status + "]";
 	}
 
 	

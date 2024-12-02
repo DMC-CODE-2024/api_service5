@@ -18,14 +18,14 @@ JpaRepository<DuplicateDeviceDetail, Long>, JpaSpecificationExecutor<DuplicateDe
 	
 	//public DuplicateDeviceDetail findById(Integer id);
 	
-	//public DuplicateDeviceDetail save(DuplicateDeviceDetail duplicateRequest);
+	//public DuplicateDeviceDetail save(DuplicateDeviceDetail stolenRequest);
 	
 	 @Modifying
 	// @Query("update DuplicateDeviceDetail m set m.trcApprovedStatus =:#{#mdr.action},m.approvedBy =:#{#mdr.approvedBy},m.trcApprovalDate=CURRENT_TIMESTAMP,  m.remark =:#{#mdr.remark} WHERE m.id =:#{#mdr.id}")
 	// public int update(@Param("id") Integer id, @Param("action") String action,@Param("remark") String remark);
 	
 		
-		  @Query("update DuplicateDeviceDetail d set d.documentType1 =:#{#duplicateRequest.documentType1},"
+		  /*@Query("update DuplicateDeviceDetail d set d.documentType1 =:#{#duplicateRequest.documentType1},"
 		  + "d.documentType2 =:#{#duplicateRequest.documentType2}," +
 		  "d.documentType3=:#{#duplicateRequest.documentType3}," +
 		  "d.documentType4=:#{#duplicateRequest.documentType4}," +
@@ -36,7 +36,11 @@ JpaRepository<DuplicateDeviceDetail, Long>, JpaSpecificationExecutor<DuplicateDe
 		  "d.status=:#{#duplicateRequest.status}," +
 		  "d.approveRemark=:#{#duplicateRequest.approveRemark}," +
 		  "d.approveTransactionId=:#{#duplicateRequest.approveTransactionId}," +
-		  "d.modifiedOn = CURRENT_TIMESTAMP WHERE d.id =:#{#duplicateRequest.id}")
+		  "d.modifiedOn = CURRENT_TIMESTAMP WHERE d.id =:#{#duplicateRequest.id}")*/
+
+	 	@Query("update DuplicateDeviceDetail d set "+
+			 "d.status=:#{#duplicateRequest.status}," +
+			 "d.modifiedOn = CURRENT_TIMESTAMP WHERE d.id =:#{#duplicateRequest.id}")
 		  public int update(@Param("duplicateRequest") DuplicateDeviceFilterRequest duplicateRequest);
 
 	public List<DuplicateDeviceDetail> findTop1ByImei(String imei);

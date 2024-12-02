@@ -37,7 +37,7 @@ public class TrcLocalManufacturedDeviceData {
     @Column(name = "manufacturer_name", nullable = false)
     private String manufacturerName;
 
-    @Column(name = "manufacturering_date", nullable = false)
+    @Column(name = "manufacturing_date", nullable = false)
     private String manufacturingDate;
 
     @Column(name = "actual_imei")
@@ -146,36 +146,20 @@ public class TrcLocalManufacturedDeviceData {
 		this.tac = tac;
 	}
 
-	
-
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("TrcLocalManufacturedDeviceData [id=");
-		builder.append(id);
-		builder.append(", createdOn=");
-		builder.append(createdOn);
-		builder.append(", imei=");
-		builder.append(imei);
-		builder.append(", serialNumber=");
-		builder.append(serialNumber);
-		builder.append(", manufacturerId=");
-		builder.append(manufacturerId);
-		builder.append(", manufacturerName=");
-		builder.append(manufacturerName);
-		builder.append(", manufacturingDate=");
-		builder.append(manufacturingDate);
-		builder.append(", actualImei=");
-		builder.append(actualImei);
-		builder.append(", tac=");
-		builder.append(tac);
-		builder.append(", modifiedOn=");
-		builder.append(modifiedOn);
-		builder.append(", tableName=");
-		builder.append(tableName);
-		builder.append("]");
-		return builder.toString();
+		return "TrcLocalManufacturedDeviceData{" +
+				"id=" + id +
+				", createdOn=" + createdOn +
+				", imei='" + imei + '\'' +
+				", serialNumber='" + serialNumber + '\'' +
+				", manufacturerId='" + manufacturerId + '\'' +
+				", manufacturerName='" + manufacturerName + '\'' +
+				", manufacturingDate='" + manufacturingDate + '\'' +
+				", actualImei='" + actualImei + '\'' +
+				", tac='" + tac + '\'' +
+				", modifiedOn=" + modifiedOn +
+				", tableName='" + tableName + '\'' +
+				'}';
 	}
-    
-    
 }

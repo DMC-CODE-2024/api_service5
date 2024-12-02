@@ -1,7 +1,11 @@
 package com.gl.mdr.service.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -18,6 +22,10 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gl.mdr.model.RedmineParser.MainResponse;
+import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +99,12 @@ public class DuplicateDeviceServiceImpl {
 
     @Autowired
     Utility utility;
+
+    @Autowired
+    MainResponse mainResponse;
+
+    @Autowired
+    PropertiesReader propertyReader;
 
     @Autowired
     DuplicateDeviceRepository duplicateDeviceRepo;
@@ -329,7 +343,7 @@ public class DuplicateDeviceServiceImpl {
     }
 
     public ResponseEntity<?> viewApprovedDevice(DuplicateDeviceFilterRequest duplicateRequest) {
-        logger.info("View Approved Devices by id : " + duplicateRequest.getId());
+        logger.info("duplicateRequest : " +duplicateRequest);
         AuditTrail auditTrail = new AuditTrail();
         auditTrail.setFeatureName("Duplicate Device");
         auditTrail.setSubFeature("View");
@@ -352,29 +366,51 @@ public class DuplicateDeviceServiceImpl {
         auditTrail.setTxnId("NA");
         auditTrailRepository.save(auditTrail);
         Optional<DuplicateDeviceDetail> result = duplicateDeviceRepo.findById(duplicateRequest.getId());
-        
-        
-        
-        logger.info("View result : " + result);
+        logger.info("View result : "  +result);
+
+        List<String> documentName = new ArrayList<>();
+        List<String> documentPaths = new ArrayList<>();
+        List<String> documentType = new ArrayList<>();
+
+        try {
+              String redmineResponse= getRedmineIssueStatus(duplicateRequest.getRedmineTktId());
+              logger.info("redmineResponse " +redmineResponse);
+              String redmineFileDownloadUrl = propertiesReader.redmineFileDownloadUrl;
+              ObjectMapper objectMapper = new ObjectMapper();
+              JsonNode rootNode = objectMapper.readTree(redmineResponse);
+              JsonNode attachmentsNode = rootNode.path("issue").path("attachments");
+                    if (attachmentsNode.isArray()) {
+                        for (JsonNode attachmentNode : attachmentsNode) {
+                            String filename = attachmentNode.path("filename").asText();
+                            String contentType = attachmentNode.path("description").asText();
+                            String attachmentId = attachmentNode.path("id").asText();
+                            //String contentUrl = attachmentNode.path(redmineFileDownloadUrl +attachmentId).asText();
+
+                            documentName.add(filename);
+                            documentType.add(contentType);
+                            documentPaths.add(redmineFileDownloadUrl+attachmentId);
+
+                            logger.info("Filename: " + filename);
+                            logger.info("Content Type: " + contentType);
+                            logger.info("Content URL: " + redmineFileDownloadUrl+attachmentId);
+
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
         if (result.isPresent()) {
         	DuplicateDeviceDetail detail = result.get();
         	
         	//for status interpretation
         	//String interpretation = getInterpretationForStatus(detail.getStatus(), Long.valueOf(duplicateRequest.getFeatureId()));
         	//logger.info("interpretation in view" +interpretation);
-            
-        	List<String> documentTypes = Arrays.asList(detail.getDocumentType1(), detail.getDocumentType2(),
-                    detail.getDocumentType3(), detail.getDocumentType4());
-            List<String> documentPaths = Arrays.asList(detail.getDocumentFileName1(), detail.getDocumentFileName2(),
-                    detail.getDocumentFileName3(), detail.getDocumentFileName4());
-
-            // Filter out null values from document types and document paths
-            documentTypes = documentTypes.stream().filter(Objects::nonNull).collect(Collectors.toList());
-            documentPaths = documentPaths.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
 
             SystemConfigurationDb uploadedFilePath = systemConfigurationDbRepository.getByTag("upload_file_link");
-
             logger.info("uploadedFilePath :::" + uploadedFilePath.getValue());
             
             
@@ -386,11 +422,10 @@ public class DuplicateDeviceServiceImpl {
             responseData.put("modifiedOn", detail.getModifiedOn());
             responseData.put("imei", detail.getImei());
             responseData.put("edrTime", detail.getEdrTime());
-            responseData.put("approveTransactionId", detail.getApproveTransactionId());
-            responseData.put("approveRemark", detail.getApproveRemark());
             responseData.put("msisdn", detail.getMsisdn());
             responseData.put("updatedBy", detail.getUpdatedBy());
-            responseData.put("documentTypes", documentTypes);
+            responseData.put("documentName", documentName);
+            responseData.put("documentType", documentType);
             responseData.put("documentPaths", documentPaths);
             //responseData.put("interpretation", interpretation);
             responseData.put("status", detail.getStatus());
@@ -403,6 +438,8 @@ public class DuplicateDeviceServiceImpl {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
+
+
 
 
     @Transactional(rollbackOn = {SQLException.class})
@@ -445,6 +482,39 @@ public class DuplicateDeviceServiceImpl {
         GenricResponse response = new GenricResponse(HttpStatus.EXPECTATION_FAILED.value(), "Something wrong happend", "", "");
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    public String getRedmineIssueStatus(String redmineTktId) {
+        StringBuilder response = new StringBuilder();
+        try {
+            logger.info("redmineTktId Received " +redmineTktId);
+            logger.info("redmine URL " +propertyReader.redmineUrl);
+            String url = propertyReader.redmineUrl + redmineTktId;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("X-Client-Type", "END_USER");
+
+            int responseCode = con.getResponseCode();
+            logger.info("Response Code : " , responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            Gson gson = new Gson();
+            mainResponse = gson.fromJson(response.toString(), MainResponse.class);
+            logger.info("Main Response" ,mainResponse.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response.toString();
     }
 
 }

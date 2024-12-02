@@ -1,12 +1,10 @@
-package com.gl.mdr.repo.app;
+package com.gl.mdr.repo.audit;
 
 
-import com.gl.mdr.model.app.ImeiSearchAudit;
+import com.gl.mdr.model.audit.ImeiSearchAudit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface IMEISearchAuditRepo extends

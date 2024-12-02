@@ -102,6 +102,17 @@ public class DuplicateDeviceDetailHis {
     @Transient
     private String tableName= Tags.duplicate_device_detail_his;
 
+    @Transient
+    private String operationInterp;
+
+    public String getOperationInterp() {
+        return operationInterp;
+    }
+
+    public void setOperationInterp(String operationInterp) {
+        this.operationInterp = operationInterp;
+    }
+
     public String getTableName() {
         return tableName;
     }
@@ -375,6 +386,7 @@ public class DuplicateDeviceDetailHis {
                 ", operation=" + operation +
                 ", source='" + source + '\'' +
                 ", tableName='" + tableName + '\'' +
+                ", operationInterp='" + operationInterp + '\'' +
                 '}';
     }
 }

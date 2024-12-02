@@ -33,7 +33,7 @@ public class AuditTrail implements Serializable {
 	@UpdateTimestamp
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime modifiedOn;
-	
+
 	private Integer userId;
 	private String userName;
 	private Integer userTypeId;
@@ -51,8 +51,10 @@ public class AuditTrail implements Serializable {
 	public AuditTrail() {
 
 	}
-	
-	public AuditTrail(Integer userId, String userName, Integer userTypeId, String userType, Integer featureId, String featureName, 
+
+
+
+	public AuditTrail(Integer userId, String userName, Integer userTypeId, String userType, Integer featureId, String featureName,
 			String subFeature, String jSessionId) {
 		this.userId = userId;
 		this.userName = userName;

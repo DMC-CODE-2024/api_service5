@@ -125,7 +125,8 @@ public class MobileDeviceRepositoryController {
 			@RequestParam(value = "browser", defaultValue="NA") String browser,
 			@RequestParam(value = "userType", defaultValue="NA") String userType,
 			@RequestParam(value = "userTypeId", defaultValue = "0") Integer userTypeId,
-			@RequestParam(value = "featureId", defaultValue = "0") Integer featureId
+			@RequestParam(value =
+					"featureId", defaultValue = "0") Integer featureId
 			) {
 		MappingJacksonValue mapping = null;
 		RepositoryHistoryFilterRequest filterRequest = new RepositoryHistoryFilterRequest();

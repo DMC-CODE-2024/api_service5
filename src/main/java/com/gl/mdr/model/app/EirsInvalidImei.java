@@ -21,8 +21,6 @@ public class EirsInvalidImei {
 	    @Column(name = "id")
 	    private Long id;
 
-	    @Column(name = "actual_imei", unique = true)
-	    private String actualImei;
 
 	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	    @Column(name = "created_on")
@@ -40,14 +38,6 @@ public class EirsInvalidImei {
 
 		public void setId(Long id) {
 			this.id = id;
-		}
-
-		public String getActualImei() {
-			return actualImei;
-		}
-
-		public void setActualImei(String actualImei) {
-			this.actualImei = actualImei;
 		}
 
 		public LocalDateTime getCreatedOn() {
@@ -79,8 +69,6 @@ public class EirsInvalidImei {
 			StringBuilder builder = new StringBuilder();
 			builder.append("EirsInvalidImei [id=");
 			builder.append(id);
-			builder.append(", actualImei=");
-			builder.append(actualImei);
 			builder.append(", createdOn=");
 			builder.append(createdOn);
 			builder.append(", imei=");

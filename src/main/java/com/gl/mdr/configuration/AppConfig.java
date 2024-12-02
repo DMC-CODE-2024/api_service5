@@ -43,7 +43,7 @@ public class AppConfig {
 		        .securityContexts(Arrays.asList(securityContext()))
 		        .securitySchemes(Arrays.asList(apiKey()))
 		        .select()
-		        .apis(RequestHandlerSelectors.basePackage("com.gl.mdr.controller"))
+		        .apis(RequestHandlerSelectors.basePackage("com.gl.mdr"))
 		        .paths(PathSelectors.any())
 		        .build();
 	}
