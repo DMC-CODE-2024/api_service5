@@ -32,7 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -132,7 +132,7 @@ public class StolenImeiStatusCheckService {
             if ("modifiedOn".equalsIgnoreCase(orderColumn) && SortDirection.getSortDirection(stolenRequest.getSort()).equals(Sort.Direction.ASC)) {
                 direction = Sort.Direction.ASC;
             }
-            Pageable pageable = PageRequest.of(pageNo, pageSize, new Sort(direction, orderColumn));
+            Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
 
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setFeatureName("Stolen IMEI status check");

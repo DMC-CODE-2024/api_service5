@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-//import io.swagger.annotations.ApiOperation;
+//
 
 @RestController
 public class modelController {  ////sachin
@@ -24,7 +24,7 @@ public class modelController {  ////sachin
      @Autowired
      ModelServiceImpl modelServiceImpl;
 
-     //@ApiOperation(value = "View All list of Mdels of Brands", response = modelRepoPojo.class)
+     ////@ApiOperation(value = "View All list of Mdels of Brands", response = modelRepoPojo.class)
      @RequestMapping(path = "gsma/modelName", method = RequestMethod.GET)
      public MappingJacksonValue getAllModels(@RequestParam("brand_id") int brand_id) {
          logger.info("`Request TO view TO all record of user={}", brand_id);

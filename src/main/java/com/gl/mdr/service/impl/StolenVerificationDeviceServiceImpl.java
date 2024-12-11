@@ -2,7 +2,7 @@ package com.gl.mdr.service.impl;
 
 import java.io.IOException;
 import org.springframework.data.jpa.domain.Specification;
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.Root;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -190,7 +190,7 @@ public class StolenVerificationDeviceServiceImpl {
 			if("modifiedOn".equalsIgnoreCase(orderColumn) && SortDirection.getSortDirection(trackLostRequest.getSort()).equals(Sort.Direction.ASC)) {
 				direction=Sort.Direction.ASC;
 			}
-			Pageable pageable = PageRequest.of(pageNo, pageSize, new Sort(direction, orderColumn));
+			Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
 
 			GenericSpecificationBuilder<StolenLostModel> uPSB = new GenericSpecificationBuilder<StolenLostModel>(propertiesReader.dialect);
 

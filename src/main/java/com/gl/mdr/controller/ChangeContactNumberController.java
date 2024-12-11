@@ -14,7 +14,7 @@ import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.model.generic.MDRGenricResponse;
 import com.gl.mdr.service.impl.ChangeContactNumberServiceImpl;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class ChangeContactNumberController {
@@ -23,7 +23,7 @@ public class ChangeContactNumberController {
 	@Autowired
 	ChangeContactNumberServiceImpl changeContactNumberServiceImpl;
 	
-	@ApiOperation(value = "Customer care contact number/request id verify", response = GenricResponse.class)
+	//@ApiOperation(value = "Customer care contact number/request id verify", response = GenricResponse.class)
 	@RequestMapping(path = "/contact-number/verification", method = RequestMethod.POST)
 	public ResponseEntity<?> verifyRequestNumber(@RequestBody ChangeNumberFilterRequest filterRequest ){
 		logger.info("Change Contact Number Verification Request = " + filterRequest);
@@ -33,7 +33,7 @@ public class ChangeContactNumberController {
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Customer care update user lost/stolen contact number", response = MDRGenricResponse.class)
+	//@ApiOperation(value = "Customer care update user lost/stolen contact number", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/contact-number/update", method = {RequestMethod.POST})
 	public ResponseEntity<?> updateContactNumber(@RequestBody ChangeNumberFilterRequest filterRequest) {
 		return changeContactNumberServiceImpl.updateContactNumberForDeviceInfo(filterRequest);

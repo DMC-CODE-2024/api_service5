@@ -1,3 +1,4 @@
+/*
 package com.gl.mdr.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,3 +47,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         .authorizeRequests();
 	}
 }
+*/

@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -175,7 +175,7 @@ public class TrackLostDeviceServiceImpl {
 			if("modifiedOn".equalsIgnoreCase(orderColumn) && SortDirection.getSortDirection(trackLostRequest.getSort()).equals(Sort.Direction.ASC)) {
 				direction=Sort.Direction.ASC;
 			}
-			Pageable pageable = PageRequest.of(pageNo, pageSize, new Sort(direction, orderColumn));
+			Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
 
 			GenericSpecificationBuilder<TrackLostDevices> uPSB = new GenericSpecificationBuilder<TrackLostDevices>(propertiesReader.dialect);
 
@@ -426,7 +426,7 @@ public class TrackLostDeviceServiceImpl {
 		try {
 			logger.info("Start Data insert in table Request=" + lostDeviceRequest.toString());
 			
-			alertMessages = alertRepository.findByAlertIdIn("alert8004");
+			alertMessages = alertRepository.findByAlertId("alert8004");
 			
 			if(alertMessages!=null) {
 				

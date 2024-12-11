@@ -1,12 +1,12 @@
 package com.gl.mdr.model.app;
 
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -45,8 +45,8 @@ public class EirsResponseParam {
 	@Column(name="feature_name", length=255, columnDefinition="varchar(255) DEFAULT ''")
 	private String feature_name = "";
 	
-	@Column(name="remarks", length=255, columnDefinition="varchar(255) DEFAULT ''")
-	private String remarks = "";
+	@Column(name="remark", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	private String remark = "";
 	
 	@Column(name="user_type", length=50, columnDefinition="varchar(50) DEFAULT ''")
 	private String userType = "";
@@ -129,12 +129,12 @@ public class EirsResponseParam {
 		this.feature_name = feature_name;
 	}
 
-	public String getRemarks() {
-		return remarks;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getUserType() {
@@ -165,7 +165,7 @@ public class EirsResponseParam {
 	public String toString() {
 		return "EirsResponseParam [id=" + id + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
 				+ ", description=" + description + ", type=" + type + ", active=" + active + ", tag=" + tag + ", value="
-				+ value + ", feature_name=" + feature_name + ", remarks=" + remarks + ", userType=" + userType
+				+ value + ", feature_name=" + feature_name + ", remark=" + remark + ", userType=" + userType
 				+ ", modifiedBy=" + modifiedBy + ", language=" + language + "]";
 	}
 	

@@ -1,3 +1,4 @@
+/*
 package com.gl.mdr.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,3 +20,4 @@ public class UserDetailsServiceImpl {
 	    		.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 }
+*/

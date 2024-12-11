@@ -35,7 +35,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -953,12 +953,13 @@ public class MobileDeviceRepositoryServiceImpl<T> {
         Page<MobileDeviceRepository> results = null;
         try {
             AuditTrail auditTrail = new AuditTrail();
-            Sort.Direction direction;
-            if (Objects.nonNull(mdrRequest.getOrder()) && mdrRequest.getOrder().equalsIgnoreCase("asc")) {
-                direction = Sort.Direction.ASC;
-            } else {
-                direction = Sort.Direction.DESC;
-            }
+            //Sort.Direction direction;
+
+            Sort.Direction direction = (Objects.nonNull(mdrRequest.getOrder()) && mdrRequest.getOrder().equalsIgnoreCase("asc"))
+                    ? Sort.Direction.ASC
+                    : Sort.Direction.DESC;
+
+
             if (Objects.nonNull(mdrRequest.getOrderColumnName()))
                 pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction,
                         OrderColumnMapping.getColumnMapping(mdrRequest.getOrderColumnName()).name()));
@@ -1219,13 +1220,13 @@ public class MobileDeviceRepositoryServiceImpl<T> {
 
         esimSupports = systemConfigListRepository.findByTag("ESIM_SUPPORT");
         softsimSupports = systemConfigListRepository.findByTag("SOFTSIM_SUPPORT");
-        networkTechnologyGSMs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_GSM");
+       /* networkTechnologyGSMs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_GSM");
         networkTechnologyCDMAs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_CDMA");
         networkTechnologyEVDOs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_EVDO");
         networkTechnologyLTEs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_LTE");
         networkTechnology5Gs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_5G");
         networkTechnology6Gs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_6G");
-        networkTechnology7Gs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_7G");
+        networkTechnology7Gs = systemConfigListRepository.findByTag("NETWORK_TECHNOLOGY_7G");*/
         memoryCardSlots = systemConfigListRepository.findByTag("MEMORY_CARD_SLOT");
         mainCameraTypes = systemConfigListRepository.findByTag("MAIN_CAMERA_TYPE");
         selfieCameraTypes = systemConfigListRepository.findByTag("SELFIE_CAMERA_TYPE");
@@ -1252,7 +1253,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                     break;
                 }
             }
-            for (SystemConfigListDb interp : networkTechnologyGSMs) {
+            /*for (SystemConfigListDb interp : networkTechnologyGSMs) {
                 if (interp.getValue().equals(result.getNetworkTechnologyGSM())) {
                     result.setNetworkTechnologyGSMInterp(interp.getInterpretation());
                     break;
@@ -1293,7 +1294,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                     result.setNetworkTechnology7GInterp(interp.getInterpretation());
                     break;
                 }
-            }
+            }*/
             for (SystemConfigListDb interp : memoryCardSlots) {
                 if (interp.getValue().equals(result.getMemoryCardSlot())) {
                     result.setMemoryCardSlotInterp(interp.getInterpretation());

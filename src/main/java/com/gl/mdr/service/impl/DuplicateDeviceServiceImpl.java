@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -149,7 +149,7 @@ public class DuplicateDeviceServiceImpl {
             if ("modifiedOn".equalsIgnoreCase(orderColumn) && SortDirection.getSortDirection(duplicateRequest.getSort()).equals(Sort.Direction.ASC)) {
                 direction = Sort.Direction.ASC;
             }
-            Pageable pageable = PageRequest.of(pageNo, pageSize, new Sort(direction, orderColumn));
+            Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
             
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setFeatureName("Duplicate Device");

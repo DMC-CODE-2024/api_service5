@@ -30,7 +30,7 @@ import com.gl.mdr.model.filter.MOIVerificationDeviceFilterRequest;
 import com.gl.mdr.model.generic.MDRGenricResponse;
 import com.gl.mdr.service.impl.StolenVerificationDeviceServiceImpl;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class MOIAdminVerificationDeviceController {
@@ -41,7 +41,7 @@ public class MOIAdminVerificationDeviceController {
 	
 	
 
-	@ApiOperation(value = "get list of verification devices", response = TrackLostDevices.class)
+	//@ApiOperation(value = "get list of verification devices", response = TrackLostDevices.class)
 	@PostMapping("/getVerificationDevicesDetails")
 	public MappingJacksonValue getPoliceVerificationDevicesDetails(@RequestBody MOIVerificationDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -54,7 +54,7 @@ public class MOIAdminVerificationDeviceController {
 	}
 
 	
-	@ApiOperation(value = "Export Verification devices", response = TrackLostDeviceFileModel.class)
+	//@ApiOperation(value = "Export Verification devices", response = TrackLostDeviceFileModel.class)
 	@PostMapping("/exportVerificationData")
 	public MappingJacksonValue exportData(@RequestBody MOIVerificationDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -68,34 +68,34 @@ public class MOIAdminVerificationDeviceController {
 	}
 	
 	
-	@ApiOperation(value="get Police Verification Device")
+	//@ApiOperation(value="get Police Verification Device")
 	@PostMapping("/getPoliceVerificationData")
 	public ResponseEntity<?> getPoliceVerificationData(@RequestBody MOIVerificationDeviceFilterRequest filterRequest ){
 		return stolenVerificationDeviceServiceImpl.getPoliceVerificationData(filterRequest);
 	}
 	
-	@ApiOperation(value = "get User Lost/Stolen Device Status Name")
+	//@ApiOperation(value = "get User Lost/Stolen Device Status Name")
 	@GetMapping("/getDistinctStolenStatus")
 	public ResponseEntity<?> getDistinctStatus() {
 		List<String>  list = stolenVerificationDeviceServiceImpl.getDistinctStolenStatus();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Lost/Stolen Device Request Mode")
+	//@ApiOperation(value = "get User Lost/Stolen Device Request Mode")
 	@GetMapping("/getDistinctRequestMode")
 	public ResponseEntity<?> getDistinctRequestMode() {
 		List<String>  list = stolenVerificationDeviceServiceImpl.getDistinctRequestMode();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Lost/Stolen Device Request Type")
+	//@ApiOperation(value = "get User Lost/Stolen Device Request Type")
 	@GetMapping("/getDistinctRequestType")
 	public ResponseEntity<?> getDistinctRequestType() {
 		List<String>  list = stolenVerificationDeviceServiceImpl.getDistinctRequestType();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Lost/Stolen Device Created By")
+	//@ApiOperation(value = "get User Lost/Stolen Device Created By")
 	@GetMapping("/getDistinctCreatedBy")
 	public ResponseEntity<?> createdBy() {
 		List<String>  list = stolenVerificationDeviceServiceImpl.getDistinctCreatedBy();
@@ -103,37 +103,37 @@ public class MOIAdminVerificationDeviceController {
 	}
 
 	
-	@ApiOperation(value = "Police Verification User Lost/Stolen Device Status", response = MDRGenricResponse.class)
+	//@ApiOperation(value = "Police Verification User Lost/Stolen Device Status", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/policeVerificationStatus", method = {RequestMethod.POST})
 	public ResponseEntity<?> updateDevices(@RequestBody MOIVerificationDeviceFilterRequest filterRequest) {
 		return stolenVerificationDeviceServiceImpl.updateDevicesStatus(filterRequest);
 	}
 	
-	@ApiOperation(value = "MOI Admin Update User Lost/Stolen Device Status", response = MDRGenricResponse.class)
+	//@ApiOperation(value = "MOI Admin Update User Lost/Stolen Device Status", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/MOIAdminVerifyStatus", method = {RequestMethod.POST})
 	public ResponseEntity<?> updateLostDeviceStatus(@RequestBody MOIVerificationDeviceFilterRequest filterRequest) {
 		return stolenVerificationDeviceServiceImpl.updateLostDeviceStatus(filterRequest);
 	}
 	
-	@ApiOperation(value = "get All Province Details")
+	//@ApiOperation(value = "get All Province Details")
 	@GetMapping("/getProvince")
 	public ResponseEntity<?> getProvince() {
 		List<ProvinceDb>  list = stolenVerificationDeviceServiceImpl.getProvince();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	@ApiOperation(value = "get All Commune Details")
+	//@ApiOperation(value = "get All Commune Details")
 	@GetMapping("/getCommune")
 	public ResponseEntity<?> getCommune() {
 		List<CommuneDb>  list = stolenVerificationDeviceServiceImpl.getCommune();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	@ApiOperation(value = "get All District Details")
+	//@ApiOperation(value = "get All District Details")
 	@GetMapping("/getDistrict")
 	public ResponseEntity<?> getDistrict() {
 		List<DistrictDb>  list = stolenVerificationDeviceServiceImpl.getDistrict();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	@ApiOperation(value = "get All Police Station Details")
+	//@ApiOperation(value = "get All Police Station Details")
 	@GetMapping("/getPoliceStation")
 	public ResponseEntity<?> getPoliceStation() {
 		List<PoliceStationDb>  list = stolenVerificationDeviceServiceImpl.getPoliceStation();
@@ -141,21 +141,21 @@ public class MOIAdminVerificationDeviceController {
 	}
 	
 	
-	@ApiOperation(value = "get All Police Station Details Status")
+	//@ApiOperation(value = "get All Police Station Details Status")
 	@GetMapping("/getPolistStatus")
 	public ResponseEntity<?> getPolistStatus() {
 		List<MOIStatus>  list = stolenVerificationDeviceServiceImpl.getPolistStatus();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get All MOI Admin Details Status")
+	//@ApiOperation(value = "get All MOI Admin Details Status")
 	@GetMapping("/getMOIAdminStatus")
 	public ResponseEntity<?> getMOIAdminStatus() {
 		List<MOIStatus>  list = stolenVerificationDeviceServiceImpl.getMOIAdminStatus();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get all device type")
+	//@ApiOperation(value = "get all device type")
 	@GetMapping("/getDistinctMOIDeviceType")
 	public ResponseEntity<?> getDistinctMOIDeviceType() {
 		List<String>  list = stolenVerificationDeviceServiceImpl.getDistinctMOIDeviceType();

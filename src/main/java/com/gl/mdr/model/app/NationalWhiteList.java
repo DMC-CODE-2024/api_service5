@@ -3,7 +3,7 @@ package com.gl.mdr.model.app;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gl.mdr.model.constants.Tags;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

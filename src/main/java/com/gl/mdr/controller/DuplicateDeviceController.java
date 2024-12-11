@@ -4,7 +4,7 @@ import com.gl.mdr.model.app.DuplicateDeviceDetail;
 import com.gl.mdr.model.file.FileDetails;
 import com.gl.mdr.model.filter.DuplicateDeviceFilterRequest;
 import com.gl.mdr.service.impl.DuplicateDeviceServiceImpl;
-import io.swagger.annotations.ApiOperation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class DuplicateDeviceController {
 	@Autowired
 	DuplicateDeviceServiceImpl duplicateDeviceServiceImpl;
 
-	@ApiOperation(value = "get list of duplicate devices", response = DuplicateDeviceDetail.class)
+	//@ApiOperation(value = "get list of duplicate devices", response = DuplicateDeviceDetail.class)
 	@PostMapping("/getDuplicateDeviceDetails")
 	public MappingJacksonValue getDuplicateDevicesDetails(@RequestBody DuplicateDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -36,7 +36,7 @@ public class DuplicateDeviceController {
 	}
 
 	
-	@ApiOperation(value = "Export duplicate devices", response = DuplicateDeviceDetail.class)
+	//@ApiOperation(value = "Export duplicate devices", response = DuplicateDeviceDetail.class)
 	@PostMapping("/exportDuplicateData")
 	public MappingJacksonValue exportData(@RequestBody DuplicateDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -50,14 +50,14 @@ public class DuplicateDeviceController {
 	}
 	
 	
-	@ApiOperation(value="get Approved Device")
+	//@ApiOperation(value="get Approved Device")
 	@PostMapping("/getApprovedDeviceData")
 	public ResponseEntity<?> getApprovedDeviceData(@RequestBody DuplicateDeviceFilterRequest duplicateRequest ){
 		return duplicateDeviceServiceImpl.viewApprovedDevice(duplicateRequest);
 	}
 	
 	
-	@ApiOperation(value="Approve Device" , response = DuplicateDeviceDetail.class)
+	//@ApiOperation(value="Approve Device" , response = DuplicateDeviceDetail.class)
 	@PostMapping("/approveDuplicateDevice")
 	public ResponseEntity<?> approveDuplicateDevice(@RequestBody DuplicateDeviceFilterRequest duplicateRequest) {
 		logger.info("in approveDuplicateDevice Controller with request : "+duplicateRequest);

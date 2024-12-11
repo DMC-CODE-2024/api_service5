@@ -153,7 +153,7 @@ public class OperatorFileMagamentServiceImpl {
 			if("modified_on".equalsIgnoreCase(orderColumn) && SortDirection.getSortDirection(fileRequest.getSort()).equals(Sort.Direction.ASC)) {
 				direction=Sort.Direction.ASC;
 			}
-			Pageable pageable = PageRequest.of(pageNo, pageSize, new Sort(direction, orderColumn));
+			Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
 			
 			logger.info("Operator List File Managemnet search Pageable  Start feature Id --> " +fileRequest.getFeatureId()+" pageNo ["+pageNo+"], pageSize ["+pageSize+"], orderColumn["+orderColumn+"]");
 			

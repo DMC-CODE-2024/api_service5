@@ -27,7 +27,7 @@ import com.gl.mdr.model.generic.MDRGenricResponse;
 import com.gl.mdr.model.generic.UserDetails;
 import com.gl.mdr.service.impl.MobileDeviceRepositoryServiceImpl;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class MobileDeviceRepositoryController {
@@ -37,7 +37,7 @@ public class MobileDeviceRepositoryController {
 	@Autowired
 	MobileDeviceRepositoryServiceImpl mdrServiceImpl;
 	
-	@ApiOperation(value = "get list of devices with details", response = MobileDeviceRepository.class)
+	////@ApiOperation(value = "get list of devices with details", response = MobileDeviceRepository.class)
 	@PostMapping("/getDevicesDetails")
 	public MappingJacksonValue getDevicesDetails(@RequestBody MobileDeviceRepositoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -49,21 +49,21 @@ public class MobileDeviceRepositoryController {
 		return mapping;
 	}
 	
-	@ApiOperation(value = "Add a device in Mobile Device Repository", response = MDRGenricResponse.class)
+	////@ApiOperation(value = "Add a device in Mobile Device Repository", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/addDevice", method = {RequestMethod.POST})
 	public MDRGenricResponse addDevice(@RequestBody MobileDeviceRepository deviceInfo) {
 		MDRGenricResponse genricResponse = mdrServiceImpl.addDevice(deviceInfo);
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Update devices in Mobile Device Repository", response = MDRGenricResponse.class)
+	////@ApiOperation(value = "Update devices in Mobile Device Repository", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/updateDevices", method = {RequestMethod.POST})
 	public MDRGenricResponse updateDevices(@RequestBody List<MobileDeviceRepository> devicesInfo) {
 		MDRGenricResponse genricResponse = mdrServiceImpl.updateDevices(devicesInfo);
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Delete a device in Mobile Device Repository", response = MDRGenricResponse.class)
+	//@ApiOperation(value = "Delete a device in Mobile Device Repository", response = MDRGenricResponse.class)
 	@RequestMapping(path = "/deleteDevice", method = {RequestMethod.POST})
 	public MDRGenricResponse deleteDevice(@RequestParam("userId") Integer userId,
 			@RequestParam("deviceId") String deviceId,
@@ -79,7 +79,7 @@ public class MobileDeviceRepositoryController {
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Get a single device details", response = MobileDeviceRepository.class)
+	//@ApiOperation(value = "Get a single device details", response = MobileDeviceRepository.class)
 	@RequestMapping(path = "/getDeviceInfo", method = {RequestMethod.POST})
 	public MappingJacksonValue getDeviceInfo(
 			@RequestParam("userId") Integer userId,
@@ -104,7 +104,7 @@ public class MobileDeviceRepositoryController {
 		return mapping;
 	}
 	
-	@ApiOperation(value = "View history of device", response = MobileDeviceRepositoryHistory.class)
+	//@ApiOperation(value = "View history of device", response = MobileDeviceRepositoryHistory.class)
 	@RequestMapping(path = "/getDeviceHistory", method = {RequestMethod.POST})
 	public MappingJacksonValue getDevieHistory(@RequestBody RepositoryHistoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -115,7 +115,7 @@ public class MobileDeviceRepositoryController {
 		return mapping;
 	}
 	
-	@ApiOperation(value = "Get a device update history details", response = MobileDeviceRepositoryHistory.class)
+	//@ApiOperation(value = "Get a device update history details", response = MobileDeviceRepositoryHistory.class)
 	@RequestMapping(path = "/getDeviceHistoryInfo", method = {RequestMethod.POST})
 	public MappingJacksonValue getDeviceHistoryInfo(
 			@RequestParam("userId") Integer userId,
@@ -143,7 +143,7 @@ public class MobileDeviceRepositoryController {
 		return mapping;
 	}
 	
-	@ApiOperation(value = "Export filtered devices", response = MobileDeviceRepository.class)
+	//@ApiOperation(value = "Export filtered devices", response = MobileDeviceRepository.class)
 	@PostMapping("/exportData")
 	public MappingJacksonValue exportData(@RequestBody MobileDeviceRepositoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -156,7 +156,7 @@ public class MobileDeviceRepositoryController {
 		return mapping;
 	}
 	
-	@ApiOperation(value = "Get dashboard data", response = DashboardData.class)
+	//@ApiOperation(value = "Get dashboard data", response = DashboardData.class)
 	@RequestMapping(path = "/getMDRDashboardData", method = {RequestMethod.GET})
 	public MappingJacksonValue getMDRDashboardData(
 			@RequestParam("userId") Integer userId,
@@ -171,21 +171,21 @@ public class MobileDeviceRepositoryController {
 		return response;
 	}
 	
-	@ApiOperation(value = "get User Details")
+	//@ApiOperation(value = "get User Details")
 	@GetMapping("/getDistinctUserName")
 	public ResponseEntity<?> getDistinctUserName() {
 		List<UserDetails>  list = mdrServiceImpl.getUserData();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Device Type")
+	//@ApiOperation(value = "get User Device Type")
 	@GetMapping("/getDistinctDeviceType")
 	public ResponseEntity<?> getDistinctDeviceType() {
 		List<String>  list = mdrServiceImpl.getDeviceType();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get Device Manufacturer Country")
+	//@ApiOperation(value = "get Device Manufacturer Country")
 	@GetMapping("/getManufacturerCountry")
 	public ResponseEntity<?> getManufacturerCountry() {
 		List<String>  list = mdrServiceImpl.getManufacturerCountry();

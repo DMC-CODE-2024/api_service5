@@ -2,7 +2,7 @@ package com.gl.mdr.model.file;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.gl.mdr.model.app.CommuneDb;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
 

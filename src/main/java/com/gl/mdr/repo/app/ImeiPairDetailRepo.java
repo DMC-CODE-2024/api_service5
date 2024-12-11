@@ -14,7 +14,7 @@ public interface ImeiPairDetailRepo extends JpaRepository<ImeiPairDetail, Long>{
 
 	public List<ImeiPairDetail> findByImeiAndImsi(String imei, String imsi);
 
-	public Optional<ImeiPairDetail> findByImei(Long id);
+	//public Optional<ImeiPairDetail> findByImei(Long id);
 
 	public List<ImeiPairDetail> findTop1ByImei(String imei);
 }

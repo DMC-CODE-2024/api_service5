@@ -14,7 +14,7 @@ import com.gl.mdr.model.app.ListFileManagementModel;
 import com.gl.mdr.model.file.FileDetails;
 import com.gl.mdr.model.filter.ListFileFilterRequest;
 import com.gl.mdr.service.impl.OperatorFileMagamentServiceImpl;
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class OperatorFileManagmentController {
@@ -23,7 +23,7 @@ public class OperatorFileManagmentController {
 	@Autowired
 	OperatorFileMagamentServiceImpl operatorFileMagamentServiceImpl;
 
-	@ApiOperation(value = "get Operator List File Wise", response = ListFileManagementModel.class)
+	//@ApiOperation(value = "get Operator List File Wise", response = ListFileManagementModel.class)
 	@PostMapping("/getOperatorFileDetails")
 	public MappingJacksonValue getPoliceVerificationDevicesDetails(@RequestBody ListFileFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -36,7 +36,7 @@ public class OperatorFileManagmentController {
 	}
 
 	
-	@ApiOperation(value = "Export get Operator List File Wise", response = ListFileManagementModel.class)
+	//@ApiOperation(value = "Export get Operator List File Wise", response = ListFileManagementModel.class)
 	@PostMapping("/exportOperatorListFileData")
 	public MappingJacksonValue exportData(@RequestBody ListFileFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,

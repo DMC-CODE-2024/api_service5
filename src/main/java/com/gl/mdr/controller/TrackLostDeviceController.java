@@ -2,8 +2,8 @@ package com.gl.mdr.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +28,7 @@ import com.gl.mdr.model.filter.TrackLostDeviceFilterRequest;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.service.impl.TrackLostDeviceServiceImpl;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class TrackLostDeviceController {
@@ -37,7 +37,7 @@ public class TrackLostDeviceController {
 	@Autowired
 	TrackLostDeviceServiceImpl trackLostDeviceServiceImpl;
 
-	@ApiOperation(value = "get list of track lost device devices", response = TrackLostDevices.class)
+	//@ApiOperation(value = "get list of track lost device devices", response = TrackLostDevices.class)
 	@PostMapping("/getTrackLostDevicesDetails")
 	public MappingJacksonValue getTrackLostDevicesDetails(@RequestBody TrackLostDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -50,7 +50,7 @@ public class TrackLostDeviceController {
 	}
 
 	
-	@ApiOperation(value = "Export track lost devices", response = TrackLostDeviceFileModel.class)
+	//@ApiOperation(value = "Export track lost devices", response = TrackLostDeviceFileModel.class)
 	@PostMapping("/exportTrackLostData")
 	public MappingJacksonValue exportData(@RequestBody TrackLostDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -64,34 +64,34 @@ public class TrackLostDeviceController {
 	}
 	
 	
-	@ApiOperation(value="get TrackLost Device")
+	//@ApiOperation(value="get TrackLost Device")
 	@PostMapping("/getTrackLostData")
 	public ResponseEntity<?> getTrackLostData(@RequestBody TrackLostDeviceFilterRequest filterRequest ){
 		return trackLostDeviceServiceImpl.getTrackLostData(filterRequest);
 	}
 	
-	@ApiOperation(value = "get User Operator Name")
+	//@ApiOperation(value = "get User Operator Name")
 	@GetMapping("/getDistinctOperator")
 	public ResponseEntity<?> getDistinctOperator() {
 		List<String>  list = trackLostDeviceServiceImpl.getDistinctOperator();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Status Name")
+	//@ApiOperation(value = "get User Status Name")
 	@GetMapping("/getDistinctStatus")
 	public ResponseEntity<?> getDistinctStatus() {
 		List<String>  list = trackLostDeviceServiceImpl.getDistinctStatus();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "get User Track Lost Device Request Type")
+	//@ApiOperation(value = "get User Track Lost Device Request Type")
 	@GetMapping("/getTrackLostRequestType")
 	public ResponseEntity<?> getTrackLostRequestType() {
 		List<String>  list = trackLostDeviceServiceImpl.getTrackLostRequestType();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "Insert Track Lost Devices Details.", response = GenricResponse.class)
+	//@ApiOperation(value = "Insert Track Lost Devices Details.", response = GenricResponse.class)
 	@RequestMapping(path = "tracklost/device/{operator}", method = RequestMethod.POST)
 	public GenricResponse setTrackLostDevices(@RequestBody LostDeviceRequest lostDeviceRequest, @PathVariable String operator, HttpServletRequest request,HttpServletResponse response ){
 		logger.info("set Track Lost Devices Details Request = " +lostDeviceRequest.toString() );

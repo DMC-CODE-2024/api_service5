@@ -12,7 +12,7 @@ import com.gl.mdr.bulk.imei.entity.BulkIMEIRequest;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.service.impl.BulkIMEIFileUploadServiceImpl;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 public class BulkIMEIController {
@@ -21,7 +21,7 @@ public class BulkIMEIController {
 	@Autowired
 	BulkIMEIFileUploadServiceImpl bulkIMEIFileUploadServiceImpl;
 	
-	@ApiOperation(value = "Upload Bulk IMEI Details.", response = GenricResponse.class)
+	//@ApiOperation(value = "Upload Bulk IMEI Details.", response = GenricResponse.class)
 	@RequestMapping(path = "bulkimei/fileupload", method = RequestMethod.POST)
 	public GenricResponse uploadBulkIMEIFile(@RequestBody BulkIMEIRequest bulkIMEIRequest ){
 		logger.info("uploadBulkIMEIFile upload Request = " + bulkIMEIRequest);
@@ -31,15 +31,15 @@ public class BulkIMEIController {
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Check Today Upload Bulk IMEI File Count.", response = GenricResponse.class)
+	//@ApiOperation(value = "Check Today Upload Bulk IMEI File Count.", response = GenricResponse.class)
 	@RequestMapping(path = "bulkimei/daycount", method = RequestMethod.POST)
 	public long daycount(@RequestBody BulkIMEIRequest bulkIMEIRequest){
-		
+
 		logger.info("Check Day wise file upload Request = " + bulkIMEIRequest.toString());
 		return bulkIMEIFileUploadServiceImpl.getDayWiseCount(bulkIMEIRequest);
 	}
 	
-	@ApiOperation(value = "Verify Bulk IMEI File Upload file.", response = GenricResponse.class)
+	//@ApiOperation(value = "Verify Bulk IMEI File Upload file.", response = GenricResponse.class)
 	@RequestMapping(path = "bulkimei/verify/otp", method = RequestMethod.POST)
 	public GenricResponse verifyOtp(@RequestBody BulkIMEIRequest bulkIMEIRequest){
 		logger.info("Check Day wise file upload Request = " + bulkIMEIRequest.toString());
@@ -47,7 +47,7 @@ public class BulkIMEIController {
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "resend OTP for bulk IMEI File Upload", response = GenricResponse.class)
+	//@ApiOperation(value = "resend OTP for bulk IMEI File Upload", response = GenricResponse.class)
 	@RequestMapping(path = "/resendOTP", method = RequestMethod.POST)
 	public GenricResponse resendOTP(@RequestBody BulkIMEIRequest bulkIMEIRequest ) {
 		
@@ -58,7 +58,7 @@ public class BulkIMEIController {
 		return genricResponse;
 	}
 	
-	@ApiOperation(value = "Check Upload Bulk IMEI File Status.", response = GenricResponse.class)
+	//@ApiOperation(value = "Check Upload Bulk IMEI File Status.", response = GenricResponse.class)
 	@RequestMapping(path = "bulkimei/status", method = RequestMethod.POST)
 	public GenricResponse getFileStatus(@RequestBody BulkIMEIRequest bulkIMEIRequest ){
 		logger.info("Check Upload Bulk IMEI File Status Request = " + bulkIMEIRequest.getTransactionId(),bulkIMEIRequest.getLang());
