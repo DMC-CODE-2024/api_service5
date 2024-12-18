@@ -1,48 +1,13 @@
 package com.gl.mdr.service.impl;
 
-import java.io.IOException;
-import org.springframework.data.jpa.domain.Specification;
-import jakarta.persistence.criteria.*;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import jakarta.persistence.criteria.Root;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import com.gl.mdr.bulk.imei.feign.NotificationFeign;
 import com.gl.mdr.configuration.PropertiesReader;
 import com.gl.mdr.configuration.SortDirection;
+import com.gl.mdr.dto.StolenLostModelDto;
+import com.gl.mdr.dto.StolenLostModelDtoResponse;
 import com.gl.mdr.exceptions.ResourceServicesException;
-import com.gl.mdr.model.app.CommuneDb;
-import com.gl.mdr.model.app.DistrictDb;
-import com.gl.mdr.model.app.EirsResponseParam;
-import com.gl.mdr.model.app.NotificationModel;
-import com.gl.mdr.model.app.PoliceStationDb;
-import com.gl.mdr.model.app.ProvinceDb;
-import com.gl.mdr.model.app.StolenLostModel;
-import com.gl.mdr.model.app.SystemConfigurationDb;
-import com.gl.mdr.model.app.User;
-import com.gl.mdr.model.app.WebActionDb;
+import com.gl.mdr.mapper.StolenLostModelMapper;
+import com.gl.mdr.model.app.*;
 import com.gl.mdr.model.audit.AuditTrail;
 import com.gl.mdr.model.constants.Datatype;
 import com.gl.mdr.model.constants.SearchOperation;
@@ -52,19 +17,7 @@ import com.gl.mdr.model.filter.MOIStatus;
 import com.gl.mdr.model.filter.MOIVerificationDeviceFilterRequest;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.model.generic.SearchCriteria;
-import com.gl.mdr.repo.app.AttachedFileInfoRepository;
-import com.gl.mdr.repo.app.CommunePoliceRepository;
-import com.gl.mdr.repo.app.CommuneRepository;
-import com.gl.mdr.repo.app.DistrictRepository;
-import com.gl.mdr.repo.app.EirsResponseParamRepository;
-import com.gl.mdr.repo.app.ProvinceRepository;
-import com.gl.mdr.repo.app.StatesInterpretaionRepository;
-import com.gl.mdr.repo.app.StolenPoliceVerificationDevicesRepository;
-import com.gl.mdr.repo.app.SystemConfigListRepository;
-import com.gl.mdr.repo.app.SystemConfigurationDbRepository;
-import com.gl.mdr.repo.app.UserProfileRepository;
-import com.gl.mdr.repo.app.UserRepository;
-import com.gl.mdr.repo.app.WebActionDbRepository;
+import com.gl.mdr.repo.app.*;
 import com.gl.mdr.repo.audit.AuditTrailRepository;
 import com.gl.mdr.specificationsbuilder.GenericSpecificationBuilder;
 import com.gl.mdr.util.CustomMappingStrategy;
@@ -73,6 +26,27 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.MappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -129,9 +103,9 @@ public class StolenVerificationDeviceServiceImpl {
 	@Autowired CommuneRepository communeRepository;
 
 
-	public Page<StolenLostModel> getVerificationDevicesDetails(
+	public StolenLostModelDtoResponse getVerificationDevicesDetails(
 			MOIVerificationDeviceFilterRequest trackLostRequest, Integer pageNo, Integer pageSize,String operation) {
-
+		StolenLostModelDtoResponse stolenLostModelDtoResponse=new StolenLostModelDtoResponse();
 		try {
 			logger.info("Police Verification Lost/Stolen Request" +trackLostRequest);
 			String orderColumn;
@@ -270,14 +244,20 @@ public class StolenVerificationDeviceServiceImpl {
 
 			SystemConfigurationDb ss=systemConfigurationDbRepository.getByTag("upload_file_link");
 
+			List<StolenLostModelDto> stolenLostModelDtolist= new ArrayList<>();
+			stolenLostModelDtoResponse.setContent(stolenLostModelDtolist);
+			stolenLostModelDtoResponse.setTotalElements(pageResult.getTotalElements());
+			stolenLostModelDtoResponse.setTotalPages(pageResult.getTotalPages());
 			for(StolenLostModel stolen : pageResult.getContent()) {
-				stolen.setFileUrl(ss.getValue().replace("$LOCAL_IP",propertiesReader.localIp));
-				stolen.setStatus(stolen.getStatus().trim());
+				StolenLostModelDto stolenLostModelDto= StolenLostModelMapper.INSTANCE.stolenLostModelToDto(stolen);
+				stolenLostModelDtolist.add(stolenLostModelDto);
+				stolenLostModelDto.setFileUrl(ss.getValue().replace("$LOCAL_IP",propertiesReader.localIp));
+				stolenLostModelDto.setStatus(stolen.getStatus().trim());
 				try {
 					if(stolen.getProvince()!=null) {
 						ProvinceDb pro= provinceRepository.findById(Long.parseLong(stolen.getProvince()));
 						if(pro!=null) {
-							stolen.setProvince(pro.getProvince());
+							stolenLostModelDto.setProvince(pro.getProvince());
 						}
 					}
 
@@ -289,7 +269,7 @@ public class StolenVerificationDeviceServiceImpl {
 					if(stolen.getDistrict()!=null) {
 						DistrictDb dis=districtRepository.findById(Long.parseLong(stolen.getDistrict()));
 						if(dis!=null) {
-							stolen.setDistrict(dis.getDistrict());
+							stolenLostModelDto.setDistrict(dis.getDistrict());
 						}
 					}
 
@@ -302,16 +282,17 @@ public class StolenVerificationDeviceServiceImpl {
 					if(stolen.getCommune()!=null) {
 						CommuneDb commune=communeRepository.findById(Long.parseLong(stolen.getCommune()));
 						if(commune!=null) {
-							stolen.setCommune(commune.getCommune());
+							stolenLostModelDto.setCommune(commune.getCommune());
 						}
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
+
 			}
-			
-			return pageResult;
+			logger.info(" stolenLostModelDtoResponse ="+stolenLostModelDtoResponse);
+			return stolenLostModelDtoResponse;
 
 		}catch(Exception e) {
 			logger.info("Exception found ="+e.getMessage());
@@ -366,7 +347,7 @@ public class StolenVerificationDeviceServiceImpl {
 		try {
 			mapStrategy.setType(StolenPoliceVerificationDeviceFileModel.class);
 			trackLostRequest.setSort("");
-			List<StolenLostModel> list = getVerificationDevicesDetails(trackLostRequest, pageNo, pageSize,"Export").getContent();
+			List<StolenLostModelDto> list = getVerificationDevicesDetails(trackLostRequest, pageNo, pageSize,"Export").getContent();
 			if( list.size()> 0 ) {
 				fileName = LocalDateTime.now().format(dtf2).replace(" ", "_")+"_moi_verification_device.csv";
 			}else {
@@ -380,7 +361,7 @@ public class StolenVerificationDeviceServiceImpl {
 
 			if( list.size() > 0 ) {
 				fileRecords = new ArrayList<StolenPoliceVerificationDeviceFileModel>(); 
-				for( StolenLostModel stolenLostModel : list ) {
+				for( StolenLostModelDto stolenLostModel : list ) {
 					uPFm = new StolenPoliceVerificationDeviceFileModel();
 					uPFm.setCreatedOn(stolenLostModel.getCreatedOn());
 					uPFm.setRequestId(stolenLostModel.getRequestId());

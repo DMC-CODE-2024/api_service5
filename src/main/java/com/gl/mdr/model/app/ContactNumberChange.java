@@ -40,7 +40,7 @@ public class ContactNumberChange {
     @Column(name="operator")
     String operator;
     
-    @Column(name="remarks")
+    @Column(name="remark")
     String remarks;
 
     @Column(name="status")

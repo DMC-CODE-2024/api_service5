@@ -41,8 +41,8 @@ public class NationalWhiteList {
 	@Column(name = "trc_imei_status")
 	private Integer trcImeiStatus;
 
-	@Column(name = "reason", length = 50)
-	private String reason;
+	/*@Column(name = "reason", length = 50)
+	private String reason;*/
 
 	@Transient
 	private String tableName= Tags.national_whitelist;
@@ -80,13 +80,6 @@ public class NationalWhiteList {
 		this.trcImeiStatusInterp = trcImeiStatusInterp;
 	}
 
-	public String getReason() {
-		return reason;
-	}
-
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
 
 	public Integer getValidityFlag() {
 		return validityFlag;
@@ -180,7 +173,6 @@ public class NationalWhiteList {
 				", reasonForInvalidImei='" + reasonForInvalidImei + '\'' +
 				", gdceImeiStatus=" + gdceImeiStatus +
 				", trcImeiStatus=" + trcImeiStatus +
-				", reason='" + reason + '\'' +
 				", tableName='" + tableName + '\'' +
 				", gdceStatusInterp='" + gdceStatusInterp + '\'' +
 				", trcImeiStatusInterp='" + trcImeiStatusInterp + '\'' +

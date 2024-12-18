@@ -2,6 +2,7 @@ package com.gl.mdr.controller;
 
 import java.util.List;
 
+import com.gl.mdr.dto.StolenLostModelDtoResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,14 @@ public class MOIAdminVerificationDeviceController {
 
 	//@ApiOperation(value = "get list of verification devices", response = TrackLostDevices.class)
 	@PostMapping("/getVerificationDevicesDetails")
-	public MappingJacksonValue getPoliceVerificationDevicesDetails(@RequestBody MOIVerificationDeviceFilterRequest filterRequest,
+	public StolenLostModelDtoResponse getPoliceVerificationDevicesDetails(@RequestBody MOIVerificationDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
 		MappingJacksonValue mapping = null;
 		logger.info("Verification Device filter request:["+filterRequest.toString()+"]");
-		Page<StolenLostModel> trackLostDataResponse =  stolenVerificationDeviceServiceImpl.getVerificationDevicesDetails(filterRequest, pageNo, pageSize,"View");
-		mapping = new MappingJacksonValue(trackLostDataResponse);
-		return mapping;
+		StolenLostModelDtoResponse trackLostDataResponse =  stolenVerificationDeviceServiceImpl.getVerificationDevicesDetails(filterRequest, pageNo, pageSize,"View");
+		logger.info("controller CC "+trackLostDataResponse.getContent().size());
+		return trackLostDataResponse;
 	}
 
 	
@@ -66,8 +67,7 @@ public class MOIAdminVerificationDeviceController {
 		logger.info("police verification export response:["+fileDetails.toString()+"]");
 		return mapping;
 	}
-	
-	
+
 	//@ApiOperation(value="get Police Verification Device")
 	@PostMapping("/getPoliceVerificationData")
 	public ResponseEntity<?> getPoliceVerificationData(@RequestBody MOIVerificationDeviceFilterRequest filterRequest ){

@@ -48,7 +48,7 @@ public class DuplicateDeviceDetailHis {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "remarks")
+    @Column(name = "remark")
     private String remarks;
 
     @Column(name = "updated_by")

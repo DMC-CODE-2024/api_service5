@@ -130,7 +130,7 @@ public class ChangeContactNumberServiceImpl {
 
 			ActiveMsisdnList activeMsisdn=activeMsisdnListRepository.findByMsisdn(filterRequest.getMsisdn());
 
-			logger.info("Update Contact Number Data available in ActiveMsisdnList table ["+filterRequest.getMsisdn()+"] : "+activeMsisdn.toString());
+			logger.info("Update Contact Number Data available in ActiveMsisdnList table ["+filterRequest.getMsisdn()+"] : "+activeMsisdn);
 
 			if(activeMsisdn!=null && stolen!=null){
 
