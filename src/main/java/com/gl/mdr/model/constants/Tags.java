@@ -48,6 +48,6 @@ public interface Tags {
 	String duplicate_device_detail_his="Duplicate Device Detail History";
 	String exception_list_his="Exception List History";
 	String lost_device_mgmt_status_init="INIT_START";
-	String lost_device_mgmt_request_type_recover="RECOVER";
+	String lost_device_mgmt_request_type_recover="Recover";
 	String lost_device_mgmt_status_start="START";
 }
