@@ -129,7 +129,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
         try {
             //fileUploadPath = systemConfigurationDbRepository.getByTag("user_upload_filepath").getValue();
             fileUploadPath = systemConfigurationDbRepository.getByTag("system_upload_filepath").getValue();
-            states = statesInterpretaionRepository.findByFeatureId(mdr.getFeatureId());
+            //states = statesInterpretaionRepository.findByFeatureId(mdr.getFeatureId());
+            states = statesInterpretaionRepository.findByFeatureId(0);
 
             for (StatesInterpretationDb state : states) {
                 if (state.getInterpretation().trim().equalsIgnoreCase(Tags.NEW))
@@ -908,7 +909,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
         User user = null;
         int status = 0;
         try {
-            states = statesInterpretaionRepository.findByFeatureId(featureId);
+            //states = statesInterpretaionRepository.findByFeatureId(featureId);
+            states = statesInterpretaionRepository.findByFeatureId(0);
             for (StatesInterpretationDb state : states) {
                 if (state.getInterpretation().trim().equalsIgnoreCase(Tags.DELETED))
                     status = state.getState();
@@ -965,7 +967,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                         OrderColumnMapping.getColumnMapping(mdrRequest.getOrderColumnName()).name()));
             else
                 pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, "modifiedOn"));
-            states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            //states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            states = statesInterpretaionRepository.findByFeatureId(0);
 
             @SuppressWarnings("unchecked")
             GenericSpecificationBuilder<MobileDeviceRepository> gsb =
@@ -1576,7 +1579,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                 direction = Sort.Direction.DESC;
             }
 
-            states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            //states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            states = statesInterpretaionRepository.findByFeatureId(0);
             gsb = (GenericSpecificationBuilder<MobileDeviceRepositoryNoFile>) this.createFilter(mdrRequest, states,
                     isDefaultFilter);
             fileRecords = new ArrayList<MobileDeviceRepoFileModel>();
@@ -1772,7 +1776,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
 
             GenericSpecificationBuilder<MobileDeviceRepositoryHistory> gsb =
                     new GenericSpecificationBuilder<MobileDeviceRepositoryHistory>(propertiesReader.dialect);
-            states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            //states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
+            states = statesInterpretaionRepository.findByFeatureId(0);
 
             if (Objects.nonNull(mdrRequest.getStartDate()) && !mdrRequest.getStartDate().equals(""))
                 gsb.with(new SearchCriteria("updatedOn", mdrRequest.getStartDate(), SearchOperation.GREATER_THAN, Datatype.DATE));
