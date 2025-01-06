@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -248,15 +249,15 @@ public class StolenImeiStatusCheckService {
         if (stolenLostModelResponse != null) {
             if (!results.isEmpty()) {
                 for (SearchImeiDetailByPolice searchImeiDetailByPolice : results) {
-                    if(stolenLostModelResponse.getCommune()!=null) {
-                        CommuneDb commune=communeRepository.findById(Long.parseLong(stolenLostModelResponse.getCommune()));
+                    if (stolenLostModelResponse.getCommune() != null) {
+                        CommuneDb commune = communeRepository.findById(Long.parseLong(stolenLostModelResponse.getCommune()));
                         searchImeiDetailByPolice.setDeviceLostCommune(commune.getCommune());
                     }
 
 
-                    if(stolenLostModelResponse.getDistrict()!=null) {
-                        DistrictDb dis=districtRepository.findById(Long.parseLong(stolenLostModelResponse.getDistrict()));
-                        if(dis!=null) {
+                    if (stolenLostModelResponse.getDistrict() != null) {
+                        DistrictDb dis = districtRepository.findById(Long.parseLong(stolenLostModelResponse.getDistrict()));
+                        if (dis != null) {
                             searchImeiDetailByPolice.setDeviceLostPoliceStation(dis.getDistrict());
                         }
                     }
@@ -285,7 +286,9 @@ public class StolenImeiStatusCheckService {
             logger.info("tac {}", tac);
             mobileDeviceRepoRepository.findByDeviceId(tac).ifPresentOrElse(x -> {
                         map.put(tac, x.stream().map(y -> y.getBrandName() + "---" + y.getModelName()).collect(Collectors.joining()));
-                    },() -> {map.put(tac,"NA");}
+                    }, () -> {
+                        map.put(tac, "NA");
+                    }
             );
 
         }
@@ -322,22 +325,22 @@ public class StolenImeiStatusCheckService {
             //if imeis length is 1, check if TAC exists in MDR
             if (tacList.size() == 1) {
                 String tac = tacList.get(0);
-                logger.info("existence of single IMEI in MDR {} ",checkTACInMDR(tac));
+                logger.info("existence of single IMEI in MDR {} ", checkTACInMDR(tac));
                 if (!checkTACInMDR(tac)) {
                     return new ResponseModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), "TAC not found in MDR");
                 }
             }
 
-            if (isBrandAndModelValid(tacList) && filterRequest.getRequestMode().equalsIgnoreCase("single")){
+            if (isBrandAndModelValid(tacList) && filterRequest.getRequestMode().equalsIgnoreCase("single")) {
                 // Proceed with the upload if all checks pass
                 ResponseModel response = eirsStolenCheckIMEIFileUploadPayload.upload(filterRequest);
-                logger.info("isBrandAndModelValid is true and request mode is :{} : {}",filterRequest.getRequestMode(), response);
+                logger.info("isBrandAndModelValid is true and request mode is :{} : {}", filterRequest.getRequestMode(), response);
                 eirsStolenCheckIMEIFileUploadPayload.saveWebActionDBEntity(filterRequest);
                 auditTrailService.auditTrailOperation(filterRequest.getAuditTrailModel(), "MOI", "IMEI_SEARCH_RECOVERY");
                 return response;
-            } else if(filterRequest.getRequestMode().equalsIgnoreCase("bulk")){
+            } else if (filterRequest.getRequestMode().equalsIgnoreCase("bulk")) {
                 ResponseModel response = eirsStolenCheckIMEIFileUploadPayload.upload(filterRequest);
-                logger.info("request mode is :{} : {}",filterRequest.getRequestMode(), response);
+                logger.info("request mode is :{} : {}", filterRequest.getRequestMode(), response);
                 eirsStolenCheckIMEIFileUploadPayload.saveWebActionDBEntity(filterRequest);
                 auditTrailService.auditTrailOperation(filterRequest.getAuditTrailModel(), "MOI", "IMEI_SEARCH_RECOVERY");
                 return response;
@@ -391,7 +394,7 @@ public class StolenImeiStatusCheckService {
 
                     //save response in lost_device_mgmt table
                     eirsStolenCheckIMEIFileUploadPayload.initiateRecovery(response);
-                    NotificationAPI(response.getContactNumberForOtp(), response.getDeviceOwnerNationality(), response.getOtp() + "", filterRequest.getLanguage(), recoveryRequestId,response.getOtpEmail());
+                    NotificationAPI(response.getContactNumberForOtp(), response.getDeviceOwnerNationality(), response.getOtp() + "", filterRequest.getLanguage(), recoveryRequestId, response.getOtpEmail());
 
                 }
                 result = new GenricResponse(200, "Initiate Recovery Successful", "", response);
@@ -482,7 +485,7 @@ public class StolenImeiStatusCheckService {
 
                     //save response in lost_device_mgmt table
                     eirsStolenCheckIMEIFileUploadPayload.initiateRecovery(response);
-                    NotificationAPI(response.getContactNumberForOtp(), response.getDeviceOwnerNationality(), response.getOtp() + "", filterRequest.getLanguage(), bulkRecoveryRequestId,response.getOtpEmail());
+                    NotificationAPI(response.getContactNumberForOtp(), response.getDeviceOwnerNationality(), response.getOtp() + "", filterRequest.getLanguage(), bulkRecoveryRequestId, response.getOtpEmail());
 
                 }
                 result = new GenricResponse(200, "Initiate Recovery Successful", "", response);
@@ -636,6 +639,10 @@ public class StolenImeiStatusCheckService {
     }
 
     public void NotificationAPI(String msisdn, String nationality, String otp, String lang, String tid, String mail) {
+        String otpMsg = null;
+        String otpMsgEmail = null;
+        String otpMsgSubject = null;
+        String otpMsgEmailSubject = null;
 
         NotificationModel notificationModel = new NotificationModel();
         GenricResponse genricResponse = new GenricResponse();
@@ -643,37 +650,46 @@ public class StolenImeiStatusCheckService {
         if (lang == null || lang.isEmpty() || lang.equalsIgnoreCase("")) {
             lang = "en";
         }
-        String msg = "";
+
         try {
             EirsResponseParam param = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_OTP_MSG", lang.toLowerCase()); //Msg to change
+            EirsResponseParam param2 = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_OTP_MSG_EMAIL", lang.toLowerCase()); //Msg to change
             if (param != null) {
-                msg = param.getValue().replaceAll("<OTP>", otp);
+                otpMsg = param.getValue().replaceAll("<OTP>", otp);
+                otpMsgSubject = param.getSubject();
+
+                otpMsgEmail = param2.getValue().replaceAll("<OTP>", otp);
+                otpMsgEmailSubject = param2.getSubject();
             }
 
-            logger.info("NotificationAPI() :: get message Details [" + msg + "] msisdn=" + msisdn);
+            logger.info("NotificationAPI() :: get message Details [{}] ,subject={} and msisdn={}", otpMsg, otpMsgSubject, msisdn);
+            logger.info("NotificationAPI() :: get otpMsgEmail message Details for email [{}] ,subject={} ,msisdn={}", otpMsgEmail, otpMsgEmailSubject, msisdn);
             logger.info("Device Owner nationality is for send OTP {}", nationality);
-            notificationModel.setMessage(msg);
-            notificationModel.setFeatureName("Initiate Recovery");
-            notificationModel.setSubFeature("Initiate Recovery OTP Verify");
-            notificationModel.setFeatureTxnId(tid);
 
             if (nationality.equalsIgnoreCase("0")) {
                 notificationModel.setChannelType("SMS_OTP");
                 notificationModel.setMsisdn(msisdn);
-            }
-            else {
+                notificationModel.setMessage(otpMsg);
+                notificationModel.setSubject(otpMsgSubject);
+            } else {
                 notificationModel.setChannelType("EMAIL_OTP");
                 notificationModel.setEmail(mail);
+                notificationModel.setMessage(otpMsgEmail);
+                notificationModel.setSubject(otpMsgEmailSubject);
             }
+
+            notificationModel.setFeatureName(propertiesReader.stolenFeatureName);
+            notificationModel.setSubFeature("Initiate Recovery OTP Verify");
+            notificationModel.setFeatureTxnId(tid);
             notificationModel.setMsgLang(lang);
-            logger.info("request send to notification API=" + notificationModel);
+            logger.info("request send to notification API for OTP ={}", notificationModel);
             genricResponse = notificationFeign.addNotifications(notificationModel);
             logger.info("Notification API response=" + genricResponse);
 
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            msg = "<OTP> is your OTP to upload the bulk check IMEI file.\n Never share OTP with anyone.".replaceAll("<OTP>", otp);
+            otpMsg = "<OTP> is your OTP to upload the bulk check IMEI file.\n Never share OTP with anyone.".replaceAll("<OTP>", otp);
             logger.info("NotificationAPI() :: Exception " + e.getMessage() + " when get message Details msisdn=" + msisdn);
 
 
@@ -723,56 +739,69 @@ public class StolenImeiStatusCheckService {
 
 
     public ResponseEntity<?> sendNotification(StolenImeiStatusCheckRequest stolenRequest) {
+        String lang = "en";
+        String msg = null;
+        String msgEmail = null;
+        String msgSubject = null;
+        String emailSubject = null;
+
         NotificationModel notificationModel = new NotificationModel();
         StolenLostModel stolenDeviceMgmt = null;
-
-
         GenricResponse results = new GenricResponse();
+
         String requestId = stolenRequest.getRequestId();
         String TransactionId = stolenRequest.getTransactionId();
         logger.info("Send Notification Request ID : {}", requestId);
         logger.info("Send Notification Transaction ID : {}", TransactionId);
-        String lang = "en";
-        String msg = "";
+
 
         try {
             EirsResponseParam param = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_NOTIFICATION_MSG", lang.toLowerCase()); //Msg to change
+            EirsResponseParam param2 = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_NOTIFICATION_MSG_EMAIL", lang.toLowerCase()); //Msg to change
             logger.info("response from eirs_response_param table {}", param);
+
             if (param != null) {
                 msg = param.getValue().replace("<REQUEST_NUMBER>", requestId);
                 msg = msg.replace("<TRANSACTION_ID>", TransactionId);
+                msgSubject = param.getSubject();
+
+                msgEmail = param2.getValue().replace("<REQUEST_NUMBER>", requestId);
+                msgEmail = msgEmail.replace("<TRANSACTION_ID>", TransactionId);
+                emailSubject = param2.getSubject();
             }
-            logger.info("NotificationAPI() :: get final message [{}] ", msg);
+            logger.info("NotificationAPI() :: get final message [{}] with subject [{}]", msg, msgSubject);
+            logger.info("NotificationAPI() :: get final email message [{}] with subject [{}]", msgEmail, emailSubject);
+
+            stolenDeviceMgmt = lostDeviceManagementRepository.findByRequestId(requestId);
+            logger.info("Device Owner nationality for sending Notification is {}", stolenDeviceMgmt.getDeviceOwnerNationality());
+
+            if (stolenDeviceMgmt.getDeviceOwnerNationality().equals("0")) {
+                notificationModel.setChannelType("SMS");
+                notificationModel.setMsisdn(stolenDeviceMgmt.getContactNumberForOtp());
+                notificationModel.setEmail(stolenDeviceMgmt.getOtpEmail());
+                notificationModel.setMessage(msg);
+                notificationModel.setSubject(msgSubject);
+            } else {
+                notificationModel.setChannelType("EMAIL");
+                notificationModel.setEmail(stolenDeviceMgmt.getOtpEmail());
+                notificationModel.setMessage(msgEmail);
+                notificationModel.setSubject(emailSubject);
+            }
+
+            notificationModel.setFeatureTxnId(TransactionId);
+            notificationModel.setFeatureName(propertiesReader.stolenFeatureName);
+            notificationModel.setSubFeature("Send Notification");
+            notificationModel.setMsgLang(lang);
+            logger.info("request send to notification API={}", notificationModel);
+            results = notificationFeign.addNotifications(notificationModel);
+            logger.info("Notification API response={}", results);
 
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
             logger.info("Notification :: Exception {}", e.getMessage());
         }
-        stolenDeviceMgmt = lostDeviceManagementRepository.findByRequestId(requestId);
-        notificationModel.setFeatureTxnId(TransactionId);
-        notificationModel.setMessage(msg);
-        notificationModel.setFeatureName("Stolen Check Status IMEI");
-        notificationModel.setSubFeature("Send Notification");
-        //notificationModel.setFeatureTxnId(tid);
-        logger.info("Device Owner nationality for sending Notification is {}",stolenDeviceMgmt.getDeviceOwnerNationality());
 
-
-        if(stolenDeviceMgmt.getDeviceOwnerNationality().equals("0")){
-            notificationModel.setChannelType("SMS");
-            notificationModel.setMsisdn(stolenDeviceMgmt.getContactNumberForOtp());
-            notificationModel.setEmail(stolenDeviceMgmt.getOtpEmail());
-            //notificationModel.setEmail(stolenDeviceMgmt.getDeviceOwnerEmail());
-        }else{
-            notificationModel.setChannelType("EMAIL");
-            notificationModel.setEmail(stolenDeviceMgmt.getOtpEmail());
-        }
-        //notificationModel.setEmail(otp);
-
-        notificationModel.setMsgLang(lang);
-        logger.info("request send to notification API={}", notificationModel);
-        results = notificationFeign.addNotifications(notificationModel);
-        logger.info("Notification API response={}", results);
         GenricResponse response;
         if (results != null) {
             response = new GenricResponse(200, "Notification Sent Successfully", stolenRequest.getTransactionId(), results);

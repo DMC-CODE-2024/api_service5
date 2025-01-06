@@ -2,6 +2,8 @@ package com.gl.mdr.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import com.gl.mdr.configuration.PropertiesReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.crypto.RuntimeCryptoException;
@@ -31,6 +33,9 @@ import com.gl.mdr.repo.audit.AuditTrailRepository;
 @Service
 public class ChangeContactNumberServiceImpl {
 	private static final Logger logger = LogManager.getLogger(ChangeContactNumberServiceImpl.class);
+
+	@Autowired
+	PropertiesReader propertiesReader;
 
 	@Autowired
 	AuditTrailRepository auditTrailRepository;
@@ -133,9 +138,6 @@ public class ChangeContactNumberServiceImpl {
 			logger.info("Update Contact Number Data available in ActiveMsisdnList table ["+filterRequest.getMsisdn()+"] : "+activeMsisdn);
 
 			if(activeMsisdn!=null && stolen!=null){
-
-				if(stolen.getStatus().equalsIgnoreCase("done")) {
-
 					ContactNumberChange change=new ContactNumberChange();
 					change.setMsisdn(stolen.getContactNumberForOtp());
 					stolen.setContactNumberForOtp(filterRequest.getMsisdn());
@@ -167,10 +169,7 @@ public class ChangeContactNumberServiceImpl {
 						GenricResponse response = new GenricResponse(500, "Something wrong happend", "", "");
 						return new ResponseEntity<>(response, HttpStatus.OK);
 					}
-				}else {
-					GenricResponse response = new GenricResponse(201, "Something wrong happend", "", "");
-					return new ResponseEntity<>(response, HttpStatus.OK);
-				}
+
 			}else {
 				logger.info("Update Contact Number Data not available in ActiveMsisdnList table ["+filterRequest.getMsisdn()+"] ");
 				GenricResponse response=new GenricResponse(500,"New contact number is not valid","",activeMsisdn);
@@ -209,7 +208,8 @@ public class ChangeContactNumberServiceImpl {
 
 		}
 		notificationModel.setMessage(msg);
-		notificationModel.setFeatureName("Change Contact Number");
+		//notificationModel.setFeatureName("Change Contact Number");
+		notificationModel.setFeatureName(propertiesReader.stolenFeatureName);
 		notificationModel.setSubFeature("Customer Care Request");
 		notificationModel.setFeatureTxnId(tid);
 		if(msisdn==null || msisdn.equals("") || msisdn.equalsIgnoreCase("null")) {

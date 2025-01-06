@@ -1340,19 +1340,18 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                     break;
                 }
             }
-            user = userRepository.getByid(result.getUserId());
-            //result.setUserDisplayName(user.getUserProfile().getDisplayName());
-            if (user != null) {
-                result.setUserDisplayName(user.getUserProfile().getFirstName() + " " + user.getUserProfile().getLastName());
-            } else {
-                result.setUserDisplayName("");
+            try {
+                user = userRepository.getByid(result.getUserId());
+                //result.setUserDisplayName(user.getUserProfile().getDisplayName());
+                if (user != null) {
+                    result.setUserDisplayName(user.getUserProfile().getFirstName() + " " + user.getUserProfile().getLastName());
+                } else {
+                    result.setUserDisplayName("");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-//            try {
-//            	 result.setUserDisplayName(user.getUserProfile().getFirstName() +" "+user.getUserProfile().getLastName());
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//				result.setUserDisplayName("");
-//			}
+
             if (result.getTrcApprovedStatus() == null) {
                 result.setTrcApprovedStatus("");
             }

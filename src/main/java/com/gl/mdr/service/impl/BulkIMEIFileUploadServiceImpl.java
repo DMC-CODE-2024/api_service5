@@ -274,7 +274,8 @@ public class BulkIMEIFileUploadServiceImpl {
 		}
 		
 		notificationModel.setMessage(msg);
-		notificationModel.setFeatureName("BULK IMEI");
+		//notificationModel.setFeatureName("BULK IMEI");
+		notificationModel.setFeatureName(propertiesReader.bulkCheckIMEIFeatureName);
 		notificationModel.setSubFeature("Bulk IMEI OTP Verify");
 		notificationModel.setFeatureTxnId(tid);
 		

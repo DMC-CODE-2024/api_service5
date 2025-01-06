@@ -614,7 +614,8 @@ public class StolenVerificationDeviceServiceImpl {
 		}
 
 		notificationModel.setMessage(msg);
-		notificationModel.setFeatureName("MOI Admin VERIFY Device");
+		//notificationModel.setFeatureName("MOI Admin VERIFY Device");
+		notificationModel.setFeatureName(propertiesReader.stolenFeatureName);
 		notificationModel.setSubFeature("Admin Reject Request");
 		notificationModel.setFeatureTxnId(tid);
 		if(msisdn==null || msisdn.equals("") || msisdn.equalsIgnoreCase("null")) {

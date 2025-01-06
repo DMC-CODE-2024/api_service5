@@ -57,6 +57,17 @@ public class EirsResponseParam {
 	@Column(name="language", length=10, columnDefinition="varchar(10) DEFAULT ''")
 	private String language = "";
 
+	@Column(name="subject", length=200, columnDefinition="varchar(200) DEFAULT ''")
+	private String subject;
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -163,13 +174,21 @@ public class EirsResponseParam {
 
 	@Override
 	public String toString() {
-		return "EirsResponseParam [id=" + id + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
-				+ ", description=" + description + ", type=" + type + ", active=" + active + ", tag=" + tag + ", value="
-				+ value + ", feature_name=" + feature_name + ", remark=" + remark + ", userType=" + userType
-				+ ", modifiedBy=" + modifiedBy + ", language=" + language + "]";
+		return "EirsResponseParam{" +
+				"id=" + id +
+				", createdOn=" + createdOn +
+				", modifiedOn=" + modifiedOn +
+				", description='" + description + '\'' +
+				", type=" + type +
+				", active=" + active +
+				", tag='" + tag + '\'' +
+				", value='" + value + '\'' +
+				", feature_name='" + feature_name + '\'' +
+				", remark='" + remark + '\'' +
+				", userType='" + userType + '\'' +
+				", modifiedBy='" + modifiedBy + '\'' +
+				", language='" + language + '\'' +
+				", subject='" + subject + '\'' +
+				'}';
 	}
-	
-	
-	
-	
 }
