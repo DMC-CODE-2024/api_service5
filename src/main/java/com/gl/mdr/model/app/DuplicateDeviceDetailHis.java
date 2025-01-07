@@ -57,7 +57,7 @@ public class DuplicateDeviceDetailHis {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @Column(name = "document_type1")
+   /* @Column(name = "document_type1")
     private String documentType1;
 
     @Column(name = "document_type2")
@@ -79,7 +79,7 @@ public class DuplicateDeviceDetailHis {
     private String documentPath3;
 
     @Column(name = "document_path4")
-    private String documentPath4;
+    private String documentPath4;*/
 
     @Column(name = "reminder_status")
     private Integer reminderStatus;
@@ -93,24 +93,21 @@ public class DuplicateDeviceDetailHis {
     @Column(name = "redmine_tkt_id")
     private String redmineTktId;
 
-    @Column(name = "operation")
-    private Integer operation;
+    @Column(name = "action")
+    private String action;
 
-    @Column(name = "source")
-    private String source;
+    @Column(name = "action_remark")
+    private String actionRemark;
 
     @Transient
     private String tableName= Tags.duplicate_device_detail_his;
 
-    @Transient
-    private String operationInterp;
-
-    public String getOperationInterp() {
-        return operationInterp;
+    public String getActionRemark() {
+        return actionRemark;
     }
 
-    public void setOperationInterp(String operationInterp) {
-        this.operationInterp = operationInterp;
+    public void setActionRemark(String actionRemark) {
+        this.actionRemark = actionRemark;
     }
 
     public String getTableName() {
@@ -241,70 +238,6 @@ public class DuplicateDeviceDetailHis {
         this.transactionId = transactionId;
     }
 
-    public String getDocumentType1() {
-        return documentType1;
-    }
-
-    public void setDocumentType1(String documentType1) {
-        this.documentType1 = documentType1;
-    }
-
-    public String getDocumentType2() {
-        return documentType2;
-    }
-
-    public void setDocumentType2(String documentType2) {
-        this.documentType2 = documentType2;
-    }
-
-    public String getDocumentType3() {
-        return documentType3;
-    }
-
-    public void setDocumentType3(String documentType3) {
-        this.documentType3 = documentType3;
-    }
-
-    public String getDocumentType4() {
-        return documentType4;
-    }
-
-    public void setDocumentType4(String documentType4) {
-        this.documentType4 = documentType4;
-    }
-
-    public String getDocumentPath1() {
-        return documentPath1;
-    }
-
-    public void setDocumentPath1(String documentPath1) {
-        this.documentPath1 = documentPath1;
-    }
-
-    public String getDocumentPath2() {
-        return documentPath2;
-    }
-
-    public void setDocumentPath2(String documentPath2) {
-        this.documentPath2 = documentPath2;
-    }
-
-    public String getDocumentPath3() {
-        return documentPath3;
-    }
-
-    public void setDocumentPath3(String documentPath3) {
-        this.documentPath3 = documentPath3;
-    }
-
-    public String getDocumentPath4() {
-        return documentPath4;
-    }
-
-    public void setDocumentPath4(String documentPath4) {
-        this.documentPath4 = documentPath4;
-    }
-
     public Integer getReminderStatus() {
         return reminderStatus;
     }
@@ -337,20 +270,12 @@ public class DuplicateDeviceDetailHis {
         this.redmineTktId = redmineTktId;
     }
 
-    public Integer getOperation() {
-        return operation;
+    public String getAction() {
+        return action;
     }
 
-    public void setOperation(Integer operation) {
-        this.operation = operation;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     @Override
@@ -371,22 +296,13 @@ public class DuplicateDeviceDetailHis {
                 ", remarks='" + remarks + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", transactionId='" + transactionId + '\'' +
-                ", documentType1='" + documentType1 + '\'' +
-                ", documentType2='" + documentType2 + '\'' +
-                ", documentType3='" + documentType3 + '\'' +
-                ", documentType4='" + documentType4 + '\'' +
-                ", documentPath1='" + documentPath1 + '\'' +
-                ", documentPath2='" + documentPath2 + '\'' +
-                ", documentPath3='" + documentPath3 + '\'' +
-                ", documentPath4='" + documentPath4 + '\'' +
                 ", reminderStatus=" + reminderStatus +
                 ", successCount=" + successCount +
                 ", failCount=" + failCount +
                 ", redmineTktId='" + redmineTktId + '\'' +
-                ", operation=" + operation +
-                ", source='" + source + '\'' +
+                ", action='" + action + '\'' +
+                ", actionRemark='" + actionRemark + '\'' +
                 ", tableName='" + tableName + '\'' +
-                ", operationInterp='" + operationInterp + '\'' +
                 '}';
     }
 }

@@ -734,6 +734,9 @@ public class SearchIMEIServiceImpl {
                     response = getDuplicateDeviceTableRecord(imei);
                     historyResponse = getDuplicateDeviceDetailHistoryRecord(imei);
                     break;
+                case Tags.duplicate_device_detail_his:
+                    historyResponse = getDuplicateDeviceDetailHistoryRecord(imei);
+                    break;
                 case Tags.lost_device_detail:
                     response = getLostDeviceDataRecord(imei);
                     historyResponse = getLostDeviceDetailHistoryRecord(imei);
@@ -906,23 +909,9 @@ public class SearchIMEIServiceImpl {
 
     public List<?> getDuplicateDeviceDetailHistoryRecord(String imei) {
         List<DuplicateDeviceDetailHis> response = new ArrayList<>();
-        List<SystemConfigListDb> operationInterp = new ArrayList<>();
         response = duplicateDeviceDetailHisRepository.findByImei(imei);
         if (!response.isEmpty()) {
             logger.info("[" + Tags.duplicate_device_detail_his + "] Table response with IMEI [" + imei + "] " + response);
-            operationInterp = systemConfigListRepository.findByTag("HISTORY_OPERATION");
-            logger.info("Operation Interp {} ", operationInterp);
-            //get Interpretation correspondence to status
-            for (DuplicateDeviceDetailHis duplicateDeviceDetailHis : response) {
-                Integer operation = duplicateDeviceDetailHis.getOperation();
-                // Set Operation Interp
-                for (SystemConfigListDb systemConfigListDb : operationInterp) {
-                    if (operation.equals(systemConfigListDb.getValue())) {
-                        duplicateDeviceDetailHis.setOperationInterp(systemConfigListDb.getInterpretation());
-                        break;
-                    }
-                }
-            }
             return response;
         }
         return Collections.EMPTY_LIST;
