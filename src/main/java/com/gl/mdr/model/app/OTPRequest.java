@@ -1,4 +1,4 @@
-package com.gl.ceir.config.model.app;
+package com.gl.mdr.model.app;
 
 public class OTPRequest {
 

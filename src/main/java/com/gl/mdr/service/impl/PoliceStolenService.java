@@ -1,19 +1,22 @@
-package com.gl.ceir.config.service.impl;
+package com.gl.mdr.service.impl;
 
-import com.gl.ceir.config.configuration.PropertiesReader;
-import com.gl.ceir.config.feign.NotificationFeign;
-import com.gl.ceir.config.model.app.*;
-import com.gl.ceir.config.model.aud.AuditTrail;
-import com.gl.ceir.config.model.oam.RequestHeaders;
-import com.gl.ceir.config.repository.app.*;
-import com.gl.ceir.config.repository.aud.AuditTrailRepository;
-import com.gl.ceir.config.repository.oam.RequestHeadersRepository;
+
+import com.gl.mdr.bulk.imei.feign.NotificationFeign;
+import com.gl.mdr.configuration.PropertiesReader;
+import com.gl.mdr.model.app.*;
+import com.gl.mdr.model.audit.AuditTrail;
+import com.gl.mdr.model.generic.GenricResponse;
+import com.gl.mdr.model.oam.RequestHeaders;
+import com.gl.mdr.repo.app.*;
+import com.gl.mdr.repo.audit.AuditTrailRepository;
+import com.gl.mdr.repo.oam.RequestHeadersRepository;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +136,10 @@ public class PoliceStolenService {
 
 
         //checking duplicate IMEI in detail table
-        LostStolenMgmt imeiExist1=stolenLostDetailRepo.findByImei(stolenLostModel.getImei1());
-        LostStolenMgmt imeiExist2=stolenLostDetailRepo.findByImei(stolenLostModel.getImei2());
-        LostStolenMgmt imeiExist3=stolenLostDetailRepo.findByImei(stolenLostModel.getImei3());
-        LostStolenMgmt imeiExist4=stolenLostDetailRepo.findByImei(stolenLostModel.getImei4());
+        LostDeviceDetail imeiExist1=stolenLostDetailRepo.findByImei(stolenLostModel.getImei1());
+        LostDeviceDetail imeiExist2=stolenLostDetailRepo.findByImei(stolenLostModel.getImei2());
+        LostDeviceDetail imeiExist3=stolenLostDetailRepo.findByImei(stolenLostModel.getImei3());
+        LostDeviceDetail imeiExist4=stolenLostDetailRepo.findByImei(stolenLostModel.getImei4());
         if(!Objects.isNull(imeiExist1) || !Objects.isNull(imeiExist2) || !Objects.isNull(imeiExist3) || !Objects.isNull(imeiExist4) ) {
             logger.info("dupicate IMEI found");
             String failRemark=eirsResponseRepo.getByTag("fail_duplicate_message",stolenLostModel.getLanguage());
@@ -196,8 +199,8 @@ public class PoliceStolenService {
         //saving in stolen_mgmt table
         lostStolenRepo.save(stolenLostModel);
         /// calling Notification API
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse=eirsResponseRepo.getByTagAndLanguage("police_stolen_notification_msg",stolenLostModel.getLanguage());
         eirsResponseEmail=eirsResponseRepo.getByTagAndLanguage("police_stolen_notification_msg_email",stolenLostModel.getLanguage());
         String message=eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -234,8 +237,8 @@ public class PoliceStolenService {
         //saving in stolen_mgmt table
         lostStolenRepo.save(stolenLostModel);
         /// calling Notification API
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse=eirsResponseRepo.getByTagAndLanguage("police_bulk_stolen_notification_msg",stolenLostModel.getLanguage());
         eirsResponseEmail=eirsResponseRepo.getByTagAndLanguage("police_bulk_stolen_notification_msg_email",stolenLostModel.getLanguage());
         String message=eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -271,8 +274,8 @@ public class PoliceStolenService {
 
             lostStolenRepo.save(res);
             //updating init  status in stolen_mgmt table
-            EirsResponse eirsResponse = new EirsResponse();
-            EirsResponse eirsResponseEmail = new EirsResponse();
+            EirsResponseParam eirsResponse = new EirsResponseParam();
+            EirsResponseParam eirsResponseEmail = new EirsResponseParam();
             eirsResponse=eirsResponseRepo.getByTagAndLanguage("police_stolen_success",res.getLanguage());
             eirsResponseEmail=eirsResponseRepo.getByTagAndLanguage("police_stolen_success_email",res.getLanguage());
             String message=eirsResponse.getValue().replace("<requestId>", res.getRequestId()).replace("<contactNumber>",res.getContactNumberForOtp());
@@ -287,7 +290,7 @@ public class PoliceStolenService {
                 webActionDb.setTxnId(res.getRequestId());
                 webActionDb.setState(1);
                 webActionDb.setFeature("MOI");
-                webActionDb.setSubFeature("PENDING_VERIFICATION");
+                webActionDb.setSub_feature("PENDING_VERIFICATION");
                 webActionDbRepository.save(webActionDb);
             }
             genricResponse.setStatusCode("200");
@@ -318,8 +321,8 @@ public class PoliceStolenService {
         res.setOtp(OTPsms);
         logger.info("request to update  resend OTP=" + res);
         lostStolenRepo.save(res);// updating OTP in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse=eirsResponseRepo.getByTagAndLanguage("resend_notification_msg",res.getLanguage());
         eirsResponseEmail=eirsResponseRepo.getByTagAndLanguage("resend_notification_msg_email",res.getLanguage());
         String message=eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -343,8 +346,8 @@ public class PoliceStolenService {
             auditTrail.setBrowser(stolenLostModel.getBrowser());
             auditTrail.setUserId(stolenLostModel.getUserId());
             auditTrail.setUserName(stolenLostModel.getUserName());
-            auditTrail.setUserType( stolenLostModel.getUserType() );
-            auditTrail.setRoleType( stolenLostModel.getUserType() );
+            auditTrail.setUserType( stolenLostModel.getUserType());
+            auditTrail.setRoleType( stolenLostModel.getUserType());
             auditTrail.setTxnId(stolenLostModel.getRequestId());
             logger.info(" going to save in auditTrail" + auditTrail);
             auditTrailRepository.save(auditTrail);

@@ -28,6 +28,9 @@ public class EirsInvalidImei {
 	    
 	    @Column(name = "imei")
 	    private String imei;
+
+	@Column(name = "actual_imei")
+	private String actualImei;
 	    
 	    @Transient
 	    private String tableName=Tags.eirs_invalid_imei;
@@ -64,20 +67,24 @@ public class EirsInvalidImei {
 			this.tableName = tableName;
 		}
 
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("EirsInvalidImei [id=");
-			builder.append(id);
-			builder.append(", createdOn=");
-			builder.append(createdOn);
-			builder.append(", imei=");
-			builder.append(imei);
-			builder.append(", tableName=");
-			builder.append(tableName);
-			builder.append("]");
-			return builder.toString();
-		}
-	    
-	    
+
+
+	public String getActualImei() {
+		return actualImei;
+	}
+
+	public void setActualImei(String actualImei) {
+		this.actualImei = actualImei;
+	}
+
+	@Override
+	public String toString() {
+		return "EirsInvalidImei{" +
+				"id=" + id +
+				", createdOn=" + createdOn +
+				", imei='" + imei + '\'' +
+				", actualImei='" + actualImei + '\'' +
+				", tableName='" + tableName + '\'' +
+				'}';
+	}
 }

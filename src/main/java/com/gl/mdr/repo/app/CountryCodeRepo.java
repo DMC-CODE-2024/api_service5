@@ -1,6 +1,7 @@
 package com.gl.mdr.repo.app;
 
-import com.gl.ceir.config.model.app.CountryCodeModel;
+
+import com.gl.mdr.model.app.CountryCodeModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

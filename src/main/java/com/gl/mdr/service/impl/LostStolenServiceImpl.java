@@ -1,13 +1,15 @@
-package com.gl.ceir.config.service.impl;
+package com.gl.mdr.service.impl;
 
-import com.gl.ceir.config.configuration.PropertiesReader;
-import com.gl.ceir.config.feign.NotificationFeign;
-import com.gl.ceir.config.model.app.*;
-import com.gl.ceir.config.model.aud.AuditTrail;
-import com.gl.ceir.config.model.oam.RequestHeaders;
-import com.gl.ceir.config.repository.app.*;
-import com.gl.ceir.config.repository.aud.AuditTrailRepository;
-import com.gl.ceir.config.repository.oam.RequestHeadersRepository;
+
+import com.gl.mdr.bulk.imei.feign.NotificationFeign;
+import com.gl.mdr.configuration.PropertiesReader;
+import com.gl.mdr.model.app.*;
+import com.gl.mdr.model.audit.AuditTrail;
+import com.gl.mdr.model.generic.GenricResponse;
+import com.gl.mdr.model.oam.RequestHeaders;
+import com.gl.mdr.repo.app.*;
+import com.gl.mdr.repo.audit.AuditTrailRepository;
+import com.gl.mdr.repo.oam.RequestHeadersRepository;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -145,10 +147,10 @@ public class LostStolenServiceImpl {
 
 
         //checking duplicate IMEI in detail table
-        LostStolenMgmt imeiExist1 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei1());
-        LostStolenMgmt imeiExist2 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei2());
-        LostStolenMgmt imeiExist3 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei3());
-        LostStolenMgmt imeiExist4 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei4());
+        LostDeviceDetail imeiExist1 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei1());
+        LostDeviceDetail imeiExist2 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei2());
+        LostDeviceDetail imeiExist3 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei3());
+        LostDeviceDetail imeiExist4 = stolenLostDetailRepo.findByImei(stolenLostModel.getImei4());
         if (!Objects.isNull(imeiExist1) || !Objects.isNull(imeiExist2) || !Objects.isNull(imeiExist3) || !Objects.isNull(imeiExist4)) {
             logger.info("dupicate IMEI found");
             String failRemark = eirsResponseRepo.getByTag("fail_duplicate_message", stolenLostModel.getLanguage());
@@ -207,8 +209,8 @@ public class LostStolenServiceImpl {
         //saving in stolen_mgmt table
         lostStolenRepo.save(stolenLostModel);
         /// calling Notification API
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("stolen_notification_msg", stolenLostModel.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("stolen_notification_msg_email", stolenLostModel.getLanguage());
 
@@ -245,8 +247,8 @@ public class LostStolenServiceImpl {
         //update in stolen_mgmt table
         lostStolenRepo.save(stolenLostModel);
         /// calling Notification API
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("stolenUpdate_success", stolenLostModel.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("stolenUpdate_success_email", stolenLostModel.getLanguage());
         String message = eirsResponse.getValue().replace("<requestId>", stolenLostModel.getRequestId());
@@ -343,6 +345,11 @@ public class LostStolenServiceImpl {
             } else if (stolen.getStatus().equalsIgnoreCase("INIT") && stolen.getRequestType().equalsIgnoreCase("Recover")) {
                 stolen1.setUserStatus("Started");
             }
+            if(stolen.getRequestMode().equalsIgnoreCase("bulk")){
+                stolen1.setDeviceType("NA");
+                stolen1.setDeviceBrand("NA");
+                stolen1.setDeviceModel("NA");
+            }
             res1.add(stolen1);
         }
         genricResponse.setData(res1);
@@ -416,8 +423,8 @@ public class LostStolenServiceImpl {
         res.setOtp(OTPsms);
         logger.info("request to update  resend OTP=" + res);
         lostStolenRepo.save(res);// updating OTP in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("resend_notification_msg", res.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("resend_notification_msg_email", res.getLanguage());
         String message = eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -439,7 +446,7 @@ public class LostStolenServiceImpl {
         String email = "";
         //StolenLostModel previousdata=lostStolenRepo.findByRequestId(requestID);
         LocalDateTime dateTime2 = LocalDateTime.now();
-        Duration duration = Duration.between(res.getModified_on(), dateTime2);
+        Duration duration = Duration.between(res.getModifiedOn(), dateTime2);
         long differenceInSeconds = duration.getSeconds();
         logger.info("seconds===++===" + differenceInSeconds);
 
@@ -462,8 +469,8 @@ public class LostStolenServiceImpl {
             //lostStolenRepo.updateByRequestId(oldrequestID,requestType);
 
 
-            EirsResponse eirsResponse = new EirsResponse();
-            EirsResponse eirsResponseEmail = new EirsResponse();
+            EirsResponseParam eirsResponse = new EirsResponseParam();
+            EirsResponseParam eirsResponseEmail = new EirsResponseParam();
             if (requestType.equalsIgnoreCase("Stolen")) {
                 eirsResponse = eirsResponseRepo.getByTagAndLanguage("stolen_success", res.getLanguage());
                 eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("stolen_success_email", res.getLanguage());
@@ -475,7 +482,7 @@ public class LostStolenServiceImpl {
                 webActionDb.setTxnId(res.getRequestId());
                 webActionDb.setState(1);
                 webActionDb.setFeature("MOI");
-                webActionDb.setSubFeature("Recover");
+                webActionDb.setSub_feature("Recover");
                 webActionDbRepository.save(webActionDb);
                 //res.setDeviceOwnerNationality("1");
             }
@@ -512,7 +519,7 @@ public class LostStolenServiceImpl {
         //StolenLostModel previousdata=lostStolenRepo.findByRequestId(requestID);
         logger.info(" response from DB=" + res);
         LocalDateTime dateTime2 = LocalDateTime.now();
-        Duration duration = Duration.between(res.getModified_on(), dateTime2);
+        Duration duration = Duration.between(res.getModifiedOn(), dateTime2);
         long differenceInSeconds = duration.getSeconds();
         logger.info("seconds===++===" + differenceInSeconds);
 
@@ -551,7 +558,7 @@ public class LostStolenServiceImpl {
         lostStolenMgmt.setImei2(stolenLostModel.getImei2());
         lostStolenMgmt.setImei3(stolenLostModel.getImei3());
         lostStolenMgmt.setImei4(stolenLostModel.getImei4());
-        lostStolenMgmt.setDeviceLostDdateTime(stolenLostModel.getDeviceLostDdateTime());
+        lostStolenMgmt.setDeviceLostDateTime(stolenLostModel.getDeviceLostDateTime());
         lostStolenMgmt.setProvince(stolenLostModel.getProvince());
         lostStolenMgmt.setDistrict(stolenLostModel.getDistrict());
         lostStolenMgmt.setCommune(stolenLostModel.getCommune());
@@ -628,8 +635,8 @@ public class LostStolenServiceImpl {
         logger.info("add new  record in mgmt table=" + saveNewData);
         lostStolenRepo.save(saveNewData);
         // updating in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("recovery_notification_msg", stolenLostModel.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("recovery_notification_msg_email", stolenLostModel.getLanguage());
         String message = eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -665,8 +672,8 @@ public class LostStolenServiceImpl {
         logger.info(" OTP=" + OTPsms);
         lostStolenRepo.updateOtp(OTPsms, stolenLostModel.getRequestId());
         // updating in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("checkStatus_notification_msg", stolenLostModel.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("checkStatus_notification_msg_email", stolenLostModel.getLanguage());
         String message = eirsResponse.getValue().replace("<otp>", OTPsms);
@@ -700,8 +707,8 @@ public class LostStolenServiceImpl {
         // updating otp in stolen_mgmt table
         lostStolenRepo.save(existingData);
         // Fetching messages from config tables
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("cancelRequest_otp_msg", stolenLostModel.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("cancelRequest_otp_msg_email", stolenLostModel.getLanguage());
 
@@ -723,7 +730,7 @@ public class LostStolenServiceImpl {
         StolenLostModel res = lostStolenRepo.findByRequestId(requestID);
         String email = "";
         LocalDateTime dateTime2 = LocalDateTime.now();
-        Duration duration = Duration.between(res.getModified_on(), dateTime2);
+        Duration duration = Duration.between(res.getModifiedOn(), dateTime2);
         long differenceInSeconds = duration.getSeconds();
         logger.info("seconds===++===" + differenceInSeconds);
 
@@ -773,7 +780,7 @@ public class LostStolenServiceImpl {
         logger.info(" OTP=" + OTPsms);
         res.setOtp(OTPsms);
         lostStolenRepo.save(res);// updating in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("checkStatus_notification_msg", res.getLanguage());
         String message = eirsResponse.getValue().replace("<otp>", OTPsms);
         NotificationAPI(res.getContactNumberForOtp(), res.getDeviceOwnerNationality(), res.getOtpEmail(), message, requestID,propertiesReader.stolenFeatureName, res.getLanguage(), eirsResponse.getDescription(), "SMS_OTP","","","");// calling notification API
@@ -796,8 +803,8 @@ public class LostStolenServiceImpl {
         res.setUserStatus("Canceled");
         res.setRemarks(stolenLostModel.getRemarks());
         lostStolenRepo.save(res);// updating in stolen_mgmt table
-        EirsResponse eirsResponse = new EirsResponse();
-        EirsResponse eirsResponseEmail = new EirsResponse();
+        EirsResponseParam eirsResponse = new EirsResponseParam();
+        EirsResponseParam eirsResponseEmail = new EirsResponseParam();
 
         eirsResponse = eirsResponseRepo.getByTagAndLanguage("cancelRequest_success_msg", res.getLanguage());
         eirsResponseEmail = eirsResponseRepo.getByTagAndLanguage("cancelRequest_success_msg_email", res.getLanguage());
@@ -835,6 +842,7 @@ public class LostStolenServiceImpl {
                 }
             } else {
                 logger.info("Tac not exist");
+                tacExist = false;
             }
         }
         // If no mismatches are found
@@ -856,10 +864,10 @@ public class LostStolenServiceImpl {
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setFeatureName("Stolen-Recovery Portal");
             auditTrail.setSubFeature(subFeature);
-            auditTrail.setFeatureId(1000001L);
+            auditTrail.setFeatureId(1000001);
             auditTrail.setPublicIp(ip);
             auditTrail.setBrowser(browser);
-            auditTrail.setUserId(1000001L);
+            auditTrail.setUserId(1000001);
             auditTrail.setUserName("Public Portal");
             auditTrail.setUserType("NA");
             auditTrail.setRoleType("NA");

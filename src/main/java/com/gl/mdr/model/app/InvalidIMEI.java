@@ -1,13 +1,11 @@
-package com.gl.ceir.config.model.app;
+/*
+package com.gl.mdr.model.app;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -71,3 +69,4 @@ public class InvalidIMEI {
                 '}';
     }
 }
+*/

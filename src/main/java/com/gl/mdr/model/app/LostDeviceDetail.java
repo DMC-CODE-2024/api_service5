@@ -27,8 +27,21 @@ public class LostDeviceDetail {
 	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime createdOn = LocalDateTime.now();
 
+	@UpdateTimestamp
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDateTime modified_on;
+
     @Column(name="imei")
     String imei;
+
+	@Column(name = "contact_number")
+	private String contactNumber;
+
+	@Column(name = "device_brand")
+	private String deviceBrand;
+
+	@Column(name = "device_model")
+	private String deviceModel;
 
 	@Column(name="request_id")
     String requestId;

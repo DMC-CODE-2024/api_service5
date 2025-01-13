@@ -1,10 +1,10 @@
-package com.gl.ceir.config.service.impl;
-
-import java.util.Random;
+package com.gl.mdr.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 
 @Service

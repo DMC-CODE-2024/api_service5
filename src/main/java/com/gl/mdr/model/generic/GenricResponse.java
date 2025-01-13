@@ -7,6 +7,8 @@ public class GenricResponse {
 	private String txnId;
 	private Object data;
 	private String tag;
+	private String statusCode;
+	private String requestID;
 
 	public GenricResponse(int errorCode, String message, String txnId) {
 		this.errorCode = errorCode;
@@ -68,19 +70,33 @@ public class GenricResponse {
 		this.tag = tag;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("GenricResponse [errorCode=");
-		builder.append(errorCode);
-		builder.append(", message=");
-		builder.append(message);
-		builder.append(", txnId=");
-		builder.append(txnId);
-		builder.append(", data=");
-		builder.append(data);
-		builder.append("]");
-		return builder.toString();
+
+	public String getStatusCode() {
+		return statusCode;
 	}
 
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getRequestID() {
+		return requestID;
+	}
+
+	public void setRequestID(String requestID) {
+		this.requestID = requestID;
+	}
+
+	@Override
+	public String toString() {
+		return "GenricResponse{" +
+				"errorCode=" + errorCode +
+				", message='" + message + '\'' +
+				", txnId='" + txnId + '\'' +
+				", data=" + data +
+				", tag='" + tag + '\'' +
+				", statusCode='" + statusCode + '\'' +
+				", requestID='" + requestID + '\'' +
+				'}';
+	}
 }

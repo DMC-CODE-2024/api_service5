@@ -48,4 +48,7 @@ public class PropertiesReader {
 
     @Value("${bulkCheckIMEIFeatureName}")
     public String bulkCheckIMEIFeatureName;
+
+    @Value("${groupId}")
+    public Long groupId;
 }

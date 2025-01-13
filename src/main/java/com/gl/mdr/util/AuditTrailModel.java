@@ -1,4 +1,4 @@
-package com.gl.ceir.config.feature.addressmanagement;
+package com.gl.mdr.util;
 
 public class AuditTrailModel {
     private Long userId;

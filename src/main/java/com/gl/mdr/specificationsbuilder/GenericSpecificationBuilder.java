@@ -246,10 +246,10 @@ public class GenericSpecificationBuilder<T> {
 	            Predicate condition5 = criteriaBuilder.equal(root.get("status"), "REJECT");
 	            Predicate condition6 = criteriaBuilder.equal(root.get("status"), "VERIFY_MOI");
 	            Predicate condition7 = criteriaBuilder.equal(root.get("status"), "INIT");
-	            Predicate condition8 = criteriaBuilder.equal(root.get("status"), "Fail");
+	            /*Predicate condition8 = criteriaBuilder.equal(root.get("status"), "Fail");*/
 
 	            // Updated logic to include null or any value other than "Approved" or "Reject"
-	            return criteriaBuilder.or(condition2, condition3,condition4,condition5,condition6,condition7,condition8);
+	            return criteriaBuilder.or(condition2, condition3,condition4,condition5,condition6,condition7);
 	        }
 	    };
 	}

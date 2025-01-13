@@ -31,8 +31,8 @@ public class EirsResponseParam {
 	@Column(name="description", length=255, columnDefinition="varchar(255) DEFAULT ''")
 	private String description = "";
 	
-	@Column(name="type", length=1, columnDefinition="int(1) DEFAULT '1'")
-	private int type ;
+
+
 	@Column(name="active", length=1, columnDefinition="int(1) DEFAULT '1'")
 	private int active ;
 	
@@ -100,13 +100,7 @@ public class EirsResponseParam {
 		this.description = description;
 	}
 
-	public int getType() {
-		return type;
-	}
 
-	public void setType(int type) {
-		this.type = type;
-	}
 
 	public int getActive() {
 		return active;
@@ -172,23 +166,5 @@ public class EirsResponseParam {
 		this.language = language;
 	}
 
-	@Override
-	public String toString() {
-		return "EirsResponseParam{" +
-				"id=" + id +
-				", createdOn=" + createdOn +
-				", modifiedOn=" + modifiedOn +
-				", description='" + description + '\'' +
-				", type=" + type +
-				", active=" + active +
-				", tag='" + tag + '\'' +
-				", value='" + value + '\'' +
-				", feature_name='" + feature_name + '\'' +
-				", remark='" + remark + '\'' +
-				", userType='" + userType + '\'' +
-				", modifiedBy='" + modifiedBy + '\'' +
-				", language='" + language + '\'' +
-				", subject='" + subject + '\'' +
-				'}';
-	}
+
 }

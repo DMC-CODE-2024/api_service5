@@ -372,7 +372,22 @@ public class StolenVerificationDeviceServiceImpl {
 					uPFm.setImei1(stolenLostModel.getImei1());
 					uPFm.setRequestId(stolenLostModel.getRequestId());
 					uPFm.setRequestType(stolenLostModel.getRequestType());
-					uPFm.setUserStatus(stolenLostModel.getStatus());
+					//uPFm.setUserStatus(stolenLostModel.getStatus());
+					if (stolenLostModel.getStatus().equalsIgnoreCase("INIT")) {
+						uPFm.setUserStatus("Pending");
+					} else if (stolenLostModel.getStatus().equalsIgnoreCase("VERIFY_MOI")) {
+						uPFm.setUserStatus("Pending MOI");
+					} else if (stolenLostModel.getStatus().equalsIgnoreCase("REJECT")) {
+						uPFm.setUserStatus("Reject");
+					} else if (stolenLostModel.getStatus().equalsIgnoreCase("START")) {
+						uPFm.setUserStatus("Pending EIRS");
+					} else if (stolenLostModel.getStatus().equalsIgnoreCase("DONE")) {
+						uPFm.setUserStatus("Done");
+					}
+					else if (stolenLostModel.getStatus().equalsIgnoreCase("FAIL")) {
+						uPFm.setUserStatus("Fail");
+					}
+
 					uPFm.setUploadedBy(stolenLostModel.getCreatedBy());
 					uPFm.setDeviceType(stolenLostModel.getDeviceType());
 					fileRecords.add(uPFm);

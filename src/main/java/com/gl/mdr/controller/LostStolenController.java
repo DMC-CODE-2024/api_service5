@@ -1,22 +1,22 @@
-package com.gl.ceir.config.controller;
+package com.gl.mdr.controller;
 
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.gl.ceir.config.model.app.*;
-import com.gl.ceir.config.repository.app.CountryCodeRepo;
+import com.gl.mdr.configuration.PropertiesReader;
+import com.gl.mdr.model.app.CountryCodeModel;
+import com.gl.mdr.model.app.OTPRequest;
+import com.gl.mdr.model.app.StolenLostModel;
+import com.gl.mdr.model.app.SystemConfigurationDb;
+import com.gl.mdr.model.generic.GenricResponse;
+import com.gl.mdr.repo.app.CountryCodeRepo;
+import com.gl.mdr.repo.app.LostStolenRepo;
+import com.gl.mdr.repo.app.SystemConfigurationDbRepository;
+import com.gl.mdr.service.impl.LostStolenServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import com.gl.ceir.config.configuration.PropertiesReader;
-import com.gl.ceir.config.repository.app.LostStolenRepo;
-import com.gl.ceir.config.repository.app.SystemConfigurationDbRepository;
-import com.gl.ceir.config.service.impl.LostStolenServiceImpl;
+import java.util.List;
 
 //import io.swagger.annotations.ApiOperation;
 
@@ -105,7 +105,7 @@ public class LostStolenController {
 	}
 	 
 	//@ApiOperation(value = "resend OTP.", response = GenricResponse.class)
-	@RequestMapping(path = "/resendOTP", method = RequestMethod.POST)
+	@RequestMapping(path = "/resendOTPEndUser", method = RequestMethod.POST)
 	public GenricResponse resendOTP(@RequestBody OTPRequest otpRequest ) {
 		
 		logger.info("resend Request , requestID= " + otpRequest.getRequestID()+" , otp ="+otpRequest.getOtp());

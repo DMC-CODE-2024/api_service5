@@ -1,19 +1,17 @@
-package com.gl.ceir.config.repository.app;
+package com.gl.mdr.repo.app;
 
+
+import com.gl.mdr.model.app.LostDeviceDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-
-import com.gl.ceir.config.model.app.LostStolenMgmt;
 
 
-public interface StolenLostDetailRepo extends JpaRepository<LostStolenMgmt, Long>, JpaSpecificationExecutor<LostStolenMgmt> {
+public interface StolenLostDetailRepo extends JpaRepository<LostDeviceDetail, Long>, JpaSpecificationExecutor<LostDeviceDetail> {
 
 	
 /*	@Modifying
 	 @Query("update LostStolenMgmt a  set a.requestType='Recovery' ,MODIFIED_ON=SYSTIMESTAMP where a.requestId=:requestId")
 		public void updateByRequestId(String requestId);*/
-	public LostStolenMgmt findByRequestId(String requestId);
-	public LostStolenMgmt findByImei(String imei);
+	public LostDeviceDetail findByRequestId(String requestId);
+	public LostDeviceDetail findByImei(String imei);
 }

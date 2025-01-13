@@ -1,19 +1,17 @@
-package com.gl.ceir.config.repository.app;
+package com.gl.mdr.repo.app;
 
 
-import java.sql.SQLException;
-import java.util.List;
 
-import com.gl.ceir.config.model.app.GenricResponse;
+import com.gl.mdr.model.app.StolenLostModel;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import com.gl.ceir.config.model.app.StolenLostModel;
 import org.springframework.stereotype.Repository;
 
-import jakarta.transaction.Transactional;
+import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 @Transactional(rollbackOn = {SQLException.class})
@@ -66,7 +64,7 @@ public interface LostStolenRepo extends JpaRepository<StolenLostModel, Long>, Jp
 	@Query(value="select interpretation from sys_param_list_value where tag='category' and list_order==:id", nativeQuery = true)
 	public String getcategory(String id );
 
-	@Query(value="select * from lost_device_mgmt s where s.status IN ('INIT','VERIFY_MOI','APPROVE_MOI','START','DONE') and request_type='Stolen' and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
+	@Query(value="select * from lost_device_mgmt s where s.status IN ('INIT','VERIFY_MOI','APPROVE_MOI','START') and request_type='Stolen' and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
 	public StolenLostModel findByImei1(String imei );
 
 	@Query(value="select * from lost_device_mgmt s where s.status  IN ('CANCEL','Done') and request_type='Recover'  and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
@@ -78,7 +76,7 @@ public interface LostStolenRepo extends JpaRepository<StolenLostModel, Long>, Jp
 	public StolenLostModel findByImei4(String imei );
 	
 	@Modifying	
-	@Query("update StolenLostModel a  set a.otp=:otp ,a.modified_on=CURRENT_TIMESTAMP  where a.requestId=:requestId")
+	@Query("update StolenLostModel a  set a.otp=:otp ,a.modifiedOn=CURRENT_TIMESTAMP  where a.requestId=:requestId")
 		public void updateOtp(String otp,String requestId);
 
 	@Modifying

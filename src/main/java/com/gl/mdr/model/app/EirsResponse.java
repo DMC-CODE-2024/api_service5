@@ -1,16 +1,15 @@
-package com.gl.ceir.config.model.app;
-
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gl.ceir.config.feature.addressmanagement.AuditTrailModel;
-import jakarta.persistence.*;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+/*
+package com.gl.mdr.model.app;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gl.mdr.util.AuditTrailModel;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "eirs_response_param")
@@ -48,6 +47,8 @@ public class EirsResponse {
 
 	@Column(name = "subject")
 	private String subject;
+
+
 
 	@Transient
 	@JsonProperty(value = "auditTrailModel", access = JsonProperty.Access.WRITE_ONLY)
@@ -176,3 +177,4 @@ public class EirsResponse {
 				'}';
 	}
 }
+*/

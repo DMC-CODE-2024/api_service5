@@ -1,13 +1,11 @@
-package com.gl.ceir.config.controller;
+package com.gl.mdr.controller;
 
-import com.gl.ceir.config.configuration.PropertiesReader;
-import com.gl.ceir.config.model.app.*;
-import com.gl.ceir.config.repository.app.CountryCodeRepo;
-import com.gl.ceir.config.repository.app.LostStolenRepo;
-import com.gl.ceir.config.repository.app.SystemConfigurationDbRepository;
-import com.gl.ceir.config.service.impl.LostStolenServiceImpl;
-import com.gl.ceir.config.service.impl.PoliceStolenService;
-//import io.swagger.annotations.ApiOperation;
+
+import com.gl.mdr.model.app.MDRModel;
+import com.gl.mdr.model.app.OTPRequest;
+import com.gl.mdr.model.app.StolenLostModel;
+import com.gl.mdr.model.generic.GenricResponse;
+import com.gl.mdr.service.impl.PoliceStolenService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ public class PoliceStolenRequestController {
     private static final Logger logger = LogManager.getLogger(PoliceStolenRequestController.class);
 
     @Autowired
-    com.gl.ceir.config.service.impl.LostStolenServiceImpl LostStolenServiceImpl;
+    com.gl.mdr.service.impl.LostStolenServiceImpl LostStolenServiceImpl;
 
     @Autowired
     PoliceStolenService lostStolenRepo;
