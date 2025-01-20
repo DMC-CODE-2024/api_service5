@@ -44,7 +44,7 @@ public class SearchIMEIController {
 	//------------------------------------- get table record   ------------------------------------------------------------------------
 	
 	//@ApiOperation(value="Get table record on basis of imei")
-	@PostMapping("/get-table-record-by-imei")
+	@PostMapping("/get-table-record-by-imei")	
 	public ResponseEntity<?> getTableDetail(@RequestBody SearchIMEIRequest searchIMEIRequest ){
 		return searchIMEIServiceImpl.getTableRecord(searchIMEIRequest);
 	}

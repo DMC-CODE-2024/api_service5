@@ -28,36 +28,29 @@ public class EirsResponseParam {
 	@Column(name="modified_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime modifiedOn = LocalDateTime.now();
 	
-	@Column(name="description", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	@Column(name="description")
 	private String description = "";
 	
 
-
-	@Column(name="active", length=1, columnDefinition="int(1) DEFAULT '1'")
-	private int active ;
-	
-	@Column(name="tag", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	@Column(name="tag")
 	private String tag = "";
 	
-	@Column(name="value", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	@Column(name="value")
 	private String value = "";
 	
-	@Column(name="feature_name", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	@Column(name="feature_name")
 	private String feature_name = "";
 	
-	@Column(name="remark", length=255, columnDefinition="varchar(255) DEFAULT ''")
+	@Column(name="remark")
 	private String remark = "";
-	
-	@Column(name="user_type", length=50, columnDefinition="varchar(50) DEFAULT ''")
-	private String userType = "";
-	
-	@Column(name="modified_by", length=50, columnDefinition="varchar(50) DEFAULT ''")
+
+	@Column(name="modified_by")
 	private String modifiedBy = "";
 	
-	@Column(name="language", length=10, columnDefinition="varchar(10) DEFAULT ''")
+	@Column(name="language")
 	private String language = "";
 
-	@Column(name="subject", length=200, columnDefinition="varchar(200) DEFAULT ''")
+	@Column(name="subject")
 	private String subject;
 
 	public String getSubject() {
@@ -100,16 +93,6 @@ public class EirsResponseParam {
 		this.description = description;
 	}
 
-
-
-	public int getActive() {
-		return active;
-	}
-
-	public void setActive(int active) {
-		this.active = active;
-	}
-
 	public String getTag() {
 		return tag;
 	}
@@ -140,14 +123,6 @@ public class EirsResponseParam {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
 	}
 
 	public String getModifiedBy() {
