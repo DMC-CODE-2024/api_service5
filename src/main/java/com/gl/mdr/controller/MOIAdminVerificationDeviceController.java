@@ -48,7 +48,7 @@ public class MOIAdminVerificationDeviceController {
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
 		MappingJacksonValue mapping = null;
-		logger.info("Verification Device filter request:["+filterRequest.toString()+"]");
+		logger.info("Verification Device filter request date field["+filterRequest.toString()+"]");
 		StolenLostModelDtoResponse trackLostDataResponse =  stolenVerificationDeviceServiceImpl.getVerificationDevicesDetails(filterRequest, pageNo, pageSize,"View");
 		logger.info("controller CC "+trackLostDataResponse.getContent().size());
 		return trackLostDataResponse;

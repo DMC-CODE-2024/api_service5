@@ -3,12 +3,7 @@ package com.gl.mdr.model.app;
 import java.io.Serializable;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,9 +29,10 @@ public class SystemConfigListDb implements Serializable {
 	private Date modifiedOn;
 	
 	private String tag;
-	
-	private Integer value;
-	
+
+
+	private String value;
+
 	private String interpretation;
 	
 	private Integer listOrder;
@@ -80,13 +76,15 @@ public class SystemConfigListDb implements Serializable {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-	public Integer getValue() {
+
+	public String getValue() {
 		return value;
 	}
-	public void setValue(Integer value) {
+
+	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 	public String getInterpretation() {
 		return interpretation;
 	}

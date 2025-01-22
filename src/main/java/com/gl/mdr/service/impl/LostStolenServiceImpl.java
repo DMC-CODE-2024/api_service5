@@ -403,6 +403,11 @@ public class LostStolenServiceImpl {
             else if (stolen.getStatus().equalsIgnoreCase("Fail")) {
                 stolen1.setUserStatus("Failed");
             }
+            if(stolen.getRequestMode().equalsIgnoreCase("bulk")){
+                stolen1.setDeviceType("NA");
+                stolen1.setDeviceBrand("NA");
+                stolen1.setDeviceModel("NA");
+            }
 
             res1.add(stolen1);
         }

@@ -67,7 +67,7 @@ public interface LostStolenRepo extends JpaRepository<StolenLostModel, Long>, Jp
 	@Query(value="select * from lost_device_mgmt s where s.status IN ('INIT','VERIFY_MOI','APPROVE_MOI','START') and request_type='Stolen' and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
 	public StolenLostModel findByImei1(String imei );
 
-	@Query(value="select * from lost_device_mgmt s where s.status  IN ('CANCEL','Done') and request_type='Recover'  and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
+	@Query(value="select * from lost_device_mgmt s where s.status  IN ('INIT') and request_type='Recover'  and :imei in (imei1,imei2,imei3,imei4)", nativeQuery = true)
 	public StolenLostModel checkduplicateRecovery(String imei );
 
 	@Query(value="select * from lost_device_mgmt s where s.status NOT IN ('START','DONE') and request_id=:requestId", nativeQuery = true)

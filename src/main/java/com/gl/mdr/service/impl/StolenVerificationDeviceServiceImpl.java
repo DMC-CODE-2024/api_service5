@@ -466,23 +466,20 @@ public class StolenVerificationDeviceServiceImpl {
 	public List<MOIStatus> getPolistStatus(){
 
 		List<MOIStatus> list=new ArrayList<MOIStatus>();
-		list.add(createMOIStatus("Pending", "INIT"));
-		list.add(createMOIStatus("Pending MOI", "VERIFY_MOI"));
-		list.add(createMOIStatus("Reject", "REJECT"));
-		list.add(createMOIStatus("Pending EIRS", "START"));
-		list.add(createMOIStatus("Done", "Done"));
-		list.add(createMOIStatus("Fail", "Fail"));
+		List<SystemConfigListDb> systemConfigListDb=systemConfigListRepository.findByTag("police_status");
+		for(SystemConfigListDb stolen : systemConfigListDb) {
+			list.add(createMOIStatus(stolen.getInterpretation(), stolen.getValue()));
+		}
 		return list;
 	}
 	public List<MOIStatus> getMOIAdminStatus(){
 		List<MOIStatus> list=new ArrayList<MOIStatus>();
-		list.add(createMOIStatus("Pending Police", "INIT"));
-		list.add(createMOIStatus("Pending", "VERIFY_MOI"));
-		list.add(createMOIStatus("Reject", "REJECT"));
-		list.add(createMOIStatus("Pending EIRS", "START"));
-		list.add(createMOIStatus("Done", "Done"));
-		list.add(createMOIStatus("Fail", "Fail"));
-		return list;
+		List<SystemConfigListDb> systemConfigListDb=systemConfigListRepository.findByTag("moi_admin_status");
+		for(SystemConfigListDb stolen : systemConfigListDb) {
+			list.add(createMOIStatus(stolen.getInterpretation(), stolen.getValue()));
+		}
+
+ return list;
 	}
 	private MOIStatus createMOIStatus(String name, String value) {
 		MOIStatus status = new MOIStatus();
@@ -614,10 +611,16 @@ public class StolenVerificationDeviceServiceImpl {
 			lang="en";
 		}
 		String msg="";
+		String msgEmail="";
+		String msgSubject="";
 		try {
 			EirsResponseParam param=eirsResponseParamRepository.findByTagAndLanguage("REJECT_MOI_MSG",lang.toLowerCase());
+			EirsResponseParam paramEmail=eirsResponseParamRepository.findByTagAndLanguage("REJECT_MOI_MSG_EMAIL",lang.toLowerCase());
+
 			if(param!=null) {
 				msg=param.getValue().replaceAll("<Request_Id>", tid);
+				msgEmail=paramEmail.getValue().replaceAll("<Request_Id>", tid);
+				msgSubject=paramEmail.getSubject();
 			}
 			logger.info("NotificationAPI() MOI Reject :: get message Details ["+msg+"] msisdn=" + msisdn);
 
@@ -628,7 +631,7 @@ public class StolenVerificationDeviceServiceImpl {
 
 		}
 
-		notificationModel.setMessage(msg);
+
 		//notificationModel.setFeatureName("MOI Admin VERIFY Device");
 		notificationModel.setFeatureName(propertiesReader.stolenFeatureName);
 		notificationModel.setSubFeature("Admin Reject Request");
@@ -637,8 +640,11 @@ public class StolenVerificationDeviceServiceImpl {
 			notificationModel.setSubject("Request ID "+tid+" :Update Notification for Device stolen request reject");
 			notificationModel.setChannelType("EMAIL");
 			notificationModel.setEmail(email);
+			notificationModel.setMessage(msgEmail);
+			notificationModel.setSubject(msgSubject);
 
 		}else {
+			notificationModel.setMessage(msg);
 			notificationModel.setChannelType("SMS");
 			notificationModel.setMsisdn(msisdn);
 		}

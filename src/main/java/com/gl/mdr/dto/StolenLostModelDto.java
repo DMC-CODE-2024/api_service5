@@ -16,10 +16,10 @@ public class StolenLostModelDto {
 
     private int statusCode;
 
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime createdOn;
 
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime modifiedOn;
 
 
@@ -220,6 +220,7 @@ public class StolenLostModelDto {
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
+
 
     public LocalDateTime getCreatedOn() {
         return createdOn;
@@ -717,73 +718,5 @@ public class StolenLostModelDto {
         this.policeMgmtImei4 = policeMgmtImei4;
     }
 
-    @Override
-    public String toString() {
-        return "StolenLostModelDto{" +
-                "id=" + id +
-                ", statusCode=" + statusCode +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", ownerDOB='" + ownerDOB + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
-                ", imei1='" + imei1 + '\'' +
-                ", imei2='" + imei2 + '\'' +
-                ", imei3='" + imei3 + '\'' +
-                ", imei4='" + imei4 + '\'' +
-                ", deviceBrand='" + deviceBrand + '\'' +
-                ", deviceModel='" + deviceModel + '\'' +
-                ", devicePurchaseInvoiceUrl='" + devicePurchaseInvoiceUrl + '\'' +
-                ", deviceLostDateTime='" + deviceLostDateTime + '\'' +
-                ", deviceOwnerName='" + deviceOwnerName + '\'' +
-                ", deviceOwnerEmail='" + deviceOwnerEmail + '\'' +
-                ", deviceOwnerAddress='" + deviceOwnerAddress + '\'' +
-                ", deviceOwnerNationalIdUrl='" + deviceOwnerNationalIdUrl + '\'' +
-                ", deviceOwnerNationalID='" + deviceOwnerNationalID + '\'' +
-                ", deviceOwnerNationality='" + deviceOwnerNationality + '\'' +
-                ", contactNumberForOtp='" + contactNumberForOtp + '\'' +
-                ", otp='" + otp + '\'' +
-                ", firCopyUrl='" + firCopyUrl + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", status='" + status + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", requestType='" + requestType + '\'' +
-                ", requestId='" + requestId + '\'' +
-                ", requestMode='" + requestMode + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", fileRecordCount='" + fileRecordCount + '\'' +
-                ", mobileInvoiceBill='" + mobileInvoiceBill + '\'' +
-                ", deviceOwnerAddress2='" + deviceOwnerAddress2 + '\'' +
-                ", recoveryReason='" + recoveryReason + '\'' +
-                ", province='" + province + '\'' +
-                ", district='" + district + '\'' +
-                ", commune='" + commune + '\'' +
-                ", policeStation='" + policeStation + '\'' +
-                ", passportNumber='" + passportNumber + '\'' +
-                ", otpEmail='" + otpEmail + '\'' +
-                ", category='" + category + '\'' +
-                ", userStatus='" + userStatus + '\'' +
-                ", language='" + language + '\'' +
-                ", lostId='" + lostId + '\'' +
-                ", deviceOwnerState='" + deviceOwnerState + '\'' +
-                ", deviceOwnerProvinceCity='" + deviceOwnerProvinceCity + '\'' +
-                ", deviceOwnerCommune='" + deviceOwnerCommune + '\'' +
-                ", otpRetryCount=" + otpRetryCount +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", incidentDetail='" + incidentDetail + '\'' +
-                ", otherDocument='" + otherDocument + '\'' +
-                ", deviceType='" + deviceType + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", oldRequestId='" + oldRequestId + '\'' +
-                ", browser='" + browser + '\'' +
-                ", publicIp='" + publicIp + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                ", fileUrl='" + fileUrl + '\'' +
-                ", auditTrailModel=" + auditTrailModel +
-                ", lostDeviceImei='" + lostDeviceImei + '\'' +
-                ", policeMgmtImei1='" + policeMgmtImei1 + '\'' +
-                ", policeMgmtImei2='" + policeMgmtImei2 + '\'' +
-                ", policeMgmtImei3='" + policeMgmtImei3 + '\'' +
-                ", policeMgmtImei4='" + policeMgmtImei4 + '\'' +
-                '}';
-    }
+
 }
