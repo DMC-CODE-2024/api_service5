@@ -112,7 +112,7 @@ public class StolenVerificationDeviceServiceImpl {
 			if(operation.equals("Export")) {
 				orderColumn = "modifiedOn";
 			}else {
-				logger.info("column Name :: " + trackLostRequest.getOrderColumnName()); 
+				logger.info("column Name :: " + trackLostRequest.getOrderColumnName());
 				orderColumn = "Date & Time".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "createdOn" :
 					"Request Number".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "requestId" :
 						"IMEI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imei" :
@@ -124,7 +124,7 @@ public class StolenVerificationDeviceServiceImpl {
 												"Commune".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "commune" :
 													"Device Type".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "deviceType" :
 														"Status".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "status"
-																:"modifiedOn"; 
+																:"modifiedOn";
 			}
 			logger.info("orderColumn data:  "+orderColumn+" user Id : "+trackLostRequest.getUserId());
 			logger.info("---system.getSort() : "+trackLostRequest.getSort());
@@ -217,10 +217,10 @@ public class StolenVerificationDeviceServiceImpl {
 
 			if(Objects.nonNull(trackLostRequest.getDeviceType()) && !trackLostRequest.getDeviceType().equals(""))
 				uPSB.with(new SearchCriteria("deviceType",trackLostRequest.getDeviceType() ,  SearchOperation.EQUALITY, Datatype.STRING));
-			
+
 //			if(Objects.nonNull(trackLostRequest.getStatus()) && !trackLostRequest.getStatus().equals(""))
 //				uPSB.with(new SearchCriteria("status",trackLostRequest.getStatus() ,  SearchOperation.EQUALITY, Datatype.STRING));
-			
+
 
 			if (Objects.nonNull(trackLostRequest.getStatus()) && !trackLostRequest.getStatus().isEmpty()) {
 			    // Single status provided by trackLostRequest
@@ -232,17 +232,17 @@ public class StolenVerificationDeviceServiceImpl {
 //			    for (String status : statuses) {
 //			        uPSB.or(new SearchCriteria("status", status,  SearchOperation.EQUALITY, Datatype.STRING));
 //			    }
-				
+
 				uPSB.addSpecification(uPSB.getStatus(new SearchCriteria("status", "Null", SearchOperation.EQUALITY_CASE_INSENSITIVE, Datatype.STRING)));
 
 			}
-			
-			
-			
+
+
+
 
 			Page<StolenLostModel> pageResult=stolenPoliceVerificationDevicesRepository.findAll(uPSB.build(),pageable);
 
-			SystemConfigurationDb ss=systemConfigurationDbRepository.getByTag("upload_file_link");
+			SystemConfigurationDb ss=systemConfigurationDbRepository.getByTag("system_upload_filepath");
 
 			List<StolenLostModelDto> stolenLostModelDtolist= new ArrayList<>();
 			stolenLostModelDtoResponse.setContent(stolenLostModelDtolist);
@@ -360,7 +360,7 @@ public class StolenVerificationDeviceServiceImpl {
 			csvWriter = builder.withMappingStrategy(mapStrategy).withSeparator(',').withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).build();
 
 			if( list.size() > 0 ) {
-				fileRecords = new ArrayList<StolenPoliceVerificationDeviceFileModel>(); 
+				fileRecords = new ArrayList<StolenPoliceVerificationDeviceFileModel>();
 				for( StolenLostModelDto stolenLostModel : list ) {
 					uPFm = new StolenPoliceVerificationDeviceFileModel();
 					uPFm.setCreatedOn(stolenLostModel.getCreatedOn());
@@ -397,7 +397,7 @@ public class StolenVerificationDeviceServiceImpl {
 			logger.info("fileName::"+fileName);
 			logger.info("filePath::::"+filePath);
 			logger.info("link:::"+dowlonadLink.getValue());
-			return new FileDetails(fileName, filePath,dowlonadLink.getValue().replace("$LOCAL_IP",propertiesReader.localIp)+fileName ); 
+			return new FileDetails(fileName, filePath,dowlonadLink.getValue().replace("$LOCAL_IP",propertiesReader.localIp)+fileName );
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -659,11 +659,11 @@ public class StolenVerificationDeviceServiceImpl {
 		List<String> deviceType=stolenPoliceVerificationDevicesRepository.findDistinctDeviceType();
 		return deviceType;
 	}
-	
+
 //	 List<String> statuses = Arrays.asList("DONE","Done","PENDING_MOI","REJECT", "VERIFY_MOI", "INIT","Fail");
 //	    for (String status : statuses) {
 //	        uPSB.or(new SearchCriteria("status", status,  SearchOperation.EQUALITY, Datatype.STRING));
 //	    }
-	
+
 
 }
