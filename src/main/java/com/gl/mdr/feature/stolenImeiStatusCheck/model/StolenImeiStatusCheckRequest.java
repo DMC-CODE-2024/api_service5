@@ -18,17 +18,28 @@ public class StolenImeiStatusCheckRequest {
     private String requestId;
     private String contactNumber;
 
-    public Integer userId;
+    private Integer featureId;
+    private Integer userId;
+    private String userName;
+
     public String userType;
     private String publicIp;
     private String browser;
     private String searchString;
-    private Integer featureId;
     private Integer userTypeId;
+
 
     private String orderColumnName;
     private String order;
     private String sort;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getContactNumber() {
         return contactNumber;
@@ -255,6 +266,7 @@ public class StolenImeiStatusCheckRequest {
                 ", searchString='" + searchString + '\'' +
                 ", featureId=" + featureId +
                 ", userTypeId=" + userTypeId +
+                ", userName='" + userName + '\'' +
                 ", orderColumnName='" + orderColumnName + '\'' +
                 ", order='" + order + '\'' +
                 ", sort='" + sort + '\'' +

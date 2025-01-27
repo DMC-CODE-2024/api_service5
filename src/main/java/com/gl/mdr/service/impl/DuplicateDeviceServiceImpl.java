@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.gl.mdr.feature.stolenImeiStatusCheck.model.StolenImeiStatusCheckRequest;
 import jakarta.transaction.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -151,28 +152,8 @@ public class DuplicateDeviceServiceImpl {
             }
             Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
             
-            AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Duplicate Device");
-            auditTrail.setSubFeature("View All");
-            auditTrail.setPublicIp(duplicateRequest.getPublicIp());
-            auditTrail.setBrowser(duplicateRequest.getBrowser());
-            if (Objects.nonNull(duplicateRequest.getUserId())) {
-                User user = userRepository.getByid(duplicateRequest.getUserId());
-                auditTrail.setUserId(duplicateRequest.getUserId());
-                auditTrail.setUserName(user.getUsername());
-            } else {
-                auditTrail.setUserName("NA");
-            }
-            if (Objects.nonNull(duplicateRequest.getUserType())) {
-                auditTrail.setUserType(duplicateRequest.getUserType());
-                auditTrail.setRoleType(duplicateRequest.getUserType());
-            } else {
-                auditTrail.setUserType("NA");
-                auditTrail.setRoleType("NA");
-            }
-            auditTrail.setTxnId("NA");
-            auditTrailRepository.save(auditTrail);
-            
+            //Audit Table Save Method
+            AuditTrailDB(duplicateRequest,"View All");
 
             GenericSpecificationBuilder<DuplicateDeviceDetail> uPSB = new GenericSpecificationBuilder<DuplicateDeviceDetail>(propertiesReader.dialect);
 
@@ -239,27 +220,8 @@ public class DuplicateDeviceServiceImpl {
         List<DuplicateDeviceFileModel> fileRecords = null;
         MappingStrategy<DuplicateDeviceFileModel> mapStrategy = new CustomMappingStrategy<>();
 
-        AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setFeatureName("Duplicate Device");
-        auditTrail.setSubFeature("Export");
-        auditTrail.setPublicIp(duplicateRequest.getPublicIp());
-        auditTrail.setBrowser(duplicateRequest.getBrowser());
-        if (Objects.nonNull(duplicateRequest.getUserId())) {
-            User user = userRepository.getByid(duplicateRequest.getUserId());
-            auditTrail.setUserId(duplicateRequest.getUserId());
-            auditTrail.setUserName(user.getUsername());
-        } else {
-            auditTrail.setUserName("NA");
-        }
-        if (Objects.nonNull(duplicateRequest.getUserType())) {
-            auditTrail.setUserType(duplicateRequest.getUserType());
-            auditTrail.setRoleType(duplicateRequest.getUserType());
-        } else {
-            auditTrail.setUserType("NA");
-            auditTrail.setRoleType("NA");
-        }
-        auditTrail.setTxnId("NA");
-        auditTrailRepository.save(auditTrail);
+        //Audit Table Save Method
+        AuditTrailDB(duplicateRequest,"Export");
 
         try {
             mapStrategy.setType(DuplicateDeviceFileModel.class);
@@ -284,7 +246,7 @@ public class DuplicateDeviceServiceImpl {
                     uPFm.setMsisdn(duplicateDeviceDetail.getMsisdn());
                     uPFm.setRedmineTktId(duplicateDeviceDetail.getRedmineTktId());
                     uPFm.setUpdatedBy(duplicateDeviceDetail.getUpdatedBy());
-                    uPFm.setStatus(duplicateDeviceDetail.getInterpretation());
+                    uPFm.setStatus(duplicateDeviceDetail.getStatus());
                     fileRecords.add(uPFm);
                 }
                 csvWriter.write(fileRecords);
@@ -310,27 +272,8 @@ public class DuplicateDeviceServiceImpl {
 
     public ResponseEntity<?> viewApprovedDevice_backup(DuplicateDeviceFilterRequest duplicateRequest) {
         logger.info("View Approved Devices by id : " + duplicateRequest.getId());
-        AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setFeatureName("Duplicate Device");
-        auditTrail.setSubFeature("View");
-        auditTrail.setPublicIp(duplicateRequest.getPublicIp());
-        auditTrail.setBrowser(duplicateRequest.getBrowser());
-        if (Objects.nonNull(duplicateRequest.getUserId())) {
-            User user = userRepository.getByid(duplicateRequest.getUserId());
-            auditTrail.setUserId(duplicateRequest.getUserId());
-            auditTrail.setUserName(user.getUsername());
-        } else {
-            auditTrail.setUserName("NA");
-        }
-        if (Objects.nonNull(duplicateRequest.getUserType())) {
-            auditTrail.setUserType(duplicateRequest.getUserType());
-            auditTrail.setRoleType(duplicateRequest.getUserType());
-        } else {
-            auditTrail.setUserType("NA");
-            auditTrail.setRoleType("NA");
-        }
-        auditTrail.setTxnId("NA");
-        auditTrailRepository.save(auditTrail);
+        //Audit Table Save Method
+        AuditTrailDB(duplicateRequest,"View");
         Optional<DuplicateDeviceDetail> result = duplicateDeviceRepo.findById(duplicateRequest.getId());
         logger.info("View result : " + result);
         if (result.isPresent()) {
@@ -344,27 +287,10 @@ public class DuplicateDeviceServiceImpl {
 
     public ResponseEntity<?> viewApprovedDevice(DuplicateDeviceFilterRequest duplicateRequest) {
         logger.info("duplicateRequest : " +duplicateRequest);
-        AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setFeatureName("Duplicate Device");
-        auditTrail.setSubFeature("View");
-        auditTrail.setPublicIp(duplicateRequest.getPublicIp());
-        auditTrail.setBrowser(duplicateRequest.getBrowser());
-        if (Objects.nonNull(duplicateRequest.getUserId())) {
-            User user = userRepository.getByid(duplicateRequest.getUserId());
-            auditTrail.setUserId(duplicateRequest.getUserId());
-            auditTrail.setUserName(user.getUsername());
-        } else {
-            auditTrail.setUserName("NA");
-        }
-        if (Objects.nonNull(duplicateRequest.getUserType())) {
-            auditTrail.setUserType(duplicateRequest.getUserType());
-            auditTrail.setRoleType(duplicateRequest.getUserType());
-        } else {
-            auditTrail.setUserType("NA");
-            auditTrail.setRoleType("NA");
-        }
-        auditTrail.setTxnId("NA");
-        auditTrailRepository.save(auditTrail);
+
+        //Audit Table Save Method
+        AuditTrailDB(duplicateRequest,"View");
+
         Optional<DuplicateDeviceDetail> result = duplicateDeviceRepo.findById(duplicateRequest.getId());
         logger.info("View result : "  +result);
 
@@ -447,27 +373,10 @@ public class DuplicateDeviceServiceImpl {
 
         if (Objects.nonNull(duplicateRequest.getId())) {
             logger.info("approveDuplicateDevice Request : " + duplicateRequest);
-            AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Duplicate Device");
-            auditTrail.setSubFeature("Approve");
-            auditTrail.setPublicIp(duplicateRequest.getPublicIp());
-            auditTrail.setBrowser(duplicateRequest.getBrowser());
-            if (Objects.nonNull(duplicateRequest.getUserId())) {
-                User user = userRepository.getByid(duplicateRequest.getUserId());
-                auditTrail.setUserId(duplicateRequest.getUserId());
-                auditTrail.setUserName(user.getUsername());
-            } else {
-                auditTrail.setUserName("NA");
-            }
-            if (Objects.nonNull(duplicateRequest.getUserType())) {
-                auditTrail.setUserType(duplicateRequest.getUserType());
-                auditTrail.setRoleType(duplicateRequest.getUserType());
-            } else {
-                auditTrail.setUserType("NA");
-                auditTrail.setRoleType("NA");
-            }
-            auditTrail.setTxnId("NA");
-            auditTrailRepository.save(auditTrail);
+
+            //Audit Table Save Method
+            AuditTrailDB(duplicateRequest,"Approve");
+
             //Changed status from duplicate to Original
             logger.info("After set status to Original[3] Status is  : " + duplicateRequest.getStatus());
             logger.info("Approve Tranaction ID  : " + duplicateRequest.getApproveTransactionId());
@@ -517,4 +426,28 @@ public class DuplicateDeviceServiceImpl {
         return response.toString();
     }
 
+    public void AuditTrailDB(DuplicateDeviceFilterRequest duplicateRequest, String subFeature){
+        AuditTrail auditTrail = new AuditTrail();
+        auditTrail.setFeatureName("Duplicate Device");
+        auditTrail.setSubFeature(subFeature);
+        auditTrail.setPublicIp(duplicateRequest.getPublicIp());
+        auditTrail.setBrowser(duplicateRequest.getBrowser());
+        if (Objects.nonNull(duplicateRequest.getUserId())) {
+            User user = userRepository.getByid(duplicateRequest.getUserId());
+            auditTrail.setUserId(duplicateRequest.getUserId());
+            auditTrail.setUserName(user.getUsername());
+        } else {
+            auditTrail.setUserName("NA");
+        }
+        if (Objects.nonNull(duplicateRequest.getUserType())) {
+            auditTrail.setUserType(duplicateRequest.getUserType());
+            auditTrail.setRoleType(duplicateRequest.getUserType());
+        } else {
+            auditTrail.setUserType("NA");
+            auditTrail.setRoleType("NA");
+        }
+        auditTrail.setTxnId("NA");
+        auditTrailRepository.save(auditTrail);
+        logger.info("Saving Audit Trail Data for Duplicate [{}]", auditTrail);
+    }
 }

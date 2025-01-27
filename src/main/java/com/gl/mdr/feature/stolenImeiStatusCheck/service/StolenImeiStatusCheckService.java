@@ -135,27 +135,8 @@ public class StolenImeiStatusCheckService {
             }
             Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, orderColumn));
 
-            AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Stolen IMEI status check");
-            auditTrail.setSubFeature("View All");
-            auditTrail.setPublicIp(stolenRequest.getPublicIp());
-            auditTrail.setBrowser(stolenRequest.getBrowser());
-            if (Objects.nonNull(stolenRequest.getUserId())) {
-                User user = userRepository.getByid(stolenRequest.getUserId());
-                auditTrail.setUserId(stolenRequest.getUserId());
-                auditTrail.setUserName(user.getUsername());
-            } else {
-                auditTrail.setUserName("NA");
-            }
-            if (Objects.nonNull(stolenRequest.getUserType())) {
-                auditTrail.setUserType(stolenRequest.getUserType());
-                auditTrail.setRoleType(stolenRequest.getUserType());
-            } else {
-                auditTrail.setUserType("NA");
-                auditTrail.setRoleType("NA");
-            }
-            auditTrail.setTxnId("NA");
-            auditTrailRepository.save(auditTrail);
+            //Save Audit Trail DB
+            AuditTrailDB(stolenRequest,"View All");
 
 
             GenericSpecificationBuilder<SearchImeiByPoliceMgmt> uPSB = new GenericSpecificationBuilder<SearchImeiByPoliceMgmt>(propertiesReader.dialect);
@@ -202,6 +183,10 @@ public class StolenImeiStatusCheckService {
 
     public ResponseEntity<?> viewStolenImeiDevice(StolenImeiStatusCheckRequest stolenRequest) {
         logger.info("StolenRequest View Transaction ID : {}", stolenRequest.getTransactionId());
+
+        //Save Audit Trail DB
+        AuditTrailDB(stolenRequest,"View");
+
         List<StolenViewResponse> results = searchImeiDetailByPoliceRepo.findGroupedByRequestId(stolenRequest.getTransactionId());
         logger.info("View result : {}", results);
         GenricResponse response;
@@ -224,6 +209,9 @@ public class StolenImeiStatusCheckService {
         StolenLostModel stolenLostModelResponse = null;
         List<StolenMatchedImeiResponse> tableResponse = new ArrayList<>();
         Map<String, String> map = new LinkedHashMap<>();
+
+        //Save Audit Trail DB
+        AuditTrailDB(stolenRequest,"View Recovered IMEI");
 
         List<SearchImeiDetailByPolice> results = searchImeiDetailByPoliceRepo.findByRequestId(stolenRequest.getRequestId());
         stolenLostModelResponse = lostDeviceManagementRepository.findByRequestId(stolenRequest.getRequestId());
@@ -357,6 +345,17 @@ public class StolenImeiStatusCheckService {
         logger.info("initiateRecovery Request ID : {}", filterRequest.getRequestId());
         StolenLostModel response = null;
         GenricResponse result = null;
+        AuditTrail auditTrail = new AuditTrail();
+        auditTrail.setFeatureName("Stolen IMEI status check");
+        auditTrail.setSubFeature("Initiate Recovery");
+        auditTrail.setPublicIp(filterRequest.getPublicIp());
+        auditTrail.setBrowser(filterRequest.getBrowser());
+        auditTrail.setUserId(filterRequest.getUserId());
+        auditTrail.setUserName(filterRequest.getUserName());
+        auditTrail.setTxnId("NA");
+        auditTrailRepository.save(auditTrail);
+        logger.info("Saving Audit Trail Data for Initiate Recovery [{}]", auditTrail);
+
         try {
             Optional<String> optional = Optional.ofNullable(filterRequest.getRequestId());
             if (optional.isPresent()) {
@@ -365,6 +364,7 @@ public class StolenImeiStatusCheckService {
                 logger.info("Initiate Recovery response : {}", response);
                 // Check if the response is valid before saving
                 if (response != null) {
+
                     response = mapToLostDeviceManagement(response);
 
                     String recoveryRequestId = "R" + utility.getTxnId();
@@ -400,6 +400,7 @@ public class StolenImeiStatusCheckService {
                 result = new GenricResponse(200, "Initiate Recovery Successful", "", response);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
@@ -754,7 +755,7 @@ public class StolenImeiStatusCheckService {
         logger.info("Send Notification Request ID : {}", requestId);
         logger.info("Send Notification Transaction ID : {}", TransactionId);
 
-
+        AuditTrailDB(stolenRequest,"Send Notification");
         try {
             EirsResponseParam param = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_NOTIFICATION_MSG", lang.toLowerCase()); //Msg to change
             EirsResponseParam param2 = eirsResponseParamRepository.findByTagAndLanguage("INITIATE_RECOVERY_NOTIFICATION_MSG_EMAIL", lang.toLowerCase()); //Msg to change
@@ -811,5 +812,30 @@ public class StolenImeiStatusCheckService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    public void AuditTrailDB(StolenImeiStatusCheckRequest stolenRequest,String subFeature){
+        AuditTrail auditTrail = new AuditTrail();
+        auditTrail.setFeatureName("Stolen IMEI status check");
+        auditTrail.setSubFeature(subFeature);
+        auditTrail.setPublicIp(stolenRequest.getPublicIp());
+        auditTrail.setBrowser(stolenRequest.getBrowser());
+        if (Objects.nonNull(stolenRequest.getUserId())) {
+            User user = userRepository.getByid(stolenRequest.getUserId());
+            auditTrail.setUserId(stolenRequest.getUserId());
+            auditTrail.setUserName(user.getUsername());
+        } else {
+            auditTrail.setUserName("NA");
+        }
+        if (Objects.nonNull(stolenRequest.getUserType())) {
+            auditTrail.setUserType(stolenRequest.getUserType());
+            auditTrail.setRoleType(stolenRequest.getUserType());
+        } else {
+            auditTrail.setUserType("NA");
+            auditTrail.setRoleType("NA");
+        }
+        auditTrail.setTxnId("NA");
+        auditTrailRepository.save(auditTrail);
+        logger.info("Saving Audit Trail Data [{}]", auditTrail);
+    }
 
 }

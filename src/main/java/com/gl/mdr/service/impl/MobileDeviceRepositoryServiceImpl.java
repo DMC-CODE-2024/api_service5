@@ -983,13 +983,13 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                 auditTrail.setPublicIp(mdrRequest.getPublicIp());
             if (Objects.nonNull(mdrRequest.getBrowser()))
                 auditTrail.setBrowser(mdrRequest.getBrowser());
-            /*if (Objects.nonNull(mdrRequest.getUserId())) {
+            if (Objects.nonNull(mdrRequest.getUserId())) {
                 User user = userRepository.getByid(mdrRequest.getUserId());
                 auditTrail.setUserId(mdrRequest.getUserId());
                 auditTrail.setUserName(user.getUsername());
             } else {
                 auditTrail.setUserName("NA");
-            }*/
+            }
             if (Objects.nonNull(mdrRequest.getUserType())) {
                 //auditTrail.setUserType(mdrRequest.getUserType());
                 //auditTrail.setRoleType(mdrRequest.getUserType());
@@ -1614,13 +1614,13 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                 auditTrail.setPublicIp(mdrRequest.getPublicIp());
             if (Objects.nonNull(mdrRequest.getBrowser()))
                 auditTrail.setBrowser(mdrRequest.getBrowser());
-            /*if (Objects.nonNull(mdrRequest.getUserId())) {
+            if (Objects.nonNull(mdrRequest.getUserId())) {
                 User user = userRepository.getByid(mdrRequest.getUserId());
                 auditTrail.setUserId(mdrRequest.getUserId());
                 auditTrail.setUserName(user.getUsername());
             } else {
                 auditTrail.setUserName("NA");
-            }*/
+            }
             if (Objects.nonNull(mdrRequest.getUserType())) {
                 //auditTrail.setUserType(mdrRequest.getUserType());
                 //auditTrail.setRoleType(mdrRequest.getUserType());
@@ -1836,26 +1836,19 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             results = this.setHistoryInterps(results, states);
             logger.info("in MDR history repo Going to save audit param");
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Mobile Device Repository");
+            auditTrail.setFeatureName("Device Management");
             auditTrail.setSubFeature("History");
             auditTrail.setFeatureId(mdrRequest.getFeatureId());
             if (Objects.nonNull(mdrRequest.getPublicIp()))
                 auditTrail.setPublicIp(mdrRequest.getPublicIp());
             if (Objects.nonNull(mdrRequest.getBrowser()))
                 auditTrail.setBrowser(mdrRequest.getBrowser());
-            /*if (Objects.nonNull(mdrRequest.getUserId())) {
+            if (Objects.nonNull(mdrRequest.getUserId())) {
                 User user = userRepository.getByid(mdrRequest.getUserId());
                 auditTrail.setUserId(mdrRequest.getUserId());
                 auditTrail.setUserName(user.getUsername());
             } else {
                 auditTrail.setUserName("NA");
-            }*/
-            if (Objects.nonNull(mdrRequest.getUserType())) {
-                //auditTrail.setUserType(mdrRequest.getUserType());
-                //auditTrail.setRoleType(mdrRequest.getUserType());
-            } else {
-                auditTrail.setUserType("NA");
-                auditTrail.setRoleType("NA");
             }
             auditTrail.setTxnId("NA");
             auditTrailRepository.save(auditTrail);
@@ -1901,7 +1894,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             DashboardData result = mdrRepository.getDashboardData();
 
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Dashboard");
+            auditTrail.setFeatureName("MDR Dashboard");
             auditTrail.setSubFeature("URL Landing Page");
             auditTrail.setFeatureId(featureId);
             auditTrail.setPublicIp(publicIp);
@@ -1909,8 +1902,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             User user = userRepository.getByid(userId);
             auditTrail.setUserId(userId);
             auditTrail.setUserName(user.getUsername());
-            auditTrail.setUserType("Device Repository");
-            auditTrail.setRoleType("Device Repository");
+            auditTrail.setUserType("Mobile Device Repository");
+            auditTrail.setRoleType("Mobile Device Repository");
             auditTrail.setTxnId("NA");
             auditTrailRepository.save(auditTrail);
 
