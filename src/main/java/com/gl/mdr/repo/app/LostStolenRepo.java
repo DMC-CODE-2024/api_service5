@@ -38,7 +38,7 @@ public interface LostStolenRepo extends JpaRepository<StolenLostModel, Long>, Jp
 	//public List<StolenLostModel> findByRequestId(String requestId);
 	public List<StolenLostModel> findByContactNumberAndStatusIgnoreCaseAndRequestTypeIgnoreCase(String requestId,String status,String requestType);
 
-	@Query(value="select * from lost_device_mgmt s where contact_number_for_otp=:contact or contact_number_for_otp=:acctualContact", nativeQuery = true)
+	@Query(value="select * from lost_device_mgmt s where (contact_number_for_otp=:contact or contact_number_for_otp=:acctualContact) and status!='INIT_START'", nativeQuery = true)
 	public List<StolenLostModel> findByContactNumberForOtp(String contact,String acctualContact);
 	@Modifying	
 	@Query("update StolenLostModel a  set a.requestType=:requestType ,a.createdOn=CURRENT_TIMESTAMP  where a.requestId=:requestId")

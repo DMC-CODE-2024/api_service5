@@ -345,6 +345,9 @@ public class LostStolenServiceImpl {
             } else if (stolen.getStatus().equalsIgnoreCase("INIT") && stolen.getRequestType().equalsIgnoreCase("Recover")) {
                 stolen1.setUserStatus("Started");
             }
+            else if (stolen.getStatus().equalsIgnoreCase("cancel") && stolen.getRequestType().equalsIgnoreCase("Recover")) {
+                stolen1.setUserStatus("Cancelled");
+            }
             if(stolen.getRequestMode().equalsIgnoreCase("bulk")){
                 stolen1.setDeviceType("NA");
                 stolen1.setDeviceBrand("NA");
@@ -399,6 +402,9 @@ public class LostStolenServiceImpl {
                 stolen1.setUserStatus("Unblocked");
             } else if (stolen.getStatus().equalsIgnoreCase("INIT") && stolen.getRequestType().equalsIgnoreCase("Recover")) {
                 stolen1.setUserStatus("Started");
+            }
+            else if (stolen.getStatus().equalsIgnoreCase("Cancel")) {
+                stolen1.setUserStatus("Cancelled");
             }
             else if (stolen.getStatus().equalsIgnoreCase("Fail")) {
                 stolen1.setUserStatus("Failed");
