@@ -20,8 +20,8 @@ public class GreyListDeviceHistory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-	@Column(name = "created_on",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@Column(name = "created_on")
 	private LocalDateTime createdOn;
 
 	@Column(name = "imei")
@@ -36,7 +36,8 @@ public class GreyListDeviceHistory {
 	@Column(name = "operation")
 	private Integer operation;
 
-	@Column(name = "modified_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "modified_on")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime  modifiedOn;
 
 	@Column(name = "source")

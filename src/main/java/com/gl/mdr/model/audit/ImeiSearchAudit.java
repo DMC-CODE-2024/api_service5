@@ -19,7 +19,7 @@ public class ImeiSearchAudit {
     private Integer id;
 
     @CreationTimestamp
-    @Column(name = "created_on", nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
     @Column(name = "ticket_id", length = 25, nullable = true)

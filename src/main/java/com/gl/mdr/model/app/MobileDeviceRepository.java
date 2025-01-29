@@ -29,12 +29,14 @@ public class MobileDeviceRepository {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="allocation_date", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="allocation_date")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime allocationDate;
 	
-	@Column(name="announce_date", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="announce_date")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime announceDate;
 	
 	@Column(name="band_detail", length=50, columnDefinition="varchar(50) DEFAULT ''")
@@ -80,13 +82,15 @@ public class MobileDeviceRepository {
 	private String commsWLAN = "";
 	
 	@CreationTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@Column(name="created_on")
 	private LocalDateTime createdOn = LocalDateTime.now();
 	
 	@UpdateTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	@Column(name="modified_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@Column(name="modified_on")
 	private LocalDateTime modifiedOn = LocalDateTime.now();
 	
 	@Column(name="device_id", length=8, columnDefinition="varchar(8) DEFAULT '0'", unique=true)
@@ -137,15 +141,17 @@ public class MobileDeviceRepository {
 	@Column(name="os_base_version", length=50, columnDefinition="varchar(50) DEFAULT ''")
 	private String osBaseVersion = "";
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@Column(name="launch_date", columnDefinition="timestamp DEFAULT NULL")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@Column(name="launch_date")
 	private LocalDateTime launchDate;
 	
 	@Column(name="device_status", length=20, columnDefinition="varchar(20) DEFAULT ''")
 	private String deviceStatus = "";
 	
-	@Column(name="discontinue_date", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="discontinue_date")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime discontinueDate;
 	
 	@Column(name="network_technology_gsm", length=1, columnDefinition="int DEFAULT '0'") //2G
@@ -313,8 +319,9 @@ public class MobileDeviceRepository {
 	@Column(name="trc_type_approved_by", length=50, columnDefinition="varchar(50) DEFAULT ''")
 	private String trcTypeApprovedBy = "";
 	
-	@Column(name="trc_approval_date", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="trc_approval_date")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime trcApprovalDate;
 	
 	@Column(name="manufacturer_country", length=100, columnDefinition="varchar(100) DEFAULT ''")

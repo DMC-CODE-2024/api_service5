@@ -24,7 +24,7 @@ public class GdceData {
     @Column(name = "imei")
     private String imei;
     
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 

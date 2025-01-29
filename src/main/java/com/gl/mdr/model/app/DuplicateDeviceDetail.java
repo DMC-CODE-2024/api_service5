@@ -14,12 +14,12 @@ public class DuplicateDeviceDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="created_on", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="created_on")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime createdOn;
 	
-	@Column(name="modified_on", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="modified_on")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime modifiedOn;
 
 	private String imei;
@@ -27,14 +27,14 @@ public class DuplicateDeviceDetail {
 	private String msisdn;
 	private String fileName;
 
-	@Column(name="edr_time", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="edr_time")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime edrTime;
 
 	private String operator;
 
-	@Column(name="expiryDate", columnDefinition="timestamp DEFAULT NULL")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Column(name="expiryDate")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime expiryDate;
 
 	@Transient

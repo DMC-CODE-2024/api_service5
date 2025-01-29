@@ -14,8 +14,8 @@ public class ExceptionListHis {
     private Long id;
 
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    @Column(name = "created_on",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
     @Column(name = "imei")

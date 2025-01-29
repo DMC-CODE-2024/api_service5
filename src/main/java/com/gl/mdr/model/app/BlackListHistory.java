@@ -24,7 +24,7 @@ public class BlackListHistory {
 	  /*  @Column(name = "actual_imei")
 	    private String actualImei;*/
 	    
-	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	    @Column(name = "created_on")
 	    private LocalDateTime createdOn;
 
@@ -55,7 +55,7 @@ public class BlackListHistory {
 	    @Column(name = "mode_type")
 	    private String modeType;
 	    
-	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	    @Column(name = "modified_on")
 	    private LocalDateTime modifiedOn;
 

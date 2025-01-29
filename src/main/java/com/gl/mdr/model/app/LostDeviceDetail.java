@@ -23,8 +23,8 @@ public class LostDeviceDetail {
     private Long id;
     
     @CreationTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
+	@Column(name="created_on")
 	private LocalDateTime createdOn = LocalDateTime.now();
 
 	@UpdateTimestamp
