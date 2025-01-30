@@ -30,13 +30,13 @@ public class MobileDeviceRepository {
 	private Integer id;
 	
 	@Column(name="allocation_date")
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime allocationDate;
 	
 	@Column(name="announce_date")
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime announceDate;
 	
 	@Column(name="band_detail", length=50, columnDefinition="varchar(50) DEFAULT ''")
@@ -141,8 +141,8 @@ public class MobileDeviceRepository {
 	@Column(name="os_base_version", length=50, columnDefinition="varchar(50) DEFAULT ''")
 	private String osBaseVersion = "";
 	
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	@Column(name="launch_date")
 	private LocalDateTime launchDate;
 	
@@ -150,8 +150,8 @@ public class MobileDeviceRepository {
 	private String deviceStatus = "";
 	
 	@Column(name="discontinue_date")
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime discontinueDate;
 	
 	@Column(name="network_technology_gsm", length=1, columnDefinition="int DEFAULT '0'") //2G
@@ -320,8 +320,8 @@ public class MobileDeviceRepository {
 	private String trcTypeApprovedBy = "";
 	
 	@Column(name="trc_approval_date")
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime trcApprovalDate;
 	
 	@Column(name="manufacturer_country", length=100, columnDefinition="varchar(100) DEFAULT ''")
