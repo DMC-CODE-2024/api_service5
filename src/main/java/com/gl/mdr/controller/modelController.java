@@ -2,6 +2,8 @@ package com.gl.mdr.controller;
 
 import com.gl.mdr.model.app.DeviceModel;
 import com.gl.mdr.service.impl.ModelServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +19,17 @@ import java.util.List;
 //
 
 @RestController
-public class modelController {  ////sachin
+public class modelController {
 
      private static final Logger logger = LogManager.getLogger(modelController.class);
 
      @Autowired
      ModelServiceImpl modelServiceImpl;
 
-     ////@ApiOperation(value = "View All list of Mdels of Brands", response = modelRepoPojo.class)
+     @Tag(name = "Model Name", description = "Device Management")
+     @Operation(
+             summary = "Fetch all model",
+             description = "Fetches all model entities from data source")
      @RequestMapping(path = "gsma/modelName", method = RequestMethod.GET)
      public MappingJacksonValue getAllModels(@RequestParam("brand_id") int brand_id) {
          logger.info("`Request TO view TO all record of user={}", brand_id);

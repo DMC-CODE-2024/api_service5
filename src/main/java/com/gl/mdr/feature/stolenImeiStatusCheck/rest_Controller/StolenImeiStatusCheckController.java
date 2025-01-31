@@ -9,6 +9,8 @@ import com.gl.mdr.model.app.StolenLostModel;
 import com.gl.mdr.model.file.FileDetails;
 import com.gl.mdr.model.generic.GenricResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,10 @@ public class StolenImeiStatusCheckController {
     @Autowired
     StolenImeiStatusCheckExport stolenImeiStatusCheckExport;
 
-    //@ApiOperation(value = "get list of stolen reported devices", response = SearchImeiByPoliceMgmt.class)
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Fetch all record",
+            description = "Fetches all record entities and their data from data source")
     @PostMapping("/getStolenDeviceDetails")
     public MappingJacksonValue getDuplicateDevicesDetails(@RequestBody StolenImeiStatusCheckRequest filterRequest,
                                                           @RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -42,7 +47,10 @@ public class StolenImeiStatusCheckController {
         return mapping;
     }
 
-    //@ApiOperation(value = "Export stolen devices", response = SearchImeiByPoliceMgmt.class)
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Export csv file",
+            description = "Fetches device entities and their associated data from the data source, with the number of records limited to a configurable parameter, up to a maximum of 50,000. Subsequently, generate a .csv file containing the retrieved data.")
     @PostMapping("/exportStolenData")
     public MappingJacksonValue exportData(@RequestBody StolenImeiStatusCheckRequest filterRequest) {
         MappingJacksonValue mapping = null;
@@ -54,12 +62,20 @@ public class StolenImeiStatusCheckController {
     }
 
     //@ApiOperation(value="View Detailed info of stolen device")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Fetch record based on Transaction Id",
+            description = "Fetches record based on Transaction Id from data source")
     @PostMapping("/viewStolenImeiData")
     public ResponseEntity<?> getStolenImeiData(@RequestBody StolenImeiStatusCheckRequest filterRequest){
         return stolenImeiStatusCheckService.viewStolenImeiDevice(filterRequest);
     }
 
     //@ApiOperation(value="get Distinct Status from search_imei_by_police_mgmt")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Fetch distinct Status from the data source",
+            description = "Fetch distinct values for the status based on the received request")
     @GetMapping("/initiateRecoveryDistinctStatus")
     public ResponseEntity<?> getDistinctStatus(){
         List<String> list = stolenImeiStatusCheckService.getDistinctStatusService();
@@ -67,28 +83,42 @@ public class StolenImeiStatusCheckController {
 
     }
 
-    //@ApiOperation(value="stolen IMEI search recovery")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Upload recovery request single/bulk",
+            description = "Upload a recovery request when the device is found")
     @PostMapping("/upload")
     public ResponseModel fileUpload(@RequestBody SearchImeiByPoliceMgmt filterRequest) {
         logger.info("Stolen Check IMEI payload for file upload [{}]", filterRequest);
         return stolenImeiStatusCheckService.save(filterRequest);
     }
 
-    //@ApiOperation(value="Initiate single recovery")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Initiate recovery single",
+            description = "Initiate a recovery request when the single device is found")
     @PostMapping("/initiateRecovery-single")
     public ResponseEntity<?> initiateSingleRecovery(@RequestBody StolenLostModel filterRequest) {
         logger.info("initiate-Single-Recovery payload [{}]", filterRequest);
         return stolenImeiStatusCheckService.initiateRecoveryService(filterRequest);
     }
 
-    //@ApiOperation(value="Initiate Bulk recovery")
+
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Initiate recovery bulk",
+            description = "Initiate a recovery request when multiple devices are found.")
     @PostMapping("/initiateRecovery-bulk")
     public ResponseEntity<?> initiateBulkRecovery(@RequestBody StolenLostModel filterRequest) {
         logger.info("initiate-Bulk-Recovery payload [{}]", filterRequest);
         return stolenImeiStatusCheckService.initiateBulkRecoveryService(filterRequest);
     }
 
-    //@ApiOperation(value = "Initiate Recovery verify OTP", response = GenricResponse.class)
+
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Verify OTP request",
+            description = "Verify the OTP when initiating a single or bulk recovery request")
     @RequestMapping(path = "/initiate-recovery/verify/otp", method = RequestMethod.POST)
     public GenricResponse verifyOtp(@RequestBody StolenLostModel filterRequest){
         logger.info("OTP Request = " + filterRequest.toString());
@@ -96,22 +126,29 @@ public class StolenImeiStatusCheckController {
         return genricResponse;
     }
 
-    //@ApiOperation(value = "Initiate Single Recovery form", response = GenricResponse.class)
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Submit recovery information",
+            description = "Submit the recovery information for a single or bulk request once the device has been successfully recovered")
     @PostMapping("/initiateRecovery")
     public ResponseEntity<?> initiateRecoveryForm(@RequestBody StolenLostModel filterRequest) {
         logger.info("initiate-Recovery payload [{}]", filterRequest);
         return stolenImeiStatusCheckService.initiateRecoveryFormService(filterRequest);
     }
 
-
-
-    //@ApiOperation(value="View Recovered data")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "View recovery information",
+            description = "Retrieve the recovery information from the data source based on the request ID")
     @PostMapping("/viewRecoveredImeiData")
     public ResponseEntity<?> getRecoveredImeiData(@RequestBody StolenImeiStatusCheckRequest filterRequest){
         return stolenImeiStatusCheckService.getRecoveredImeiDataService(filterRequest);
     }
 
-    //@ApiOperation(value = "Initiate Recovery resend OTP", response = GenricResponse.class)
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Resend OTP",
+            description = "Resend the OTP when initiating a recovery request for a single or bulk device")
     @RequestMapping(path = "/initiate-recovery/resendOTP", method = RequestMethod.POST)
     public GenricResponse resendOTP(@RequestBody StolenLostModel filterRequest ) {
 
@@ -122,9 +159,10 @@ public class StolenImeiStatusCheckController {
         return genricResponse;
     }
 
-
-
-    //@ApiOperation(value="Send Notification to contact number")
+    @Tag(name = "Stolen Status Check IMEI", description = "MOI Module API")
+    @Operation(
+            summary = "Send Notification",
+            description = "Send a notification to the user associated with the recovered device")
     @PostMapping("/initiateRecovery-sendNotification")
     public ResponseEntity<?> sendNotification(@RequestBody StolenImeiStatusCheckRequest filterRequest){
         return stolenImeiStatusCheckService.sendNotification(filterRequest);

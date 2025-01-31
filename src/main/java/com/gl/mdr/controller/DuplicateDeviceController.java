@@ -5,6 +5,8 @@ import com.gl.mdr.model.file.FileDetails;
 import com.gl.mdr.model.filter.DuplicateDeviceFilterRequest;
 import com.gl.mdr.service.impl.DuplicateDeviceServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,10 @@ public class DuplicateDeviceController {
 	@Autowired
 	DuplicateDeviceServiceImpl duplicateDeviceServiceImpl;
 
-	//@ApiOperation(value = "get list of duplicate devices", response = DuplicateDeviceDetail.class)
+	@Tag(name = "Duplicate Device Management", description = "Duplicate Module API")
+	@Operation(
+			summary = "Fetch all record",
+			description = "Fetches all record entities and their data from data source")
 	@PostMapping("/getDuplicateDeviceDetails")
 	public MappingJacksonValue getDuplicateDevicesDetails(@RequestBody DuplicateDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -35,8 +40,11 @@ public class DuplicateDeviceController {
 		return mapping;
 	}
 
-	
-	//@ApiOperation(value = "Export duplicate devices", response = DuplicateDeviceDetail.class)
+
+	@Tag(name = "Duplicate Device Management", description = "Duplicate Module API")
+	@Operation(
+			summary = "Export csv file",
+			description = "Fetches device entities and their associated data from the data source, with the number of records limited to a configurable parameter, up to a maximum of 50,000. Subsequently, generate a .csv file containing the retrieved data.")
 	@PostMapping("/exportDuplicateData")
 	public MappingJacksonValue exportData(@RequestBody DuplicateDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -48,16 +56,22 @@ public class DuplicateDeviceController {
 		logger.info("Duplicate export response:["+fileDetails.toString()+"]");
 		return mapping;
 	}
-	
-	
-	//@ApiOperation(value="get Approved Device")
+
+
+	@Tag(name = "Duplicate Device Management", description = "Duplicate Module API")
+	@Operation(
+			summary = "Fetch single record based on Id",
+			description = "Fetches record based on Id from data source")
 	@PostMapping("/getApprovedDeviceData")
 	public ResponseEntity<?> getApprovedDeviceData(@RequestBody DuplicateDeviceFilterRequest duplicateRequest ){
 		return duplicateDeviceServiceImpl.viewApprovedDevice(duplicateRequest);
 	}
-	
-	
-	//@ApiOperation(value="Approve Device" , response = DuplicateDeviceDetail.class)
+
+
+	@Tag(name = "Duplicate Device Management", description = "Duplicate Module API")
+	@Operation(
+			summary = "Approve record based on Id",
+			description = "Approve record based on Id from data source")
 	@PostMapping("/approveDuplicateDevice")
 	public ResponseEntity<?> approveDuplicateDevice(@RequestBody DuplicateDeviceFilterRequest duplicateRequest) {
 		logger.info("in approveDuplicateDevice Controller with request : "+duplicateRequest);

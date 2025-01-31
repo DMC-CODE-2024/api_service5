@@ -4,6 +4,8 @@ package com.gl.mdr.controller;
 //
 
 import com.gl.mdr.service.impl.BrandServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,10 @@ public class BrandController { //sachin
     
     private static final Logger logger = LogManager.getLogger(BrandController.class);
 
-    ////@ApiOperation(value = "View All list of Brands", response = String.class)
+    @Tag(name = "Brand Name", description = "Device Management")
+    @Operation(
+            summary = "Fetch all brand",
+            description = "Fetches all brand entities from data source")
     @RequestMapping(path = "gsma/brandName", method = RequestMethod.GET)
     public MappingJacksonValue getAllBrands() {
         var getBrands =brandServiceImpl.getAllBrands();

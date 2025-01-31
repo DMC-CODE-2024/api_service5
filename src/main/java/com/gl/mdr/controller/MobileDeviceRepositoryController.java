@@ -2,6 +2,8 @@ package com.gl.mdr.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,11 @@ public class MobileDeviceRepositoryController {
 	@Autowired
 	MobileDeviceRepositoryServiceImpl mdrServiceImpl;
 	
-	////@ApiOperation(value = "get list of devices with details", response = MobileDeviceRepository.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch all record",
+			description = "Fetches all device entities and their data from data source")
 	@PostMapping("/getDevicesDetails")
 	public MappingJacksonValue getDevicesDetails(@RequestBody MobileDeviceRepositoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -48,22 +54,31 @@ public class MobileDeviceRepositoryController {
 		mapping = new MappingJacksonValue(mdrs);
 		return mapping;
 	}
-	
-	////@ApiOperation(value = "Add a device in Mobile Device Repository", response = MDRGenricResponse.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Add record to the data source",
+			description = "Add the Device based on the received request")
 	@RequestMapping(path = "/addDevice", method = {RequestMethod.POST})
 	public MDRGenricResponse addDevice(@RequestBody MobileDeviceRepository deviceInfo) {
 		MDRGenricResponse genricResponse = mdrServiceImpl.addDevice(deviceInfo);
 		return genricResponse;
 	}
-	
-	////@ApiOperation(value = "Update devices in Mobile Device Repository", response = MDRGenricResponse.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Update record to the data source",
+			description = "Update the Device based on the received request")
 	@RequestMapping(path = "/updateDevices", method = {RequestMethod.POST})
 	public MDRGenricResponse updateDevices(@RequestBody List<MobileDeviceRepository> devicesInfo) {
 		MDRGenricResponse genricResponse = mdrServiceImpl.updateDevices(devicesInfo);
 		return genricResponse;
 	}
-	
-	//@ApiOperation(value = "Delete a device in Mobile Device Repository", response = MDRGenricResponse.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Delete record to the data source",
+			description = "Delete the Device based on the received request")
 	@RequestMapping(path = "/deleteDevice", method = {RequestMethod.POST})
 	public MDRGenricResponse deleteDevice(@RequestParam("userId") Integer userId,
 			@RequestParam("deviceId") String deviceId,
@@ -78,8 +93,11 @@ public class MobileDeviceRepositoryController {
 				browser, userId, userType, userTypeId, featureId);
 		return genricResponse;
 	}
-	
-	//@ApiOperation(value = "Get a single device details", response = MobileDeviceRepository.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch single record based on Id",
+			description = "Fetches record based on Id from data source")
 	@RequestMapping(path = "/getDeviceInfo", method = {RequestMethod.POST})
 	public MappingJacksonValue getDeviceInfo(
 			@RequestParam("userId") Integer userId,
@@ -103,8 +121,11 @@ public class MobileDeviceRepositoryController {
 		mapping = new MappingJacksonValue(mdr);
 		return mapping;
 	}
-	
-	//@ApiOperation(value = "View history of device", response = MobileDeviceRepositoryHistory.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch all record history",
+			description = "Fetches all record history from data source")
 	@RequestMapping(path = "/getDeviceHistory", method = {RequestMethod.POST})
 	public MappingJacksonValue getDevieHistory(@RequestBody RepositoryHistoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -114,8 +135,11 @@ public class MobileDeviceRepositoryController {
 		mapping = new MappingJacksonValue(mdrs);
 		return mapping;
 	}
-	
-	//@ApiOperation(value = "Get a device update history details", response = MobileDeviceRepositoryHistory.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch record history based on Id",
+			description = "Fetches record history based on Id from data source")
 	@RequestMapping(path = "/getDeviceHistoryInfo", method = {RequestMethod.POST})
 	public MappingJacksonValue getDeviceHistoryInfo(
 			@RequestParam("userId") Integer userId,
@@ -142,8 +166,11 @@ public class MobileDeviceRepositoryController {
 		mapping = new MappingJacksonValue(mdr);
 		return mapping;
 	}
-	
-	//@ApiOperation(value = "Export filtered devices", response = MobileDeviceRepository.class)
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Export csv file",
+			description = "Fetches device entities and their associated data from the data source, with the number of records limited to a configurable parameter, up to a maximum of 50,000. Subsequently, generate a .csv file containing the retrieved data.")
 	@PostMapping("/exportData")
 	public MappingJacksonValue exportData(@RequestBody MobileDeviceRepositoryFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -155,8 +182,11 @@ public class MobileDeviceRepositoryController {
 		logger.info("MDR export response:["+fileDetails.toString()+"]");
 		return mapping;
 	}
-	
-	//@ApiOperation(value = "Get dashboard data", response = DashboardData.class)
+
+	@Tag(name = "MDR Dashboard", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch all state count of record",
+			description = "Fetches count of all device entities with their state from data source")
 	@RequestMapping(path = "/getMDRDashboardData", method = {RequestMethod.GET})
 	public MappingJacksonValue getMDRDashboardData(
 			@RequestParam("userId") Integer userId,
@@ -170,22 +200,31 @@ public class MobileDeviceRepositoryController {
 				userId, userType, userTypeId, featureId));
 		return response;
 	}
-	
-	//@ApiOperation(value = "get User Details")
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch distinct value from the data source",
+			description = "Fetch distinct values for the user name based on the received request")
 	@GetMapping("/getDistinctUserName")
 	public ResponseEntity<?> getDistinctUserName() {
 		List<UserDetails>  list = mdrServiceImpl.getUserData();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	//@ApiOperation(value = "get User Device Type")
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch distinct value from the data source",
+			description = "Fetch distinct values for the device type based on the received request")
 	@GetMapping("/getDistinctDeviceType")
 	public ResponseEntity<?> getDistinctDeviceType() {
 		List<String>  list = mdrServiceImpl.getDeviceType();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	//@ApiOperation(value = "get Device Manufacturer Country")
+
+	@Tag(name = "Device Management", description = "MDR Module API")
+	@Operation(
+			summary = "Fetch distinct value from the data source",
+			description = "Fetch distinct values for the manufacture country based on the received request")
 	@GetMapping("/getManufacturerCountry")
 	public ResponseEntity<?> getManufacturerCountry() {
 		List<String>  list = mdrServiceImpl.getManufacturerCountry();
