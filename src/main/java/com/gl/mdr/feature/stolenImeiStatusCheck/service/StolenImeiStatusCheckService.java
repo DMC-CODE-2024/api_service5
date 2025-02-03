@@ -815,7 +815,7 @@ public class StolenImeiStatusCheckService {
 
     public void AuditTrailDB(StolenImeiStatusCheckRequest stolenRequest,String subFeature){
         AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setFeatureName("Stolen IMEI status check");
+        auditTrail.setFeatureName(propertiesReader.StolenIMEIStatusCheck);
         auditTrail.setSubFeature(subFeature);
         auditTrail.setPublicIp(stolenRequest.getPublicIp());
         auditTrail.setBrowser(stolenRequest.getBrowser());

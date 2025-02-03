@@ -36,6 +36,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -475,7 +477,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
 
             txnId = mdr.getDeviceId();
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("Add");
             auditTrail.setFeatureId(mdr.getFeatureId());
             if (Objects.nonNull(mdr.getPublicIp()))
@@ -876,7 +878,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
 
             // Audit trail entry
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("Update");
             auditTrail.setFeatureId(mdrs.get(0).getFeatureId());
             if (Objects.nonNull(mdrs.get(0).getPublicIp()))
@@ -927,7 +929,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             user = userRepository.getByid(userId);
             // Audit trail entry
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("Delete");
             auditTrail.setFeatureId(featureId);
             auditTrail.setPublicIp(publicIp);
@@ -976,7 +978,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                             isDefaultFilter);
             results = this.setInterps(mdrRepository.findAll(gsb.build(), pageable), states);
 
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("View All");
             auditTrail.setFeatureId(mdrRequest.getFeatureId());
             if (Objects.nonNull(mdrRequest.getPublicIp()))
@@ -1607,7 +1609,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                 csvWriter.write(new MobileDeviceRepoFileModel());
 
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("Export");
             auditTrail.setFeatureId(mdrRequest.getFeatureId());
             if (Objects.nonNull(mdrRequest.getPublicIp()))
@@ -1836,7 +1838,7 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             results = this.setHistoryInterps(results, states);
             logger.info("in MDR history repo Going to save audit param");
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("Device Management");
+            auditTrail.setFeatureName(propertiesReader.DeviceManagement);
             auditTrail.setSubFeature("History");
             auditTrail.setFeatureId(mdrRequest.getFeatureId());
             if (Objects.nonNull(mdrRequest.getPublicIp()))
@@ -1888,22 +1890,19 @@ public class MobileDeviceRepositoryServiceImpl<T> {
         }
     }
 
-    public DashboardData getMDRDashboardData(String publicIp, String browser, Integer userId, String userType, Integer userTypeId,
-                                             Integer featureId) {
+    public DashboardData getMDRDashboardData(MobileDeviceRepositoryFilterRequest filterRequest) {
         try {
             DashboardData result = mdrRepository.getDashboardData();
 
             AuditTrail auditTrail = new AuditTrail();
-            auditTrail.setFeatureName("MDR Dashboard");
+            auditTrail.setFeatureName(propertiesReader.mdrDashboard);
             auditTrail.setSubFeature("URL Landing Page");
-            auditTrail.setFeatureId(featureId);
-            auditTrail.setPublicIp(publicIp);
-            auditTrail.setBrowser(browser);
-            User user = userRepository.getByid(userId);
-            auditTrail.setUserId(userId);
+            auditTrail.setFeatureId(filterRequest.getFeatureId());
+            auditTrail.setPublicIp(filterRequest.getPublicIp());
+            auditTrail.setBrowser(filterRequest.getBrowser());
+            User user = userRepository.getByid(filterRequest.getUserId());
+            auditTrail.setUserId(filterRequest.getUserId());
             auditTrail.setUserName(user.getUsername());
-            auditTrail.setUserType("Mobile Device Repository");
-            auditTrail.setRoleType("Mobile Device Repository");
             auditTrail.setTxnId("NA");
             auditTrailRepository.save(auditTrail);
 

@@ -51,4 +51,18 @@ public class PropertiesReader {
 
     @Value("${groupId}")
     public Long groupId;
+
+    //Dynamic feature name for AUDIT purpose.
+    @Value("${sidebar.Duplicate_Management}")
+    public String DuplicateManagement;
+
+    @Value("${sidebar.Device_Management}")
+    public String DeviceManagement;
+
+    @Value("${sidebar.Dashboard_MDR}")
+    public String mdrDashboard;
+
+    @Value("${sidebar.Stolen_IMEI_Status_Check}")
+    public String StolenIMEIStatusCheck;
+
 }

@@ -104,8 +104,7 @@ public class DuplicateDeviceServiceImpl {
     @Autowired
     MainResponse mainResponse;
 
-    @Autowired
-    PropertiesReader propertyReader;
+
 
     @Autowired
     DuplicateDeviceRepository duplicateDeviceRepo;
@@ -397,8 +396,8 @@ public class DuplicateDeviceServiceImpl {
         StringBuilder response = new StringBuilder();
         try {
             logger.info("redmineTktId Received " +redmineTktId);
-            logger.info("redmine URL " +propertyReader.redmineUrl);
-            String url = propertyReader.redmineUrl + redmineTktId;
+            logger.info("redmine URL " +propertiesReader.redmineUrl);
+            String url = propertiesReader.redmineUrl + redmineTktId;
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
@@ -428,7 +427,7 @@ public class DuplicateDeviceServiceImpl {
 
     public void AuditTrailDB(DuplicateDeviceFilterRequest duplicateRequest, String subFeature){
         AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setFeatureName("Duplicate Device");
+        auditTrail.setFeatureName(propertiesReader.DuplicateManagement);
         auditTrail.setSubFeature(subFeature);
         auditTrail.setPublicIp(duplicateRequest.getPublicIp());
         auditTrail.setBrowser(duplicateRequest.getBrowser());
