@@ -189,9 +189,15 @@ public class MobileDeviceRepositoryController {
 			description = "Fetches count of all device entities with their state from data source")
 	@RequestMapping(path = "/getMDRDashboardData", method = {RequestMethod.GET})
 	public MappingJacksonValue getMDRDashboardData(
-			@RequestBody MobileDeviceRepositoryFilterRequest filterRequest
+			@RequestParam("userId") Integer userId,
+			@RequestParam(value = "publicIp", defaultValue="NA") String publicIp,
+			@RequestParam(value = "browser", defaultValue="NA") String browser,
+			@RequestParam(value = "userType", defaultValue="NA") String userType,
+			@RequestParam(value = "userTypeId", defaultValue = "0") Integer userTypeId,
+			@RequestParam(value = "featureId", defaultValue = "0") Integer featureId
 			) {
-		MappingJacksonValue response = new MappingJacksonValue(mdrServiceImpl.getMDRDashboardData(filterRequest));
+		MappingJacksonValue response = new MappingJacksonValue(mdrServiceImpl.getMDRDashboardData(publicIp, browser,
+				userId, userType, userTypeId, featureId));
 		return response;
 	}
 

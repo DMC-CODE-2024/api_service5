@@ -36,8 +36,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -1890,18 +1888,19 @@ public class MobileDeviceRepositoryServiceImpl<T> {
         }
     }
 
-    public DashboardData getMDRDashboardData(MobileDeviceRepositoryFilterRequest filterRequest) {
+    public DashboardData getMDRDashboardData(String publicIp, String browser, Integer userId, String userType, Integer userTypeId,
+                                             Integer featureId) {
         try {
             DashboardData result = mdrRepository.getDashboardData();
-
+            logger.info("publicIp{} and browser{}",publicIp, browser);
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setFeatureName(propertiesReader.mdrDashboard);
             auditTrail.setSubFeature("URL Landing Page");
-            auditTrail.setFeatureId(filterRequest.getFeatureId());
-            auditTrail.setPublicIp(filterRequest.getPublicIp());
-            auditTrail.setBrowser(filterRequest.getBrowser());
-            User user = userRepository.getByid(filterRequest.getUserId());
-            auditTrail.setUserId(filterRequest.getUserId());
+            auditTrail.setFeatureId(featureId);
+            auditTrail.setPublicIp(publicIp);
+            auditTrail.setBrowser(browser);
+            User user = userRepository.getByid(userId);
+            auditTrail.setUserId(userId);
             auditTrail.setUserName(user.getUsername());
             auditTrail.setTxnId("NA");
             auditTrailRepository.save(auditTrail);
