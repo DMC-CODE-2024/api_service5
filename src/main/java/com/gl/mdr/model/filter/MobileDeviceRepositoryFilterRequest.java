@@ -30,6 +30,7 @@ public class MobileDeviceRepositoryFilterRequest {
 	private Integer userTypeId;
 	private String userDisplayName;
 	private String manufacturerCountry;
+	private String source;
 	
 	public String getStartDate() {
 		return startDate;
@@ -192,20 +193,50 @@ public class MobileDeviceRepositoryFilterRequest {
 	public String getManufacturerCountry() {
 		return manufacturerCountry;
 	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public void setManufacturerCountry(String manufacturerCountry) {
 		this.manufacturerCountry = manufacturerCountry;
 	}
+
 	@Override
 	public String toString() {
-		return "MobileDeviceRepositoryFilterRequest [startDate=" + startDate + ", endDate=" + endDate + ", modifiedOn="
-				+ modifiedOn + ", deviceId=" + deviceId + ", deviceType=" + deviceType + ", deviceStatus="
-				+ deviceStatus + ", mdrStatus=" + mdrStatus + ", marketingName=" + marketingName + ", modelName="
-				+ modelName + ", brandName=" + brandName + ", os=" + os + ", organizationId=" + organizationId
-				+ ", networkTechnologyGSM=" + networkTechnologyGSM + ", networkTechnologyCDMA=" + networkTechnologyCDMA
-				+ ", networkTechnologyLTE=" + networkTechnologyLTE + ", networkTechnology5G=" + networkTechnology5G
-				+ ", userId=" + userId + ", userType=" + userType + ", orderColumnName=" + orderColumnName + ", order="
-				+ order + ", publicIp=" + publicIp + ", browser=" + browser + ", searchString=" + searchString
-				+ ", featureId=" + featureId + ", userTypeId=" + userTypeId + "]";
+		return "MobileDeviceRepositoryFilterRequest{" +
+				"startDate='" + startDate + '\'' +
+				", endDate='" + endDate + '\'' +
+				", modifiedOn='" + modifiedOn + '\'' +
+				", deviceId='" + deviceId + '\'' +
+				", deviceType='" + deviceType + '\'' +
+				", deviceStatus='" + deviceStatus + '\'' +
+				", mdrStatus=" + mdrStatus +
+				", marketingName='" + marketingName + '\'' +
+				", modelName='" + modelName + '\'' +
+				", brandName='" + brandName + '\'' +
+				", os='" + os + '\'' +
+				", organizationId='" + organizationId + '\'' +
+				", networkTechnologyGSM=" + networkTechnologyGSM +
+				", networkTechnologyCDMA=" + networkTechnologyCDMA +
+				", networkTechnologyLTE=" + networkTechnologyLTE +
+				", networkTechnology5G=" + networkTechnology5G +
+				", userId=" + userId +
+				", userType='" + userType + '\'' +
+				", orderColumnName='" + orderColumnName + '\'' +
+				", order='" + order + '\'' +
+				", publicIp='" + publicIp + '\'' +
+				", browser='" + browser + '\'' +
+				", searchString='" + searchString + '\'' +
+				", featureId=" + featureId +
+				", userTypeId=" + userTypeId +
+				", userDisplayName='" + userDisplayName + '\'' +
+				", manufacturerCountry='" + manufacturerCountry + '\'' +
+				", source='" + source + '\'' +
+				'}';
 	}
-	
 }

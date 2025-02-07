@@ -977,7 +977,9 @@ public class MobileDeviceRepositoryServiceImpl<T> {
             results = this.setInterps(mdrRepository.findAll(gsb.build(), pageable), states);
 
             auditTrail.setFeatureName(propertiesReader.DeviceManagement);
-            auditTrail.setSubFeature("View All");
+
+            auditTrail.setSubFeature("filter".equalsIgnoreCase(mdrRequest.getSource()) ? mdrRequest.getSource() : "View All");
+
             auditTrail.setFeatureId(mdrRequest.getFeatureId());
             if (Objects.nonNull(mdrRequest.getPublicIp()))
                 auditTrail.setPublicIp(mdrRequest.getPublicIp());
