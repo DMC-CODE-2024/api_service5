@@ -28,7 +28,7 @@ public class LostDeviceDetail {
 	private LocalDateTime createdOn = LocalDateTime.now();
 
 	@UpdateTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime modified_on;
 
     @Column(name="imei")

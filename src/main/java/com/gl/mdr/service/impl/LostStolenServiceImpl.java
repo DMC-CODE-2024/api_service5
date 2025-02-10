@@ -235,9 +235,40 @@ public class LostStolenServiceImpl {
 
     public GenricResponse updateLostStolenDevice(StolenLostModel stolenLostModel) {
         GenricResponse genricResponse = new GenricResponse();
+        List<String> tacList = new ArrayList<String>();
 
+        if (stolenLostModel.getImei1() != null) {
+            String tac = stolenLostModel.getImei1().substring(0, 8);
+            tacList.add(tac);
+        }
+        if (stolenLostModel.getImei2() != null && !stolenLostModel.getImei2().equals("") && !stolenLostModel.getImei2().isEmpty())
+        {
+            logger.info("imei 2 empty ");
+            String tac = stolenLostModel.getImei2().substring(0, 8);
+            tacList.add(tac);
+        }
+        if (stolenLostModel.getImei3() != null && !stolenLostModel.getImei3().equals("") && !stolenLostModel.getImei3().isEmpty())
+        {
+            String tac = stolenLostModel.getImei3().substring(0, 8);
+            tacList.add(tac);
+        }
+        if (stolenLostModel.getImei4() != null && !stolenLostModel.getImei4().equals("") && !stolenLostModel.getImei4().isEmpty())
+        {
+            String tac = stolenLostModel.getImei4().substring(0, 8);
+            tacList.add(tac);
+        }
 
         StolenLostModel res = lostStolenRepo.findByRequestId(stolenLostModel.getRequestId());
+        boolean tacResult = multipleTacValidation(tacList, stolenLostModel.getDeviceBrand(), stolenLostModel.getDeviceModel());
+        //   checking TAC validation
+        if (!tacResult) {
+            logger.info("TAC details invalid ");
+            genricResponse.setStatusCode("201");
+            genricResponse.setMessage("Invalid TAC");
+            genricResponse.setRequestID(stolenLostModel.getRequestId());
+            return genricResponse;
+
+        }
         //Entry in audit tail
         audiTrail(stolenLostModel.getPublicIp(), stolenLostModel.getBrowser(), stolenLostModel.getRequestId(), "Update-Device-Stolen", stolenLostModel.getUserAgent());
         stolenLostModel.setId(res.getId());

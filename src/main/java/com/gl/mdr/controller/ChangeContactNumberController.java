@@ -1,5 +1,7 @@
 package com.gl.mdr.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,10 @@ public class ChangeContactNumberController {
 	@Autowired
 	ChangeContactNumberServiceImpl changeContactNumberServiceImpl;
 	
-	//@ApiOperation(value = "Customer care contact number/request id verify", response = GenricResponse.class)
+
+	@Tag(name = "Contact number verification", description = "Contact number verification")
+	@Operation(
+			summary = "Contact number verify request",description = "Customer care contact number/request id verify.")
 	@RequestMapping(path = "/contact-number/verification", method = RequestMethod.POST)
 	public ResponseEntity<?> verifyRequestNumber(@RequestBody ChangeNumberFilterRequest filterRequest ){
 		logger.info("Change Contact Number Verification Request = " + filterRequest);
@@ -33,7 +38,10 @@ public class ChangeContactNumberController {
 		return genricResponse;
 	}
 	
-	//@ApiOperation(value = "Customer care update user lost/stolen contact number", response = MDRGenricResponse.class)
+
+	@Tag(name = "Contact number verification", description = "Contact number verification")
+	@Operation(
+			summary = "Contact number update",description = "Customer care update user lost/stolen contact number.")
 	@RequestMapping(path = "/contact-number/update", method = {RequestMethod.POST})
 	public ResponseEntity<?> updateContactNumber(@RequestBody ChangeNumberFilterRequest filterRequest) {
 		return changeContactNumberServiceImpl.updateContactNumberForDeviceInfo(filterRequest);

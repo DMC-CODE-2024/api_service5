@@ -19,12 +19,12 @@ public class ContactNumberChange {
     private Long id;
     
     @CreationTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime createdOn = LocalDateTime.now();
 
     @UpdateTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	@Column(name="modified_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
     LocalDateTime modifiedOn;
 

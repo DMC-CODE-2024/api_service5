@@ -2,6 +2,8 @@ package com.gl.mdr.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -37,7 +39,9 @@ public class TrackLostDeviceController {
 	@Autowired
 	TrackLostDeviceServiceImpl trackLostDeviceServiceImpl;
 
-	//@ApiOperation(value = "get list of track lost device devices", response = TrackLostDevices.class)
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Fetch all record",description = "Get list of track lost devices")
 	@PostMapping("/getTrackLostDevicesDetails")
 	public MappingJacksonValue getTrackLostDevicesDetails(@RequestBody TrackLostDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -49,8 +53,11 @@ public class TrackLostDeviceController {
 		return mapping;
 	}
 
-	
-	//@ApiOperation(value = "Export track lost devices", response = TrackLostDeviceFileModel.class)
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Export  all record",description = "Download list of track lost devices in to csv file.")
 	@PostMapping("/exportTrackLostData")
 	public MappingJacksonValue exportData(@RequestBody TrackLostDeviceFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -62,36 +69,51 @@ public class TrackLostDeviceController {
 		logger.info("track lost export response:["+fileDetails.toString()+"]");
 		return mapping;
 	}
-	
-	
-	//@ApiOperation(value="get TrackLost Device")
+
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Get record by request id",description = "Get record of particular request to view the details of device.")
 	@PostMapping("/getTrackLostData")
 	public ResponseEntity<?> getTrackLostData(@RequestBody TrackLostDeviceFilterRequest filterRequest ){
 		return trackLostDeviceServiceImpl.getTrackLostData(filterRequest);
 	}
-	
-	//@ApiOperation(value = "get User Operator Name")
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Operator names list",description = "Get record of operator name to filter the particular operator in track lost device.")
 	@GetMapping("/getDistinctOperator")
 	public ResponseEntity<?> getDistinctOperator() {
 		List<String>  list = trackLostDeviceServiceImpl.getDistinctOperator();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	//@ApiOperation(value = "get User Status Name")
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Device Status list",description = "Get record of status to filter the particular operator in track lost device.")
 	@GetMapping("/getDistinctStatus")
 	public ResponseEntity<?> getDistinctStatus() {
 		List<String>  list = trackLostDeviceServiceImpl.getDistinctStatus();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	//@ApiOperation(value = "get User Track Lost Device Request Type")
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "Device request type list",description = "Get record of request type to filter the particular operator in track lost device.")
 	@GetMapping("/getTrackLostRequestType")
 	public ResponseEntity<?> getTrackLostRequestType() {
 		List<String>  list = trackLostDeviceServiceImpl.getTrackLostRequestType();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	//@ApiOperation(value = "Insert Track Lost Devices Details.", response = GenricResponse.class)
+
+
+	@Tag(name = "Track lost devices", description = "Track lost device request")
+	@Operation(
+			summary = "insert in track lost",description = "Insert Track Lost Devices Details.")
 	@RequestMapping(path = "tracklost/device/{operator}", method = RequestMethod.POST)
 	public GenricResponse setTrackLostDevices(@RequestBody LostDeviceRequest lostDeviceRequest, @PathVariable String operator, HttpServletRequest request,HttpServletResponse response ){
 		logger.info("set Track Lost Devices Details Request = " +lostDeviceRequest.toString() );

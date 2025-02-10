@@ -21,12 +21,12 @@ public class TrackLostDevices {
 	private long id;
 
 	@CreationTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	@Column(name="created_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime createdOn = LocalDateTime.now();
 	
 	@CreationTimestamp
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm")
 	@Column(name="modified_on", columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime modifiedOn = LocalDateTime.now();
 	

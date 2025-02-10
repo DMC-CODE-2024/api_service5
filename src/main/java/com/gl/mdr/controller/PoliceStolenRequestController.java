@@ -6,6 +6,8 @@ import com.gl.mdr.model.app.OTPRequest;
 import com.gl.mdr.model.app.StolenLostModel;
 import com.gl.mdr.model.generic.GenricResponse;
 import com.gl.mdr.service.impl.PoliceStolenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ public class PoliceStolenRequestController {
     PoliceStolenService lostStolenRepo;
 
 
-   // //@ApiOperation(value = "Mark device stolen.", response = GenricResponse.class)
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "Save stolen request By police",description = "Save end user device  stolen request raise  by police user")
     @RequestMapping(path = "/lostStolen/create", method = RequestMethod.POST)
     public GenricResponse saveStolenDevice(@RequestBody StolenLostModel stolenLostModel) {
 
@@ -34,8 +38,9 @@ public class PoliceStolenRequestController {
         return genricResponse;
     }
 
-   // //@ApiOperation(value = "verify OTP.", response = GenricResponse.class)
-
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "OTP verification request",description = "OTP Verification request for device  stolen request")
     @RequestMapping(path = "/verifyOTP", method = RequestMethod.POST) public
     GenricResponse verifyOTP(@RequestBody OTPRequest otpRequest ) {
         logger.info("verify OTP Request , requestID= " +
@@ -45,7 +50,9 @@ public class PoliceStolenRequestController {
         return genricResponse;
     }
 
-   // //@ApiOperation(value = "resend OTP.", response = GenricResponse.class)
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "OTP resend request",description = "OTP resend request for stolen and recovery")
     @RequestMapping(path = "/resendOTP", method = RequestMethod.POST)
     public GenricResponse resendOTP(@RequestBody OTPRequest otpRequest ) {
 
@@ -57,7 +64,9 @@ public class PoliceStolenRequestController {
     }
 
 
-   // //@ApiOperation(value = "Mark Bulk device stolen.", response = GenricResponse.class)
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "Save bulk stolen request By police",description = "Save end user bulk device  stolen request raise  by police user")
     @RequestMapping(path = "/lostStolen/bulkSave", method = RequestMethod.POST)
     public GenricResponse bulkSave(@RequestBody StolenLostModel stolenLostModel) {
 
@@ -67,7 +76,9 @@ public class PoliceStolenRequestController {
         return genricResponse;
     }
 
-   // //@ApiOperation(value = "Verify device", response = CountryCodeModel.class)
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "Verify stolen request By police",description = "Verify device brand and model details")
     @PostMapping("/verifyDevice")
     public GenricResponse verifyDevice(@RequestBody StolenLostModel stolenLostModel) {
         String tac=	stolenLostModel.getImei1().substring(0, 8);
@@ -79,7 +90,9 @@ public class PoliceStolenRequestController {
         return genricResponse;
     }
 
-   // //@ApiOperation(value = "approve police request by  request id .", response = GenricResponse.class)
+    @Tag(name = "End user stolen", description = "End user stolen and recovery")
+    @Operation(
+            summary = "Verify stolen request By police",description = "Verify end user device  stolen request raise  by police user")
     @RequestMapping(path = "/approvePoliceRequest", method = RequestMethod.POST)
     public GenricResponse approvePoliceRequest(@RequestBody StolenLostModel stolenLostModel) {
         logger.info("approve request for request id = " + stolenLostModel.getRequestId());

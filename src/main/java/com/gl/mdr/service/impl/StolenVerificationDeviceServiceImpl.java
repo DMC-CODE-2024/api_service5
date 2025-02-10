@@ -420,7 +420,7 @@ public class StolenVerificationDeviceServiceImpl {
 			GenricResponse response=new GenricResponse(200,"","",result.get());
 			return  new ResponseEntity<>(response,HttpStatus.OK);
 		}else {
-			GenricResponse response=new GenricResponse(500,"Something wrong happend","",result);
+			GenricResponse response=new GenricResponse(500,"Something wrong happened","",result);
 			return  new ResponseEntity<>(response,HttpStatus.OK);
 		}
 	}
