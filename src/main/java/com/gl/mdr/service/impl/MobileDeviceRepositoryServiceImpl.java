@@ -962,11 +962,24 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                     : Sort.Direction.DESC;
 
 
-            if (Objects.nonNull(mdrRequest.getOrderColumnName()))
+            /*if (Objects.nonNull(mdrRequest.getOrderColumnName()))
                 pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction,
                         OrderColumnMapping.getColumnMapping(mdrRequest.getOrderColumnName()).name()));
             else
+                pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, "modifiedOn"));*/
+
+            if (Objects.nonNull(mdrRequest.getOrderColumnName())) {
+                OrderColumnMapping columnMapping = OrderColumnMapping.getColumnMapping(mdrRequest.getOrderColumnName());
+                if (columnMapping != null) {
+                    pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, columnMapping.name()));
+                } else {
+                    // Case where the column mapping is not found, for default sorting or error handling
+                    pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, "modifiedOn"));
+                }
+            } else {
                 pageable = PageRequest.of(pageNo, pageSize, Sort.by(direction, "modifiedOn"));
+            }
+
             //states = statesInterpretaionRepository.findByFeatureId(mdrRequest.getFeatureId());
             states = statesInterpretaionRepository.findByFeatureId(0);
 
