@@ -1,5 +1,7 @@
 package com.gl.mdr.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class OperatorFileManagmentController {
 	OperatorFileMagamentServiceImpl operatorFileMagamentServiceImpl;
 
 	//@ApiOperation(value = "get Operator List File Wise", response = ListFileManagementModel.class)
+	@Tag(name = "Operator File List", description = "Operator File List")
+	@Operation(
+			summary = "Feature is no longer in use",
+			description = "This API is no longer in use")
 	@PostMapping("/getOperatorFileDetails")
 	public MappingJacksonValue getPoliceVerificationDevicesDetails(@RequestBody ListFileFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
@@ -37,6 +43,10 @@ public class OperatorFileManagmentController {
 
 	
 	//@ApiOperation(value = "Export get Operator List File Wise", response = ListFileManagementModel.class)
+	@Tag(name = "Operator File List", description = "Operator File List")
+	@Operation(
+			summary = "Feature is no longer in use",
+			description = "This API is no longer in use")
 	@PostMapping("/exportOperatorListFileData")
 	public MappingJacksonValue exportData(@RequestBody ListFileFilterRequest filterRequest,
 			@RequestParam(value = "pageNo", defaultValue = "0") Integer pageNo,
