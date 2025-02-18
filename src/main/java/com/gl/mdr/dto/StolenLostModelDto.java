@@ -31,7 +31,7 @@ public class StolenLostModelDto {
 
 
     private String imei1;
-
+    private String imei;
 
     private String imei2;
 

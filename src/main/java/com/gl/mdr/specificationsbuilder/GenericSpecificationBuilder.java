@@ -246,10 +246,21 @@ public class GenericSpecificationBuilder<T> {
 	            Predicate condition5 = criteriaBuilder.equal(root.get("status"), "REJECT");
 	            Predicate condition6 = criteriaBuilder.equal(root.get("status"), "VERIFY_MOI");
 	            Predicate condition7 = criteriaBuilder.equal(root.get("status"), "INIT");
-	            /*Predicate condition8 = criteriaBuilder.equal(root.get("status"), "Fail");*/
+	            Predicate condition8 = criteriaBuilder.equal(root.get("status"), "Fail");
+				Predicate createdByCondition = criteriaBuilder.notEqual(root.get("createdBy"), "End User");
 
-	            // Updated logic to include null or any value other than "Approved" or "Reject"
-	            return criteriaBuilder.or(condition2, condition3,condition4,condition5,condition6,condition7);
+				// Predicate for excluding records when status is "Fail" and createdBy is "End User"
+				Predicate failAndEndUser = criteriaBuilder.and(
+						criteriaBuilder.equal(root.get("status"), "Fail"),
+						criteriaBuilder.equal(root.get("createdBy"), "End User")
+				);
+				// Combine the status conditions
+				Predicate statusConditions = criteriaBuilder.or(condition2, condition3, condition4, condition5, condition6, condition7,condition8);
+				// Exclude records where status is "Fail" and createdBy is "End User"
+				return criteriaBuilder.and(
+						statusConditions,  // Apply the status conditions
+						criteriaBuilder.not(failAndEndUser) // Exclude "Fail" status with "End User" as createdBy
+				);
 	        }
 	    };
 	}

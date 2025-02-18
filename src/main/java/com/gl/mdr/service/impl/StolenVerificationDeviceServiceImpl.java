@@ -115,8 +115,8 @@ public class StolenVerificationDeviceServiceImpl {
 				logger.info("column Name :: " + trackLostRequest.getOrderColumnName());
 				orderColumn = "Date & Time".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "createdOn" :
 					"Request Number".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "requestId" :
-						"IMEI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imei" :
-							"Uploaded By".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "uploadedBy" :
+						"IMEI".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "imei1" :
+							"Uploaded By".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "createdBy" :
 								"Request Mode".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "requestMode" :
 									"Request Type".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "requestType" :
 										"Province".equalsIgnoreCase(trackLostRequest.getOrderColumnName()) ? "province" :
