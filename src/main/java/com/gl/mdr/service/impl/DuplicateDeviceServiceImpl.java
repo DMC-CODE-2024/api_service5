@@ -257,13 +257,16 @@ public class DuplicateDeviceServiceImpl {
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+            e.printStackTrace();
             throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
         } finally {
             try {
                 if (writer != null)
                     writer.close();
             } catch (IOException e) {
-
+                logger.error(e.getMessage(), e);
+                e.printStackTrace();
+                throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
             }
         }
 

@@ -398,7 +398,7 @@ public class SearchIMEIServiceImpl {
             }
 
         }
-        ;
+
         searchIMEIResponseList.add(searchIMEIResponse);
         return searchIMEIResponseList;
     }

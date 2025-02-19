@@ -918,6 +918,7 @@ public class LostStolenServiceImpl {
             auditTrailRepository.save(auditTrail);
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
         try {
             RequestHeaders header = new RequestHeaders();
@@ -931,6 +932,7 @@ public class LostStolenServiceImpl {
             requestHeadersRepository.save(header);
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

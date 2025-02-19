@@ -1657,6 +1657,8 @@ public class MobileDeviceRepositoryServiceImpl<T> {
                 if (writer != null)
                     writer.close();
             } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         }
     }

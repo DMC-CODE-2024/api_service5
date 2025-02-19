@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import com.gl.mdr.exceptions.ResourceServicesException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
@@ -131,7 +132,8 @@ public class BulkIMEIFileUploadServiceImpl {
 		try {
 			audiTrail(bulkIMEIRequest.auditTrailModel.getPublicIp(), bulkIMEIRequest.auditTrailModel.getBrowser(), bulkIMEIRequest.getTransactionId(), "day wise file upload",bulkIMEIRequest.auditTrailModel.getBrowser());
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error(e.getMessage(), e);
+			throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
 		}
 		
 		return bulkIMEIFileUploadRepository.findCount(bulkIMEIRequest.getContactNumber()) ;
@@ -178,7 +180,8 @@ public class BulkIMEIFileUploadServiceImpl {
 						webActionDbRepository.save(webDB);
 						
 					} catch (Exception e) {
-						// TODO: handle exception
+						logger.error(e.getMessage(), e);
+						throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
 					}
 					audiTrail(ip, browser, requestID, "Verify OTP",userAgent);
 					
@@ -331,6 +334,8 @@ public class BulkIMEIFileUploadServiceImpl {
 			} catch (Exception e) {
 				// TODO: handle exception
 				trackLostDevices.setStatus("7");
+				logger.error(e.getMessage(), e);
+				throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
 			}
 			
 			trackLostDevices.setTime_stamp(lostDeviceRequest.getTimeStamp());
@@ -365,6 +370,8 @@ public class BulkIMEIFileUploadServiceImpl {
 						// TODO: handle exception
 						trackLostDevices.setRequestType("");
 						logger.info("Exception When Set Request type = " +lostDeviceDetail.getRequestType());
+						logger.error(e.getMessage(), e);
+						throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
 					}
 				}else {
 					trackLostDevices.setRequest_id("");
@@ -392,7 +399,9 @@ public class BulkIMEIFileUploadServiceImpl {
 			genricResponse.setErrorCode(201);
 			genricResponse.setMessage("Wrong Data");
 			genricResponse.setTxnId("FAILED");
+			logger.error(e.getMessage(), e);
 			return genricResponse;
+
 		}
 		
 		
@@ -415,6 +424,7 @@ public class BulkIMEIFileUploadServiceImpl {
 			auditTrailRepository.save(auditTrail);
 		} catch (Exception e) {
 			// TODO: handle exception
+			logger.error(e.getMessage(), e);
 		}
 		try {
 			RequestHeaders header=new RequestHeaders();
@@ -427,6 +437,8 @@ public class BulkIMEIFileUploadServiceImpl {
 			requestHeadersRepository.save(header);
 		} catch (Exception e) {
 			// TODO: handle exception
+			logger.error(e.getMessage(), e);
+			throw new ResourceServicesException(this.getClass().getName(), e.getMessage());
 		}
 		
 	}

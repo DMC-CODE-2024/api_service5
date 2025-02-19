@@ -353,6 +353,7 @@ public class PoliceStolenService {
             auditTrailRepository.save(auditTrail);
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
         try {
             RequestHeaders header=new RequestHeaders();
@@ -366,6 +367,7 @@ public class PoliceStolenService {
             requestHeadersRepository.save(header);
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

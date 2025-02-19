@@ -228,6 +228,7 @@ public class TrackLostDeviceServiceImpl {
 			        String interpretation = getInterpretationForStatus(Integer.parseInt(detail.getStatus()), 93L);
 			        detail.setInterpretation(interpretation);
 			    } catch (Exception e) {
+					e.printStackTrace();
 			        logger.info("Exception when get status =" + detail.getStatus() + " getFeatureId=" + 93L + " Exception=" + e.getMessage());
 			    }
 			    
@@ -370,7 +371,7 @@ public class TrackLostDeviceServiceImpl {
 				if( writer != null )
 					writer.close();
 			} catch (IOException e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -459,6 +460,7 @@ public class TrackLostDeviceServiceImpl {
 			} catch (Exception e) {
 				// TODO: handle exception
 				trackLostDevices.setStatus("7");
+				e.printStackTrace();
 			}
 			
 			trackLostDevices.setTime_stamp(lostDeviceRequest.getTimeStamp());
@@ -492,6 +494,7 @@ public class TrackLostDeviceServiceImpl {
 						// TODO: handle exception
 						trackLostDevices.setRequestType("");
 						logger.info("Exception When Set Request type = " +lostDeviceDetail.getRequestType());
+						e.printStackTrace();
 					}
 				}else {
 					trackLostDevices.setRequest_id("");
@@ -522,6 +525,7 @@ public class TrackLostDeviceServiceImpl {
 			logger.info("setTrackLostDevices():: Raise Alert request API=" + alertDto);
 			genricResponse = alertFeign.raiseAnAlert(alertDto);
 			logger.info("setTrackLostDevices():: Raise Alert API response=" + genricResponse);
+			e.printStackTrace();
 			return genricResponse;
 		}
 		

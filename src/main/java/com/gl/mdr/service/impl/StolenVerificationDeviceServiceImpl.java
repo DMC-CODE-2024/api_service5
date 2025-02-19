@@ -407,7 +407,7 @@ public class StolenVerificationDeviceServiceImpl {
 				if( writer != null )
 					writer.close();
 			} catch (IOException e) {
-
+				e.printStackTrace();
 			}
 		}
 	}
@@ -593,6 +593,7 @@ public class StolenVerificationDeviceServiceImpl {
 
 				} catch (Exception e) {
 					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 			GenricResponse response = new GenricResponse(HttpStatus.OK.value(), "MOI Admin Verification Successfully", "", stolen);
